@@ -1,0 +1,160 @@
+{
+  "experiment": "stage-a-pilot",
+  "timestamp": "2026-10-07T21:32:12.348Z",
+  "requests": [
+    {
+      "id": "coding-01",
+      "task": "coding",
+      "prompt": "Write a Python function that returns the second distinct largest integer in a list. Explain empty and duplicate-only cases.",
+      "rubric": "Distinctness, boundary cases, valid Python."
+    },
+    {
+      "id": "analysis-01",
+      "task": "analysis",
+      "prompt": "Compare a subscription and a usage-based price for a small analytics tool. Identify two risks of each.",
+      "rubric": "Balanced comparison, explicit risks, actionable recommendation."
+    },
+    {
+      "id": "writing-01",
+      "task": "writing",
+      "prompt": "Draft a concise announcement for a dashboard redesign, emphasizing where existing reports moved.",
+      "rubric": "Clear change, navigation guidance, concise tone."
+    },
+    {
+      "id": "qa-01",
+      "task": "qa",
+      "prompt": "What is the difference between a median and a mean? Give an example where they differ substantially.",
+      "rubric": "Accurate definitions and computed example."
+    }
+  ],
+  "results": [
+    {
+      "router": "litellm",
+      "requestId": "coding-01",
+      "success": true,
+      "selectedModel": "gpt-4.1",
+      "provider": "openai",
+      "response": "Certainly! Here’s a Python function to find the **second distinct largest integer** in a list, plus explanations for the empty and duplicate-only cases.\n\n## Function\n\n```python\ndef second_largest(nums):\n    # Remove duplicates by converting to a set\n    distinct_nums = set(nums)\n    \n    if len(distinct_nums) == 0:\n        # No elements in the list\n        return None\n    if len(distinct_nums) == 1:\n        # All elements are the same; only one distinct value\n        return None\n    \n    # Sort the set in descending order and get the second value\n    sorted_nums = sorted(distinct_nums, reverse=True)\n    return sorted_nums[1]\n```\n\n## How it works\n\n1. **Removes duplicates**: Using `set()`.\n2. **Checks empty set**: If list is empty, `set(nums)` is empty. Returns `None`.\n3. **Checks one distinct element**: If all elements are equal (like `[7, 7, 7]`), set has just one item. Returns `None`.\n4. **Returns second largest**: Sorts the set in descending order and returns the item at index 1.\n\n## Examples\n\n```python\nprint(second_largest([1, 3, 5, 5, 4]))   # Output: 4\nprint(second_largest([10, 10, 10]))      # Output: None\nprint(second_largest([]))                # Output: None\n```\n\n### Case Explanations\n\n- **Empty list:**  \n  `second_largest([])` returns `None` because there are no elements.\n\n- **List with all duplicates:**  \n  `second_largest([7, 7, 7, 7])` returns `None` because there isn't a second distinct largest value.\n\n- **Normal case:**  \n  `second_largest([8, 2, 7, 8, 3])` returns `7` (distinct elements: `[8, 7, 3, 2]` → second largest is `7`).",
+      "latencyMs": 4101.942292,
+      "inputTokens": 29,
+      "outputTokens": 437,
+      "costUsd": 0.003554,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "coding-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! Below is a Python function to find the **second distinct largest integer** in a list. Following the function, I'll explain how it handles empty lists or lists where all elements are duplicates (i.e., don't have a second distinct largest value).\n\n```python\ndef second_largest(nums):\n    \"\"\"\n    Returns the second distinct largest integer in the list nums.\n    If there is no such second largest (list empty or only one distinct element),\n    returns None.\n    \"\"\"\n    distinct_nums = set(nums)  # Remove duplicates\n    if len(distinct_nums) < 2:\n        # Less than two distinct elements means no second largest\n        return None\n    sorted_nums = sorted(distinct_nums, reverse=True)\n    return sorted_nums[1]\n\n\n# Examples:\nprint(second_largest([4, 1, 7, 7, 3]))  # Output: 4\nprint(second_largest([5, 5, 5]))        # Output: None (only one distinct element)\nprint(second_largest([]))                # Output: None (empty list)\n```\n\n### Explanation:\n\n- **Empty list (`[]`)**:  \n  The function returns `None` because there are no elements, so no second largest can be found.\n\n- **List with only duplicates (`[5, 5, 5]`)**:  \n  After converting to a `set`, it has only one distinct element (`{5}`). Since there's only one distinct number, there is no \"second largest\", so the function returns `None`.\n\n- **Normal list with multiple distinct elements (`[4, 1, 7, 7, 3]`)**:  \n  Duplicates are removed by converting to a set (`{1, 3, 4, 7}`), then sorted in descending order `[7, 4, 3, 1]`. The second distinct largest is the second element (`4`).\n\nLet me know if you want a variant that raises an error instead of returning `None` when no second largest is found!",
+      "latencyMs": 4185.419542,
+      "inputTokens": 29,
+      "outputTokens": 425,
+      "costUsd": 0.0006915999999999999,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "analysis-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini",
+      "provider": "openai",
+      "response": "Sure! Here's a comparison of subscription and usage-based pricing models for a small analytics tool, along with two risks for each:\n\n### Subscription Pricing\n\n**Description:**  \nCustomers pay a fixed recurring fee (e.g., monthly or yearly) for access to the analytics tool, regardless of how much they use it.\n\n**Risks:**\n\n1. **Underutilization Risk:**  \n   Some customers might pay for the subscription but use the tool infrequently, leading to lower perceived value and potential churn when they realize the cost outweighs the benefit.\n\n2. **Revenue Ceiling Risk:**  \n   With a fixed fee, the company’s revenue per customer is capped regardless of customer growth or increased usage, potentially leaving money on the table from heavy users who could pay more under a usage-based model.\n\n---\n\n### Usage-Based Pricing\n\n**Description:**  \nCustomers pay based on how much they use the analytics tool, such as the number of queries run, reports generated, or data processed.\n\n**Risks:**\n\n1. **Revenue Volatility Risk:**  \n   Income can fluctuate significantly month-to-month based on customer usage patterns, making financial forecasting and budgeting more difficult.\n\n2. **Customer Friction Risk:**  \n   Variable costs can discourage usage as customers may limit their tool engagement to control expenses, which can reduce customer satisfaction and inhibit product adoption.\n\n---\n\nLet me know if you'd like me to expand on these or add examples!",
+      "latencyMs": 3163.7316250000003,
+      "inputTokens": 27,
+      "outputTokens": 283,
+      "costUsd": 0.0004636,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "analysis-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! Here’s a comparison, plus two risks for **each** pricing model:\n\n---\n\n### Subscription Pricing (e.g., $30/month flat fee)\n\n**Description:**  \nCustomers pay a fixed recurring fee for access to the analytics tool, regardless of usage.\n\n**Risks:**\n1. **Churn Risk from Low Usage:**  \n   If customers don’t use the tool frequently, they may cancel because the perceived value doesn’t match the recurring cost.\n\n2. **Over-/Under-Pricing Risk:**  \n   Some customers may heavily use the tool (incurring higher costs for the business), while others use it very little. A single price might discourage high-usage customers (due to perceived unfairness) and might not capture all potential revenue from power users.\n\n---\n\n### Usage-Based Pricing (e.g., $0.10 per report generated)\n\n**Description:**  \nCustomers are charged based on usage metrics like number of reports, data volume, etc.\n\n**Risks:**\n1. **Revenue Unpredictability:**  \n   With fluctuating customer usage, revenue can be difficult to forecast, making financial planning and steady growth harder for the business.\n\n2. **User Anxiety (\"Metering Effect\"):**  \n   Customers may hesitate to use the tool fully, fearing high bills, which can discourage adoption, reduce engagement, or lead to negative experiences (“bill shock”).\n\n---\n\n**Summary Table:**\n\n| Pricing Model              | Risk #1                           | Risk #2                        |\n|----------------------------|-----------------------------------|--------------------------------|\n| Subscription               | Churn from low user value         | Over-/Under-pricing segments   |\n| Usage-based                | Revenue unpredictability          | User hesitancy/bill shock      |\n\nLet me know if you want real-world examples or further details!",
+      "latencyMs": 3318.0734159999993,
+      "inputTokens": 27,
+      "outputTokens": 357,
+      "costUsd": 0.00291,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "writing-01",
+      "success": true,
+      "selectedModel": "gpt-4.1",
+      "provider": "openai",
+      "response": "Subject: Dashboard Redesign Update – Report Locations\n\nWe’re excited to announce the launch of our redesigned dashboard! To enhance your experience, key reports have been reorganized:\n\n- **Monthly Sales** and **Revenue Reports** are now under the “Performance” tab.\n- **Customer Insights** reports are found in the new “Analytics” section.\n- **Operational Dashboards** have moved to “Operations.”\n\nFor a detailed guide and FAQs, please [click here/go to our help page].  \nThank you for adapting with us as we work to improve your workflow!",
+      "latencyMs": 2750.4284580000003,
+      "inputTokens": 22,
+      "outputTokens": 113,
+      "costUsd": 0.000948,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "writing-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "We’re excited to announce our dashboard redesign! All existing reports can now be found under the new “Reports” tab in the main navigation. Please update your bookmarks accordingly. If you have trouble locating any report, contact our support team for assistance. Thank you for adapting with us!",
+      "latencyMs": 1799.380957999998,
+      "inputTokens": 22,
+      "outputTokens": 56,
+      "costUsd": 0.000492,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "qa-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-nano",
+      "provider": "openai",
+      "response": "The **mean** (often called the average) is calculated by adding up all the numbers in a data set and then dividing by the number of values. The **median** is the middle value when the data are arranged in order; if there is an even number of values, the median is the average of the two middle ones.\n\n**Key differences:**\n- The mean takes into account all values and can be influenced heavily by very large or very small numbers (outliers).\n- The median only considers the middle position, making it more resistant to outliers.\n\n---\n\n### Example where mean and median differ substantially:\n\nSuppose we have incomes of 5 people (in thousands of dollars):\n\n**$25k, $30k, $35k, $40k, $200k**\n\n- **Mean:**\n  \\[\n  \\frac{25 + 30 + 35 + 40 + 200}{5} = \\frac{330}{5} = 66 \\text{k}\n  \\]\n\n- **Median:**\n  Arrange in order: $25k, $30k, $35k, $40k, $200k\n\n  The middle value (3rd in order) is **$35k**.\n\n---\n\n### **Result:**\n- The **mean** is **$66k**, which is much higher than most individual incomes due to the $200k outlier.\n- The **median** is **$35k**, better representing the typical income of this group.\n\nThis example illustrates how the mean can be skewed upward by a few high values, whereas the median provides a better sense of the typical middle value when outliers are present.",
+      "latencyMs": 3631.135916000003,
+      "inputTokens": 26,
+      "outputTokens": 342,
+      "costUsd": 0.0001394,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "qa-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "**Difference between Median and Mean:**\n\n- **Mean** (or average): Add up all the values in a data set and divide by the number of values.  \n- **Median**: The middle value when the data are arranged in order. If there is an even number of values, it is the average of the two middle numbers.\n\n---\n\n### Example Where They Differ Substantially\n\nSuppose we look at the yearly incomes (in thousands of dollars) of four people in a small group:\n\n    $28, $30, $31, $200\n\n**Mean:**\n- (28 + 30 + 31 + 200) / 4 = 289 / 4 = **$72.25k**\n\n**Median:**\n- Arrange in order: 28, 30, 31, 200\n- Since there are 4 numbers (even), median = (30 + 31)/2 = **$30.5k**\n\n**Interpretation:**\n- The **mean** is much higher ($72.25k), distorted upward by the single very high value ($200k).\n- The **median** is $30.5k, which better represents the income of a \"typical\" person in this group.\n\n---\n\n**Conclusion:**  \nThe mean is affected by outliers (very large or very small values), while the median is resistant to them. That's why, in datasets with outliers or skewed values, the median is often a better measure of \"typical\" value.",
+      "latencyMs": 2096.7376670000012,
+      "inputTokens": 26,
+      "outputTokens": 310,
+      "costUsd": 0.002532,
+      "error": null
+    }
+  ],
+  "summary": [
+    {
+      "router": "litellm",
+      "totalRequests": 4,
+      "successfulRequests": 4,
+      "successRate": 1,
+      "averageCostUsd": 0.0012762499999999998,
+      "totalCostUsd": 0.005104999999999999,
+      "averageLatencyMs": 3411.809572750001,
+      "p50LatencyMs": 3397.4337705000016,
+      "p95LatencyMs": 4031.3213356
+    },
+    {
+      "router": "notdiamond",
+      "totalRequests": 4,
+      "successfulRequests": 4,
+      "successRate": 1,
+      "averageCostUsd": 0.0016564000000000001,
+      "totalCostUsd": 0.006625600000000001,
+      "averageLatencyMs": 2849.9028957499995,
+      "p50LatencyMs": 2707.4055415000003,
+      "p95LatencyMs": 4055.3176230999993
+    }
+  ]
+}

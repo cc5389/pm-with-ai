@@ -1,0 +1,51 @@
+model_list:
+  - model_name: gpt-4.1
+    litellm_params:
+      model: openai/gpt-4.1-2025-04-14
+      api_key: os.environ/OPENAI_API_KEY
+    model_info:
+      quality_tier: 3
+      adaptive_router_preferences:
+        quality_tier: 3
+        strengths:
+          - code_generation
+          - analytical_reasoning
+          - writing
+
+  - model_name: gpt-4.1-mini
+    litellm_params:
+      model: openai/gpt-4.1-mini-2025-04-14
+      api_key: os.environ/OPENAI_API_KEY
+    model_info:
+      quality_tier: 2
+      adaptive_router_preferences:
+        quality_tier: 2
+        strengths:
+          - general
+          - factual_lookup
+          - writing
+
+  - model_name: gpt-4.1-nano
+    litellm_params:
+      model: openai/gpt-4.1-nano-2025-04-14
+      api_key: os.environ/OPENAI_API_KEY
+    model_info:
+      quality_tier: 1
+      adaptive_router_preferences:
+        quality_tier: 1
+        strengths:
+          - general
+          - factual_lookup
+
+  - model_name: smart-router
+    litellm_params:
+      model: auto_router/adaptive_router
+      adaptive_router_default_model: gpt-4.1-mini
+      adaptive_router_config:
+        available_models:
+          - gpt-4.1
+          - gpt-4.1-mini
+          - gpt-4.1-nano
+        weights:
+          quality: 0.7
+          cost: 0.3

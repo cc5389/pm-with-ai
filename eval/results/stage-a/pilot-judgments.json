@@ -1,0 +1,88 @@
+{
+  "experiment": "stage-a-pilot-quality",
+  "judgeModel": "gpt-4.1-mini-2025-04-14",
+  "qualityThreshold": 0.75,
+  "timestamp": "2026-10-07T21:51:42.990Z",
+  "judgments": [
+    {
+      "requestId": "coding-01",
+      "router": "litellm",
+      "correctness": 5,
+      "completeness": 5,
+      "instructionFollowing": 5,
+      "reasoning": "The answer provides a correct Python function that returns the second distinct largest integer, handling empty and duplicate-only cases by returning None. It explains the approach clearly, includes example usage, and discusses boundary cases as requested. The code is valid Python and meets all rubric criteria.",
+      "overallScore": 1,
+      "passed": true
+    },
+    {
+      "requestId": "coding-01",
+      "router": "notdiamond",
+      "correctness": 5,
+      "completeness": 5,
+      "instructionFollowing": 5,
+      "reasoning": "The answer provides a correct Python function that returns the second distinct largest integer in a list, handling duplicates by converting to a set and sorting. It correctly returns None when the list is empty or has only one distinct element. The explanation clearly covers the empty list and duplicate-only cases as requested. The code is valid Python and meets the rubric requirements fully.",
+      "overallScore": 1,
+      "passed": true
+    },
+    {
+      "requestId": "analysis-01",
+      "router": "litellm",
+      "correctness": 5,
+      "completeness": 5,
+      "instructionFollowing": 5,
+      "reasoning": "The answer provides a balanced comparison of subscription and usage-based pricing models, clearly describing each and identifying two explicit risks for each model. It addresses the user's request fully and follows the instruction to provide a balanced comparison with explicit risks. The answer also offers to expand or add examples, showing engagement with the user's needs. The recommendation is implicit in the risk analysis, which is actionable for decision-making.",
+      "overallScore": 1,
+      "passed": true
+    },
+    {
+      "requestId": "analysis-01",
+      "router": "notdiamond",
+      "correctness": 5,
+      "completeness": 5,
+      "instructionFollowing": 5,
+      "reasoning": "The answer provides a balanced comparison of subscription and usage-based pricing models for a small analytics tool, clearly describing each model. It identifies two explicit risks for each pricing model, matching the user request. The inclusion of a summary table enhances clarity and completeness. The answer also offers to provide further details, showing engagement with the user's needs. It fully follows the instructions and rubric.",
+      "overallScore": 1,
+      "passed": true
+    },
+    {
+      "requestId": "writing-01",
+      "router": "litellm",
+      "correctness": 5,
+      "completeness": 5,
+      "instructionFollowing": 5,
+      "reasoning": "The announcement clearly states the dashboard redesign and specifies where existing reports have moved, fulfilling the requirement to emphasize report locations. It provides navigation guidance by naming the new tabs/sections for the reports. The tone is concise and professional, matching the rubric's demand for clarity and conciseness. The inclusion of a link to a detailed guide and FAQs adds helpful navigation support without unnecessary verbosity. Overall, it fully addresses the task and follows instructions precisely.",
+      "overallScore": 1,
+      "passed": true
+    },
+    {
+      "requestId": "writing-01",
+      "router": "notdiamond",
+      "correctness": 5,
+      "completeness": 5,
+      "instructionFollowing": 5,
+      "reasoning": "The announcement clearly states the dashboard redesign and specifies where existing reports have moved (under the new 'Reports' tab). It provides navigation guidance and maintains a concise tone, fully meeting the task requirements and rubric.",
+      "overallScore": 1,
+      "passed": true
+    },
+    {
+      "requestId": "qa-01",
+      "router": "litellm",
+      "correctness": 5,
+      "completeness": 5,
+      "instructionFollowing": 5,
+      "reasoning": "The answer provides accurate definitions of mean and median, clearly explains their differences, and includes a concrete example with calculations showing a substantial difference between the two measures. It fully addresses the user's request and follows the rubric requirements precisely.",
+      "overallScore": 1,
+      "passed": true
+    },
+    {
+      "requestId": "qa-01",
+      "router": "notdiamond",
+      "correctness": 5,
+      "completeness": 5,
+      "instructionFollowing": 5,
+      "reasoning": "The answer provides accurate definitions of mean and median, including the calculation method for each. It includes a clear example with a small dataset where the mean and median differ substantially, showing the calculations step-by-step. The explanation correctly interprets why the mean is higher due to an outlier and why the median better represents the typical value. The answer fully addresses the task and rubric with no deviations from instructions.",
+      "overallScore": 1,
+      "passed": true
+    }
+  ]
+}

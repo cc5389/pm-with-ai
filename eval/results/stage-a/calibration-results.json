@@ -1,0 +1,720 @@
+{
+  "experiment": "stage-a-router-comparison",
+  "version": "1.0",
+  "phase": "calibration",
+  "updatedAt": "2026-10-07T21:56:49.593Z",
+  "config": {
+    "experiment": "stage-a-router-comparison",
+    "version": "1.0",
+    "candidateModels": [
+      "gpt-4.1-2025-04-14",
+      "gpt-4.1-mini-2025-04-14",
+      "gpt-4.1-nano-2025-04-14"
+    ],
+    "routers": [
+      "litellm",
+      "notdiamond"
+    ],
+    "tasks": [
+      "coding",
+      "analysis",
+      "writing",
+      "qa"
+    ],
+    "judge": {
+      "model": "gpt-4.1-mini-2025-04-14",
+      "qualityThreshold": 0.75,
+      "rubricVersion": "1.0",
+      "temperature": 0
+    },
+    "dataset": {
+      "totalPrompts": 40,
+      "calibrationPrompts": 20,
+      "evaluationPrompts": 20,
+      "pilotPrompts": 4
+    },
+    "metrics": [
+      "quality",
+      "qualityPassRate",
+      "generationCostUsd",
+      "latencyMs",
+      "successRate"
+    ],
+    "notes": [
+      "Same candidate model pool for both routers.",
+      "Same task prompts and evaluation rubric.",
+      "Judge is blind to router and selected model.",
+      "Generation costs exclude router service fees.",
+      "Held-out evaluation prompts are not used for calibration.",
+      "LiteLLM adaptive routing state may change during the experiment."
+    ]
+  },
+  "requests": [
+    {
+      "id": "coding-01",
+      "task": "coding",
+      "prompt": "Write a Python function that returns the second distinct largest integer in a list. Explain empty and duplicate-only cases.",
+      "rubric": "Distinctness, boundary cases, valid Python."
+    },
+    {
+      "id": "coding-02",
+      "task": "coding",
+      "prompt": "Implement a TypeScript debounce utility with cancellation and preserved argument types.",
+      "rubric": "Timer reset, cancellation, type correctness."
+    },
+    {
+      "id": "coding-03",
+      "task": "coding",
+      "prompt": "Explain why a SQL LEFT JOIN can lose unmatched rows when a right-table filter is in WHERE. Correct the query.",
+      "rubric": "NULL semantics, corrected join filter, example."
+    },
+    {
+      "id": "coding-04",
+      "task": "coding",
+      "prompt": "Write a JavaScript function to group records by category without mutating the input.",
+      "rubric": "Correct grouping, immutability, missing-category handling."
+    },
+    {
+      "id": "coding-05",
+      "task": "coding",
+      "prompt": "Design unit tests for an inclusive date-range overlap function, including adjacent intervals.",
+      "rubric": "Overlap cases, inclusivity, disjoint ranges."
+    },
+    {
+      "id": "analysis-01",
+      "task": "analysis",
+      "prompt": "Compare a subscription and a usage-based price for a small analytics tool. Identify two risks of each.",
+      "rubric": "Balanced comparison, explicit risks, actionable recommendation."
+    },
+    {
+      "id": "analysis-02",
+      "task": "analysis",
+      "prompt": "A signup experiment has 40 conversions among 400 visitors versus 54 among 450. Analyze what is known and uncertain.",
+      "rubric": "Correct rates, uncertainty, no unjustified causal claim."
+    },
+    {
+      "id": "analysis-03",
+      "task": "analysis",
+      "prompt": "Prioritize three roadmap items with reach, effort, and uncertainty: export, onboarding, and team permissions.",
+      "rubric": "Explicit assumptions, consistent prioritization, uncertainty."
+    },
+    {
+      "id": "analysis-04",
+      "task": "analysis",
+      "prompt": "Evaluate whether a five-person startup should build or buy a customer-support tool.",
+      "rubric": "Costs, integration risks, decision criteria."
+    },
+    {
+      "id": "analysis-05",
+      "task": "analysis",
+      "prompt": "Outline a pre-mortem for launching a mobile app in a new market.",
+      "rubric": "Concrete failure modes, leading indicators, mitigations."
+    },
+    {
+      "id": "writing-01",
+      "task": "writing",
+      "prompt": "Draft a concise announcement for a dashboard redesign, emphasizing where existing reports moved.",
+      "rubric": "Clear change, navigation guidance, concise tone."
+    },
+    {
+      "id": "writing-02",
+      "task": "writing",
+      "prompt": "Rewrite an outage apology to acknowledge impact without promising an unverified cause or recovery time.",
+      "rubric": "Accountability, uncertainty, helpful next update."
+    },
+    {
+      "id": "writing-03",
+      "task": "writing",
+      "prompt": "Write a welcoming onboarding email for a collaborative note-taking tool, with one clear call to action.",
+      "rubric": "Friendly tone, concise value, single action."
+    },
+    {
+      "id": "writing-04",
+      "task": "writing",
+      "prompt": "Write a short product description for a reusable travel mug without unverifiable environmental claims.",
+      "rubric": "Concrete benefits, factual restraint, readability."
+    },
+    {
+      "id": "writing-05",
+      "task": "writing",
+      "prompt": "Draft three different headlines for a guide to organizing personal research notes.",
+      "rubric": "Three distinct headlines, relevance, clear language."
+    },
+    {
+      "id": "qa-01",
+      "task": "qa",
+      "prompt": "What is the difference between a median and a mean? Give an example where they differ substantially.",
+      "rubric": "Accurate definitions and computed example."
+    },
+    {
+      "id": "qa-02",
+      "task": "qa",
+      "prompt": "Explain HTTP 404 versus HTTP 500 in two short paragraphs.",
+      "rubric": "Client/server distinction, accurate examples, format."
+    },
+    {
+      "id": "qa-03",
+      "task": "qa",
+      "prompt": "Why does a leap year usually have 366 days? Include the Gregorian century exception.",
+      "rubric": "Correct leap rule and century exception."
+    },
+    {
+      "id": "qa-04",
+      "task": "qa",
+      "prompt": "What does database normalization aim to prevent? Give one concrete example.",
+      "rubric": "Redundancy and anomalies, relevant example."
+    },
+    {
+      "id": "qa-05",
+      "task": "qa",
+      "prompt": "Explain the difference between authentication and authorization using a shared document.",
+      "rubric": "Identity versus permission, consistent example."
+    }
+  ],
+  "results": [
+    {
+      "router": "litellm",
+      "requestId": "coding-01",
+      "success": true,
+      "selectedModel": "gpt-4.1",
+      "provider": "openai",
+      "response": "Certainly! Here’s a Python function to find the **second distinct largest integer** in a list, plus explanations for the empty and duplicate-only cases.\n\n## Function\n\n```python\ndef second_largest(nums):\n    # Remove duplicates by converting to a set\n    distinct_nums = set(nums)\n    \n    if len(distinct_nums) == 0:\n        # No elements in the list\n        return None\n    if len(distinct_nums) == 1:\n        # All elements are the same; only one distinct value\n        return None\n    \n    # Sort the set in descending order and get the second value\n    sorted_nums = sorted(distinct_nums, reverse=True)\n    return sorted_nums[1]\n```\n\n## How it works\n\n1. **Removes duplicates**: Using `set()`.\n2. **Checks empty set**: If list is empty, `set(nums)` is empty. Returns `None`.\n3. **Checks one distinct element**: If all elements are equal (like `[7, 7, 7]`), set has just one item. Returns `None`.\n4. **Returns second largest**: Sorts the set in descending order and returns the item at index 1.\n\n## Examples\n\n```python\nprint(second_largest([1, 3, 5, 5, 4]))   # Output: 4\nprint(second_largest([10, 10, 10]))      # Output: None\nprint(second_largest([]))                # Output: None\n```\n\n### Case Explanations\n\n- **Empty list:**  \n  `second_largest([])` returns `None` because there are no elements.\n\n- **List with all duplicates:**  \n  `second_largest([7, 7, 7, 7])` returns `None` because there isn't a second distinct largest value.\n\n- **Normal case:**  \n  `second_largest([8, 2, 7, 8, 3])` returns `7` (distinct elements: `[8, 7, 3, 2]` → second largest is `7`).",
+      "latencyMs": 4101.942292,
+      "inputTokens": 29,
+      "outputTokens": 437,
+      "costUsd": 0.003554,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "coding-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! Below is a Python function to find the **second distinct largest integer** in a list. Following the function, I'll explain how it handles empty lists or lists where all elements are duplicates (i.e., don't have a second distinct largest value).\n\n```python\ndef second_largest(nums):\n    \"\"\"\n    Returns the second distinct largest integer in the list nums.\n    If there is no such second largest (list empty or only one distinct element),\n    returns None.\n    \"\"\"\n    distinct_nums = set(nums)  # Remove duplicates\n    if len(distinct_nums) < 2:\n        # Less than two distinct elements means no second largest\n        return None\n    sorted_nums = sorted(distinct_nums, reverse=True)\n    return sorted_nums[1]\n\n\n# Examples:\nprint(second_largest([4, 1, 7, 7, 3]))  # Output: 4\nprint(second_largest([5, 5, 5]))        # Output: None (only one distinct element)\nprint(second_largest([]))                # Output: None (empty list)\n```\n\n### Explanation:\n\n- **Empty list (`[]`)**:  \n  The function returns `None` because there are no elements, so no second largest can be found.\n\n- **List with only duplicates (`[5, 5, 5]`)**:  \n  After converting to a `set`, it has only one distinct element (`{5}`). Since there's only one distinct number, there is no \"second largest\", so the function returns `None`.\n\n- **Normal list with multiple distinct elements (`[4, 1, 7, 7, 3]`)**:  \n  Duplicates are removed by converting to a set (`{1, 3, 4, 7}`), then sorted in descending order `[7, 4, 3, 1]`. The second distinct largest is the second element (`4`).\n\nLet me know if you want a variant that raises an error instead of returning `None` when no second largest is found!",
+      "latencyMs": 4185.419542,
+      "inputTokens": 29,
+      "outputTokens": 425,
+      "costUsd": 0.0006915999999999999,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "analysis-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini",
+      "provider": "openai",
+      "response": "Sure! Here's a comparison of subscription and usage-based pricing models for a small analytics tool, along with two risks for each:\n\n### Subscription Pricing\n\n**Description:**  \nCustomers pay a fixed recurring fee (e.g., monthly or yearly) for access to the analytics tool, regardless of how much they use it.\n\n**Risks:**\n\n1. **Underutilization Risk:**  \n   Some customers might pay for the subscription but use the tool infrequently, leading to lower perceived value and potential churn when they realize the cost outweighs the benefit.\n\n2. **Revenue Ceiling Risk:**  \n   With a fixed fee, the company’s revenue per customer is capped regardless of customer growth or increased usage, potentially leaving money on the table from heavy users who could pay more under a usage-based model.\n\n---\n\n### Usage-Based Pricing\n\n**Description:**  \nCustomers pay based on how much they use the analytics tool, such as the number of queries run, reports generated, or data processed.\n\n**Risks:**\n\n1. **Revenue Volatility Risk:**  \n   Income can fluctuate significantly month-to-month based on customer usage patterns, making financial forecasting and budgeting more difficult.\n\n2. **Customer Friction Risk:**  \n   Variable costs can discourage usage as customers may limit their tool engagement to control expenses, which can reduce customer satisfaction and inhibit product adoption.\n\n---\n\nLet me know if you'd like me to expand on these or add examples!",
+      "latencyMs": 3163.7316250000003,
+      "inputTokens": 27,
+      "outputTokens": 283,
+      "costUsd": 0.0004636,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "analysis-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! Here’s a comparison, plus two risks for **each** pricing model:\n\n---\n\n### Subscription Pricing (e.g., $30/month flat fee)\n\n**Description:**  \nCustomers pay a fixed recurring fee for access to the analytics tool, regardless of usage.\n\n**Risks:**\n1. **Churn Risk from Low Usage:**  \n   If customers don’t use the tool frequently, they may cancel because the perceived value doesn’t match the recurring cost.\n\n2. **Over-/Under-Pricing Risk:**  \n   Some customers may heavily use the tool (incurring higher costs for the business), while others use it very little. A single price might discourage high-usage customers (due to perceived unfairness) and might not capture all potential revenue from power users.\n\n---\n\n### Usage-Based Pricing (e.g., $0.10 per report generated)\n\n**Description:**  \nCustomers are charged based on usage metrics like number of reports, data volume, etc.\n\n**Risks:**\n1. **Revenue Unpredictability:**  \n   With fluctuating customer usage, revenue can be difficult to forecast, making financial planning and steady growth harder for the business.\n\n2. **User Anxiety (\"Metering Effect\"):**  \n   Customers may hesitate to use the tool fully, fearing high bills, which can discourage adoption, reduce engagement, or lead to negative experiences (“bill shock”).\n\n---\n\n**Summary Table:**\n\n| Pricing Model              | Risk #1                           | Risk #2                        |\n|----------------------------|-----------------------------------|--------------------------------|\n| Subscription               | Churn from low user value         | Over-/Under-pricing segments   |\n| Usage-based                | Revenue unpredictability          | User hesitancy/bill shock      |\n\nLet me know if you want real-world examples or further details!",
+      "latencyMs": 3318.0734159999993,
+      "inputTokens": 27,
+      "outputTokens": 357,
+      "costUsd": 0.00291,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "writing-01",
+      "success": true,
+      "selectedModel": "gpt-4.1",
+      "provider": "openai",
+      "response": "Subject: Dashboard Redesign Update – Report Locations\n\nWe’re excited to announce the launch of our redesigned dashboard! To enhance your experience, key reports have been reorganized:\n\n- **Monthly Sales** and **Revenue Reports** are now under the “Performance” tab.\n- **Customer Insights** reports are found in the new “Analytics” section.\n- **Operational Dashboards** have moved to “Operations.”\n\nFor a detailed guide and FAQs, please [click here/go to our help page].  \nThank you for adapting with us as we work to improve your workflow!",
+      "latencyMs": 2750.4284580000003,
+      "inputTokens": 22,
+      "outputTokens": 113,
+      "costUsd": 0.000948,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "writing-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "We’re excited to announce our dashboard redesign! All existing reports can now be found under the new “Reports” tab in the main navigation. Please update your bookmarks accordingly. If you have trouble locating any report, contact our support team for assistance. Thank you for adapting with us!",
+      "latencyMs": 1799.380957999998,
+      "inputTokens": 22,
+      "outputTokens": 56,
+      "costUsd": 0.000492,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "qa-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-nano",
+      "provider": "openai",
+      "response": "The **mean** (often called the average) is calculated by adding up all the numbers in a data set and then dividing by the number of values. The **median** is the middle value when the data are arranged in order; if there is an even number of values, the median is the average of the two middle ones.\n\n**Key differences:**\n- The mean takes into account all values and can be influenced heavily by very large or very small numbers (outliers).\n- The median only considers the middle position, making it more resistant to outliers.\n\n---\n\n### Example where mean and median differ substantially:\n\nSuppose we have incomes of 5 people (in thousands of dollars):\n\n**$25k, $30k, $35k, $40k, $200k**\n\n- **Mean:**\n  \\[\n  \\frac{25 + 30 + 35 + 40 + 200}{5} = \\frac{330}{5} = 66 \\text{k}\n  \\]\n\n- **Median:**\n  Arrange in order: $25k, $30k, $35k, $40k, $200k\n\n  The middle value (3rd in order) is **$35k**.\n\n---\n\n### **Result:**\n- The **mean** is **$66k**, which is much higher than most individual incomes due to the $200k outlier.\n- The **median** is **$35k**, better representing the typical income of this group.\n\nThis example illustrates how the mean can be skewed upward by a few high values, whereas the median provides a better sense of the typical middle value when outliers are present.",
+      "latencyMs": 3631.135916000003,
+      "inputTokens": 26,
+      "outputTokens": 342,
+      "costUsd": 0.0001394,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "qa-01",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "**Difference between Median and Mean:**\n\n- **Mean** (or average): Add up all the values in a data set and divide by the number of values.  \n- **Median**: The middle value when the data are arranged in order. If there is an even number of values, it is the average of the two middle numbers.\n\n---\n\n### Example Where They Differ Substantially\n\nSuppose we look at the yearly incomes (in thousands of dollars) of four people in a small group:\n\n    $28, $30, $31, $200\n\n**Mean:**\n- (28 + 30 + 31 + 200) / 4 = 289 / 4 = **$72.25k**\n\n**Median:**\n- Arrange in order: 28, 30, 31, 200\n- Since there are 4 numbers (even), median = (30 + 31)/2 = **$30.5k**\n\n**Interpretation:**\n- The **mean** is much higher ($72.25k), distorted upward by the single very high value ($200k).\n- The **median** is $30.5k, which better represents the income of a \"typical\" person in this group.\n\n---\n\n**Conclusion:**  \nThe mean is affected by outliers (very large or very small values), while the median is resistant to them. That's why, in datasets with outliers or skewed values, the median is often a better measure of \"typical\" value.",
+      "latencyMs": 2096.7376670000012,
+      "inputTokens": 26,
+      "outputTokens": 310,
+      "costUsd": 0.002532,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "coding-02",
+      "success": true,
+      "selectedModel": "gpt-4.1",
+      "provider": "openai",
+      "response": "Certainly! Here's a robust TypeScript debounce utility with:\n\n- **Preserved argument/return types**  \n- **Cancellation support** (`cancel()` to clear a pending call)\n\n```typescript\ntype DebouncedFunction<F extends (...args: any[]) => any> = {\n  (...args: Parameters<F>): void;\n  cancel: () => void;\n};\n\n/**\n * Debounce utility with cancellation and preserved types\n * @param func The function to debounce\n * @param wait Wait time in ms\n * @returns Debounced function with a .cancel() method\n */\nexport function debounce<F extends (...args: any[]) => any>(\n  func: F,\n  wait: number\n): DebouncedFunction<F> {\n  let timeout: ReturnType<typeof setTimeout> | undefined;\n\n  const debounced = (...args: Parameters<F>): void => {\n    if (timeout !== undefined) {\n      clearTimeout(timeout);\n    }\n    timeout = setTimeout(() => {\n      func(...args);\n      timeout = undefined;\n    }, wait);\n  };\n\n  debounced.cancel = () => {\n    if (timeout !== undefined) {\n      clearTimeout(timeout);\n      timeout = undefined;\n    }\n  };\n\n  return debounced;\n}\n```\n\n**Usage Example:**\n\n```typescript\nconst log = (n: number, msg: string) => {\n  console.log(n, msg);\n};\n\nconst debouncedLog = debounce(log, 500);\n\ndebouncedLog(123, 'Hello!');\ndebouncedLog.cancel(); // Cancels the pending call\n```\n\n- Argument types & parameter names are preserved by the utility.\n- `debounced.cancel()` can be called at any time to clear any pending invocation.\n\n---\n\nLet me know if you need a version that returns a Promise or returns the result from the wrapped function!",
+      "latencyMs": 4031.2216249999997,
+      "inputTokens": 20,
+      "outputTokens": 364,
+      "costUsd": 0.0029519999999999998,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "coding-02",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! Here's a TypeScript debounce utility with:\n\n- **Cancellation capability** (`cancel()` method)\n- **Correct argument & return typings** (types are inferred from the function)\n- **Preserved `this` context** (optional but often expected)\n- **`flush()` to run immediately** (commonly available in popular debouncers)\n\n## Implementation\n\n```typescript\ntype DebouncedFunction<F extends (...args: any[]) => any> = {\n  (...args: Parameters<F>): void;\n  cancel: () => void;\n  flush: () => ReturnType<F> | undefined;\n};\n\nexport function debounce<F extends (...args: any[]) => any>(\n  func: F,\n  wait: number\n): DebouncedFunction<F> {\n  let timeout: ReturnType<typeof setTimeout> | null = null;\n  let lastArgs: Parameters<F> | null = null;\n  let lastThis: any = null;\n  let result: ReturnType<F> | undefined;\n\n  const debounced = function (this: any, ...args: Parameters<F>) {\n    lastArgs = args;\n    lastThis = this;\n    if (timeout !== null) {\n      clearTimeout(timeout);\n    }\n    timeout = setTimeout(() => {\n      timeout = null;\n      result = func.apply(lastThis, lastArgs!);\n      lastArgs = null; // reset\n    }, wait);\n  } as DebouncedFunction<F>;\n\n  debounced.cancel = () => {\n    if (timeout !== null) {\n      clearTimeout(timeout);\n      timeout = null;\n    }\n    lastArgs = null;\n    lastThis = null;\n  };\n\n  debounced.flush = () => {\n    if (timeout !== null && lastArgs) {\n      clearTimeout(timeout);\n      timeout = null;\n      result = func.apply(lastThis, lastArgs);\n      lastArgs = null;\n      lastThis = null;\n      return result;\n    }\n    return undefined;\n  };\n\n  return debounced;\n}\n```\n\n---\n\n## Usage Example\n\n```typescript\nfunction doSomething(a: number, b: string): boolean {\n  console.log(a, b);\n  return true;\n}\n\nconst debouncedDoSomething = debounce(doSomething, 500);\n\n// Argument types are preserved:\ndebouncedDoSomething(1, \"hello\");\n\n// Cancel scheduled execution:\ndebouncedDoSomething.cancel();\n\n// Immediate execution (if there was a pending call):\ndebouncedDoSomething.flush();\n```\n\n---\n\n### Notes\n\n- `Parameters<F>` and `ReturnType<F>` ensure type preservation.\n- The debounced function does **not** return a value immediately (consistent with most debouncers).\n- The returned object has `.cancel()` and `.flush()` methods.",
+      "latencyMs": 4671.822500000001,
+      "inputTokens": 20,
+      "outputTokens": 547,
+      "costUsd": 0.004416,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "coding-03",
+      "success": true,
+      "selectedModel": "gpt-4.1-nano",
+      "provider": "openai",
+      "response": "When using a `LEFT JOIN`, the goal is typically to include all rows from the left table and only matching rows from the right table. However, if you add a filter condition on the right table *inside the WHERE clause*, it effectively turns the intended outer join into an inner join, potentially causing unmatched rows from the left table to be excluded.\n\n### Why does this happen?\n\n- **Original intention:** Keep all left table rows, whether or not they have matching right table rows.\n- **Problematic pattern:**\n\n```sql\nSELECT ...\nFROM left_table lt\nLEFT JOIN right_table rt ON lt.id = rt.foreign_id\nWHERE rt.some_column = 'value';\n```\n\n- **What occurs:** The condition `rt.some_column = 'value'` in the `WHERE` clause filters out all rows where `rt` is NULL (i.e., no match was found). This nullifies the outer join behavior and acts like an inner join, losing unmatched left-table rows.\n\n---\n\n### Correct way to maintain unmatched rows with a right-table filter:\n\nTo filter based on conditions on the right table *without losing unmatched left rows*, you should:\n\n- Move the filter condition on the right table into the `ON` clause instead of the `WHERE` clause.\n- Or, if you want to keep filtering in `WHERE`, make sure you account for NULLs by adjusting the condition.\n\n### Corrected example:\n\n```sql\nSELECT ...\nFROM left_table lt\nLEFT JOIN right_table rt ON lt.id = rt.foreign_id AND rt.some_column = 'value';\n```\n\n### Explanation:\n- The condition `rt.some_column = 'value'` is now part of the `ON` clause.\n- Rows from `left_table` without a matching `right_table` matching that condition will still appear, with `NULL` in `rt` columns.\n- If you move the filter to the `WHERE` clause, you need to also account for unmatched rows:\n\n```sql\nSELECT ...\nFROM left_table lt\nLEFT JOIN right_table rt ON lt.id = rt.foreign_id\nWHERE rt.some_column = 'value' OR rt.some_column IS NULL;\n```\n\nBut this can sometimes be less clean. Usually, placing filtering criteria related to the right table within the `ON` clause is clearer and preserves the outer join semantics.\n\n---\n\n### **Summary**\n\n- Placing a right-table filter in the `WHERE` clause after a `LEFT JOIN` can exclude unmatched rows because the filter condition filters out `NULL` `right_table` columns.\n- Move such filters into the `ON` clause to retain all unmatched left rows while applying the filter to the joined data.\n\n---\n\nIf you'd like, I can help correct your specific query—just provide the SQL statement you're working with!",
+      "latencyMs": 6445.9442500000005,
+      "inputTokens": 30,
+      "outputTokens": 560,
+      "costUsd": 0.000227,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "coding-03",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly, let's break this down:\n\n## **How a SQL LEFT JOIN can lose unmatched rows**\n\nA **LEFT JOIN** returns all rows from the *left table*, and the matched rows from the *right table*. If there's no match, the right table's columns are filled with `NULL`.\n\n**What goes wrong:**\n\nIf you filter rows based on a column from the *right table* **in the `WHERE` clause**, you inadvertently turn your `LEFT JOIN` into an **INNER JOIN**, because `NULL` values (which appear for unmatched rows) will fail the filter. Thus, *unmatched* left rows are dropped.\n\n### **Example**\n\nSuppose you have:\n\n```sql\nSELECT a.*, b.*\nFROM a\nLEFT JOIN b ON a.id = b.a_id\nWHERE b.status = 'active';\n```\n\n**Intention:**  \n\"All rows from `a`, and info from `b` if matched, but only when the `b` row is 'active'.\"\n\n**Actual result:**  \nYou only get rows from `a` that **have a matching row in `b`** where `b.status = 'active'`. All `a` rows with **no `b` match** are *gone*, because for them, `b.status` is `NULL`, and `NULL = 'active'` is `FALSE`.\n\n----\n\n## **How to Correct the Query**\n\n**Solution:**  \nMove the filter into the `ON` clause *instead of* the `WHERE`.  \nOr, in `WHERE`, use `b.status = 'active' OR b.status IS NULL` if you want unmatched `a` rows.\n\n### **Corrected Query (Recommended)**\n\n```sql\nSELECT a.*, b.*\nFROM a\nLEFT JOIN b ON a.id = b.a_id AND b.status = 'active';\n```\n\n**Why?**  \nNow the join *only* matches `b` rows where `b.status` = 'active', but still returns *all* `a` rows, even if there is no matching `b` row.\n\n----\n\n### **Alternatively, in WHERE (less ideal):**\n\n```sql\nSELECT a.*, b.*\nFROM a\nLEFT JOIN b ON a.id = b.a_id\nWHERE b.status = 'active' OR b.status IS NULL;\n```\nThis also preserves unmatched `a` rows.\n\n---\n\n## **Summary Table**\n\n| Filter location       | Result                         |\n|----------------------|--------------------------------|\n| `WHERE b.col = ...`  | Loses unmatched left rows!     |\n| `ON ... AND ...`     | Keeps unmatched left rows      |\n\n---\n\n**In short:**  \n> **When using LEFT JOIN, filter right-table columns in the `ON` clause to avoid dropping unmatched left rows.**",
+      "latencyMs": 4572.582833000002,
+      "inputTokens": 30,
+      "outputTokens": 565,
+      "costUsd": 0.00458,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "coding-04",
+      "success": true,
+      "selectedModel": "gpt-4.1",
+      "provider": "openai",
+      "response": "Certainly! Here’s a JavaScript function that **groups an array of records by a specified category**, without mutating the input array or its objects.\n\n### Example\n\nSuppose you have this input:\n\n```js\nconst data = [\n  { id: 1, category: 'Fruit', name: 'Apple' },\n  { id: 2, category: 'Vegetable', name: 'Carrot' },\n  { id: 3, category: 'Fruit', name: 'Banana' },\n  { id: 4, category: 'Vegetable', name: 'Lettuce' },\n  { id: 5, category: 'Dairy', name: 'Cheese' }\n];\n```\n\nYou want to group these records by `\"category\"`, **without modifying `data` itself**.\n\n---\n\n## Function: `groupByCategory`\n\n```js\nfunction groupByCategory(records, categoryKey = 'category') {\n  return records.reduce((acc, record) => {\n    const key = record[categoryKey];\n    if (!acc[key]) {\n      acc[key] = [];\n    }\n    acc[key].push(record); // safe: only pushes references, doesn't mutate input records or array\n    return acc;\n  }, {});\n}\n```\n\n**Note:**  \n- This function does _not_ mutate the input array or the objects within it.\n- If you want to deep-clone the objects to be extra-safe, let me know.\n\n---\n\n### **Usage**\n\n```js\nconst grouped = groupByCategory(data);\n// Now grouped looks like:\nconsole.log(grouped);\n// {\n//   Fruit: [\n//     { id: 1, category: 'Fruit', name: 'Apple' },\n//     { id: 3, category: 'Fruit', name: 'Banana' }\n//   ],\n//   Vegetable: [\n//     { id: 2, category: 'Vegetable', name: 'Carrot' },\n//     { id: 4, category: 'Vegetable', name: 'Lettuce' }\n//   ],\n//   Dairy: [\n//     { id: 5, category: 'Dairy', name: 'Cheese' }\n//   ]\n// }\n```\n\n---\n\nLet me know if you need it to work on a different key or with deep clones!",
+      "latencyMs": 5464.181917000002,
+      "inputTokens": 23,
+      "outputTokens": 467,
+      "costUsd": 0.0037819999999999998,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "coding-04",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! Below is a JavaScript function that **groups an array of records by category**, returning a new object without mutating the input data.\n\nAssume each record is an object with a `category` property.\n\n```javascript\nfunction groupByCategory(records) {\n  return records.reduce((acc, record) => {\n    // Get the category from the record\n    const { category } = record;\n    // If the category isn't in acc yet, create a new array for it\n    if (!acc[category]) {\n      acc[category] = [];\n    }\n    // Push the record into the correct category array\n    acc[category].push(record);\n    return acc;\n  }, {});\n}\n```\n\n### Example usage:\n\n```javascript\nconst records = [\n  { id: 1, name: \"A\", category: \"fruit\" },\n  { id: 2, name: \"B\", category: \"vegetable\" },\n  { id: 3, name: \"C\", category: \"fruit\" },\n  { id: 4, name: \"D\", category: \"grain\" }\n];\n\nconst grouped = groupByCategory(records);\nconsole.log(grouped);\n/*\n{\n  fruit: [\n    { id: 1, name: \"A\", category: \"fruit\" },\n    { id: 3, name: \"C\", category: \"fruit\" }\n  ],\n  vegetable: [\n    { id: 2, name: \"B\", category: \"vegetable\" }\n  ],\n  grain: [\n    { id: 4, name: \"D\", category: \"grain\" }\n  ]\n}\n*/\n```\n\n**Note:**  \n- This function returns a new object.\n- It does **not** mutate the original `records` array or any objects within it.\n- If you want to avoid even reference-sharing of the record objects (deep copy), you may clone each `record` inside the `push`.\n\nLet me know if you need it more generic or want to group by a different property!",
+      "latencyMs": 4310.594416,
+      "inputTokens": 23,
+      "outputTokens": 417,
+      "costUsd": 0.003382,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "coding-05",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini",
+      "provider": "openai",
+      "response": "Certainly! Below is a detailed design for unit tests targeting an **inclusive date-range overlap function** — that is, one that treats intervals as overlapping if they share **any day or boundary** (adjacency counts as overlapping).\n\n---\n\n### Assumptions about the function to test\n\nLet's say the function signature is:\n\n```python\ndef date_ranges_overlap(start1: date, end1: date, start2: date, end2: date) -> bool:\n    \"\"\"\n    Returns True if the inclusive date ranges [start1, end1] and [start2, end2] overlap, \n    including if they are adjacent (i.e., the end date of one is exactly the start date of the other).\n    Otherwise, returns False.\n    \"\"\"\n```\n\n---\n\n### Key considerations for tests\n\n1. **Overlap scenarios:**\n   - Fully overlapping intervals (one range fully inside another)\n   - Partially overlapping intervals\n   - Identical intervals\n   \n2. **Adjacency cases (where one ends exactly when the other starts):**\n   - end1 == start2\n   - start1 == end2\n   \n3. **Non-overlapping intervals:**\n   - Disjoint intervals where there is a gap of at least one day\n   \n4. **Single-day intervals:**\n   - Overlapping on the same day\n   - Adjacent single-day intervals\n   \n5. **Edge cases:**\n   - Intervals where start == end (single day range)\n   - Invalid date ranges (start > end) — if function should handle or raise errors — can be tested if relevant\n   \n---\n\n### Example unit test cases (in pytest style):\n\n```python\nimport pytest\nfrom datetime import date\n\nfrom your_module import date_ranges_overlap  # Import your overlap function here\n\n\ndef test_identical_ranges():\n    assert date_ranges_overlap(date(2024, 1, 1), date(2024, 1, 10), date(2024, 1, 1), date(2024, 1, 10))\n\n\ndef test_full_overlap_range_inside_another():\n    assert date_ranges_overlap(date(2024, 1, 1), date(2024, 1, 10), date(2024, 1, 3), date(2024, 1, 5))\n\n\ndef test_full_overlap_other_range_inside_first():\n    assert date_ranges_overlap(date(2024, 1, 3), date(2024, 1, 5), date(2024, 1, 1), date(2024, 1, 10))\n    \n\ndef test_partial_overlap_at_start():\n    assert date_ranges_overlap(date(2024, 1, 5), date(2024, 1, 15), date(2024, 1, 1), date(2024, 1, 8))\n\n\ndef test_partial_overlap_at_end():\n    assert date_ranges_overlap(date(2024, 1, 1), date(2024, 1, 10), date(2024, 1, 8), date(2024, 1, 15))\n\n\ndef test_adjacent_intervals_end1_equals_start2():\n    # These are adjacent, so should be True\n    assert date_ranges_overlap(date(2024,1,1), date(2024,1,10), date(2024,1,10), date(2024,1,15))\n\n\ndef test_adjacent_intervals_end2_equals_start1():\n    # Reverse adjacency, also True\n    assert date_ranges_overlap(date(2024,1,10), date(2024,1,15), date(2024,1,1), date(2024,1,10))\n\n\ndef test_non_overlapping_intervals():\n    assert not date_ranges_overlap(date(2024,1,1), date(2024,1,9), date(2024,1,11), date(2024,1,20))\n\n\ndef test_single_day_overlap():\n    assert date_ranges_overlap(date(2024,1,10), date(2024,1,10), date(2024,1,10), date(2024,1,10))\n\n\ndef test_single_day_adjacent_ranges():\n    # One ends exactly when the other starts (single day ranges)\n    assert date_ranges_overlap(date(2024,1,10), date(2024,1,10), date(2024,1,11), date(2024,1,11)) is False  # not overlapping\n    assert date_ranges_overlap(date(2024,1,10), date(2024,1,10), date(2024,1,10), date(2024,1,10)) is True  # same day\n    \n\ndef test_intervals_with_one_day_gap():\n    # 1 day gap between intervals, no adjacency, no overlap\n    assert not date_ranges_overlap(date(2024,1,1), date(2024,1,5), date(2024,1,7), date(2024,1,10))\n\n\ndef test_invalid_range_start_after_end():\n    # If the function is supposed to handle or raise errors for invalid ranges:\n    with pytest.raises(ValueError):\n        date_ranges_overlap(date(2024,1,10), date(2024,1,1), date(2024,1,5), date(2024,1,20))\n```\n\n---\n\n### Explanation of tests\n\n| Test Name                        | Description                                                               | Expected Result |\n|---------------------------------|---------------------------------------------------------------------------|-----------------|\n| `test_identical_ranges`          | Identical date ranges completely overlap                                  | True            |\n| `test_full_overlap_range_inside_another` | Second range fully inside first                                       | True            |\n| `test_full_overlap_other_range_inside_first` | First range fully inside second                                        | True            |\n| `test_partial_overlap_at_start` | Partial overlap at range start                                            | True            |\n| `test_partial_overlap_at_end`   | Partial overlap at range end                                              | True            |\n| `test_adjacent_intervals_end1_equals_start2` | Adjacent by boundary; end1 == start2                                  | True (inclusive)|\n| `test_adjacent_intervals_end2_equals_start1` | Reverse adjacency                                                       | True (inclusive)|\n| `test_non_overlapping_intervals`| Intervals with clear gap, no overlap                                      | False           |\n| `test_single_day_overlap`       | Both intervals are exactly the same single day                            | True            |\n| `test_single_day_adjacent_ranges`| Single day intervals adjacent but non-overlapping                       | False           |\n| `test_intervals_with_one_day_gap`| Intervals separated by 1 day gap, no adjacency or overlap               | False           |\n| `test_invalid_range_start_after_end` | Inputs where start date > end date (invalid ranges)                    | Should raise error or handle gracefully |\n\n---\n\nIf your function should treat adjacency differently (e.g., not count adjacent intervals as overlapping), adjust the expected results accordingly.\n\n---\n\nWould you like me to provide an implementation of this function as well?",
+      "latencyMs": 10666.607749999996,
+      "inputTokens": 22,
+      "outputTokens": 1469,
+      "costUsd": 0.0023592,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "coding-05",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! Let's outline and design unit tests for a function that checks if *two inclusive date ranges overlap*, **including adjacent intervals as overlapping**.\n\n### 1. **Function to Test:**\n\nAssume the function signature in Python is:\n\n```python\ndef date_ranges_overlap(start1, end1, start2, end2):\n    \"\"\"\n    Returns True if the two inclusive date ranges [start1, end1] and [start2, end2]\n    overlap (adjacent counts as overlap), False otherwise.\n    \"\"\"\n    pass  # implementation\n```\nWhere `start1`, `end1`, `start2`, `end2` are date objects.\n\n---\n\n### 2. **Test Cases**\n\n#### Import dependencies:\n```python\nimport datetime\nimport unittest\n```\n\n#### Prepare useful dates:\n```python\nd = lambda y, m, d: datetime.date(y, m, d)\n```\n\n#### Individual test cases:\nHere is the comprehensive list covering all relevant edge-cases:\n\n| Test # | Range 1          | Range 2          | Expected | Description                                |\n|--------|------------------|------------------|----------|--------------------------------------------|\n| 1      | 2023-01-01, 2023-01-05 | 2023-01-03, 2023-01-07 | True     | Partial overlap                            |\n| 2      | 2023-01-01, 2023-01-05 | 2023-01-05, 2023-01-10 | True     | Touch at endpoint (adjacent)               |\n| 3      | 2023-01-01, 2023-01-05 | 2023-01-06, 2023-01-10 | False    | No overlap, not adjacent                   |\n| 4      | 2023-01-01, 2023-01-10 | 2023-01-02, 2023-01-03 | True     | Range 2 inside Range 1                     |\n| 5      | 2023-01-03, 2023-01-03 | 2023-01-03, 2023-01-03 | True     | Exact same single-day interval             |\n| 6      | 2023-01-01, 2023-01-01 | 2023-01-02, 2023-01-02 | True     | Adjacent single-day intervals              |\n| 7      | 2023-01-05, 2023-01-01 | 2023-01-03, 2023-01-07 | True     | Out-of-order Range 1 (should be handled)   |\n| 8      | 2023-01-01, 2023-01-10 | 2023-01-20, 2023-01-30 | False    | Ranges far apart                           |\n| 9      | 2023-01-10, 2023-01-20 | 2023-01-01, 2023-01-09 | True     | Adjacent, Range 2 ends the day before 1st starts |\n| 10     | 2023-01-01, 2023-01-10 | 2023-01-10, 2023-01-10 | True     | Range 2 is a subset of Range 1 end date    |\n\n---\n\n### 3. **Sample Unit Test Implementation (unittest style)**\n```python\nclass TestDateRangeOverlap(unittest.TestCase):\n    def setUp(self):\n        self.d = lambda y, m, d: datetime.date(y, m, d)\n        self.func = date_ranges_overlap\n\n    def test_partial_overlap(self):\n        self.assertTrue(self.func(self.d(2023,1,1), self.d(2023,1,5),\n                                 self.d(2023,1,3), self.d(2023,1,7)))\n\n    def test_adjacent_overlap(self):\n        self.assertTrue(self.func(self.d(2023,1,1), self.d(2023,1,5),\n                                 self.d(2023,1,5), self.d(2023,1,10)))\n        self.assertTrue(self.func(self.d(2023,1,10), self.d(2023,1,20),\n                                 self.d(2023,1,1), self.d(2023,1,10)))\n\n    def test_no_overlap(self):\n        self.assertFalse(self.func(self.d(2023,1,1), self.d(2023,1,5),\n                                  self.d(2023,1,6), self.d(2023,1,10)))\n        self.assertFalse(self.func(self.d(2023,1,1), self.d(2023,1,10),\n                                  self.d(2023,1,20), self.d(2023,1,30)))\n\n    def test_contained(self):\n        self.assertTrue(self.func(self.d(2023,1,1), self.d(2023,1,10),\n                                 self.d(2023,1,2), self.d(2023,1,3)))\n\n    def test_same_single_day(self):\n        self.assertTrue(self.func(self.d(2023,1,3), self.d(2023,1,3),\n                                 self.d(2023,1,3), self.d(2023,1,3)))\n\n    def test_adjacent_single_days(self):\n        self.assertTrue(self.func(self.d(2023,1,1), self.d(2023,1,1),\n                                 self.d(2023,1,2), self.d(2023,1,2)))\n\n    def test_range_ordering(self):\n        \"\"\"\n        Ensure function works even if start > end.\n        \"\"\"\n        self.assertTrue(self.func(self.d(2023,1,5), self.d(2023,1,1),\n                                 self.d(2023,1,3), self.d(2023,1,7)))\n\n    def test_edge_case_end(self):\n        self.assertTrue(self.func(self.d(2023,1,1), self.d(2023,1,10),\n                                 self.d(2023,1,10), self.d(2023,1,10)))\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n```\n\n---\n\n## **Summary Table**\n\n| Case                | Input Example                                 | Should Overlap? |\n|---------------------|-----------------------------------------------|----------------|\n| Partial Overlap     | [1,5] & [3,7]                                 | Yes            |\n| Adjacent            | [1,5] & [5,10]                                | Yes            |\n| No Overlap          | [1,5] & [6,10]                                | No             |\n| Containment         | [1,10] & [2,3]                                | Yes            |\n| Identical           | [3,3] & [3,3]                                 | Yes            |\n| Adjacent Singles    | [1,1] & [2,2]                                 | Yes            |\n| Out-of-order Input  | [5,1] & [3,7]                                 | Yes (**should handle**) |\n| Disjoint            | [1,10] & [20,30]                              | No             |\n| End Subset          | [1,10] & [10,10]                              | Yes            |\n\n---\n\n### **Note**\n- Adjust the date-ranges to your programming language/date library as needed.\n- The core point: intervals are inclusive and adjacent intervals count as overlapping.\n\n---\n\n**Let me know if you need the function implementation as well!**",
+      "latencyMs": 33375.649999999994,
+      "inputTokens": 22,
+      "outputTokens": 1626,
+      "costUsd": 0.013052,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "analysis-02",
+      "success": true,
+      "selectedModel": "gpt-4.1",
+      "provider": "openai",
+      "response": "Let's analyze the data and address **what is known** and **what is uncertain** about the signup experiment.\n\n---\n\n## **What is Known**\n\n### **Data Summary**\n\n- **Group A:** 40 conversions / 400 visitors = 0.10 (10% conversion rate)\n- **Group B:** 54 conversions / 450 visitors ≈ 0.12 (12% conversion rate)\n\n### **Observed Lift**\n- Absolute difference: 12% - 10% = 2 percentage points\n- Relative difference: (12%-10%)/10% = 20% relative increase\n\n### **Data Counts**\n- Exact sample sizes and number of conversions.\n\n---\n\n## **What is Uncertain**\n\n### 1. **Statistical Significance**\n- The observed difference may be due to random chance. We do **not** yet know if it is statistically significant.\n\n#### ***Quick z-test:***\n- **p1 =** 0.10  \n- **p2 =** 0.12  \n- **n1 =** 400  \n- **n2 =** 450  \n- **Pooled proportion:** (40 + 54) / (400+450) = 94/850 ≈ 0.1106  \n- **Standard Error:**  \n  \\[ SE = \\sqrt{ p(1-p)(1/n_1 + 1/n_2) } \\]\n  \\[ SE = \\sqrt{ 0.1106 \\times 0.8894 \\times (1/400 + 1/450) } \\]\n  \\[ SE = \\sqrt{ 0.1106 \\times 0.8894 \\times (0.0025 + 0.00222) } \\]\n  \\[ SE = \\sqrt{ 0.1106 \\times 0.8894 \\times 0.00472 } \\]\n  \\[ \\approx \\sqrt{ 0.1106 \\times 0.004197 } \\]\n  \\[ \\approx \\sqrt{ 0.0004638 } \\]\n  \\[ \\approx 0.0215 \\]\n\n- **z-score:**  \n  \\[ z = (0.12 - 0.10)/SE = 0.02/0.0215 ≈ 0.93 \\]\n- A z-score of 0.93 is not statistically significant (p ≈ 0.35).\n\n### 2. **Confidence Intervals**\n- The true conversion rates could differ from the observed rates; the sample is just an estimate. The confidence intervals of the conversion rates probably overlap.\n\n### 3. **Causality**\n- It's not clear whether the groups were randomly assigned or if there were any biases/confounders.\n\n### 4. **Other Uncertainties**\n- External factors: Were both groups exposed to similar conditions?  \n- Duration: Was the test long enough to avoid seasonality/daily effects?  \n- Segmentation: Did the groups match in critical characteristics (e.g., traffic source, device)?\n\n---\n\n## **Summary Table**\n\n|            | Group A        | Group B        |\n|------------|---------------|---------------|\n| Conversions| 40            | 54            |\n| Visitors   | 400           | 450           |\n| Conversion | 10%           | 12%           |\n\n- **Observed:** B has a higher conversion rate.\n- **Uncertainty:** The difference is **not** statistically significant with these sample sizes.\n\n---\n\n## **Conclusion**\n\n### **What is known:**\n- Exact number of conversions and visitors for each group.\n- Observed conversion rates: 10% vs 12%.\n\n### **What is uncertain:**\n- The statistical significance: The observed difference could easily be random; statistical testing shows it is not significant.\n- The true difference in conversion rates between groups.\n- Whether the difference is due to the experiment or other confounding variables.\n\n**In sum:**  \nYou know that B outperformed A in this sample, but with this data the result is *not* statistically significant—so you cannot confidently conclude that B is truly better than A. More data or further experimentation would be needed for a robust inference.",
+      "latencyMs": 8243.814417000001,
+      "inputTokens": 32,
+      "outputTokens": 866,
+      "costUsd": 0.006991999999999999,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "analysis-02",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Let's break this down into what is **known** (the data, what we can directly compute) and what is **uncertain** (what we would typically estimate, test, or infer from the data):\n\n---\n\n## 1. **What is Known**\n\nYou have two groups:\n\n- **Group 1:**  \n  Conversions = 40  \n  Visitors = 400  \n  Conversion Rate = 40/400 = **10.0%**\n\n- **Group 2:**  \n  Conversions = 54  \n  Visitors = 450  \n  Conversion Rate = 54/450 = **12.0%**\n\n**Absolute difference in conversion rates:**  \n12.0% - 10.0% = **2.0 percentage points higher in Group 2**\n\n---\n\n## 2. **What is Uncertain**\n\n- **Statistical Significance**:  \n  Is the observed difference in conversion rates (2 percentage points) statistically significant, or could it just be due to random sampling variation? We would need to perform a statistical test (e.g., z-test for proportions) to determine this.\n\n- **Confidence Intervals**:  \n  The true, underlying conversion rates of the two groups are unknown. We only estimate them from these samples. Each group's conversion rate has some uncertainty (standard error) around it.\n\n- **Practical Significance**:  \n  Even if the difference is statistically significant, is it practically meaningful for your business?\n\n- **Causality**:  \n  If this is an A/B test, are the groups randomized and free of confounding variables? Are there other factors that could explain the difference?\n\n---\n\n## 3. **Typical Statistical Analysis**\n\nLet's illustrate with a quick z-test for proportions:\n\n### **Step 1: Calculate pooled conversion rate**\n\\[\np_{pooled} = \\frac{40 + 54}{400 + 450} = \\frac{94}{850} \\approx 0.1106\n\\]\n\n### **Step 2: Standard error**\n\\[\nSE = \\sqrt{p_{pooled}(1 - p_{pooled}) \\left(\\frac{1}{400} + \\frac{1}{450}\\right)}\n\\]\n\n\\[\nSE = \\sqrt{0.1106 \\cdot 0.8894 \\left(\\frac{1}{400} + \\frac{1}{450}\\right)}\n\\]\n\\[\n= \\sqrt{0.0983 \\cdot (0.0025 + 0.002222)} \n= \\sqrt{0.0983 \\cdot 0.004722}\n= \\sqrt{0.0004638}\n\\approx 0.0215\n\\]\n\n### **Step 3: z-score**\n\\[\nz = \\frac{0.10 - 0.12}{0.0215} \\approx \\frac{-0.02}{0.0215} \\approx -0.93\n\\]\n\nA z-score of **-0.93** corresponds to a two-tailed p-value of about **0.35** (not statistically significant at conventional levels).\n\n---\n\n## **Summary Table**\n\n| Aspect                   | Known         | Uncertain                                          |\n|--------------------------|--------------|----------------------------------------------------|\n| Conversions & Visitors   | Yes          | No                                                 |\n| Observed Conversion Rate | Yes          | No                                                 |\n| Actual True Rate         | No           | Yes (must be estimated/statistical interval)       |\n| Significance             | No (requires test) | Yes (we did a z-test: p ~ 0.35, not significant) |\n| Cause of Difference      | No           | Yes (could be random)                              |\n\n---\n\n## **Bottom Line**\n\n- We **know** the observed rates: 10.0% vs 12.0%; Group 2 did better.\n- There is a **2-point absolute improvement**.\n- We **do not know** if this is a real effect or just random chance ⚠️\n    - A quick z-test suggests the difference is **not statistically significant**.\n- We **do not know** the true conversion rates or the source of the difference without more data/analysis.\n\n**Conclusion:**  \nThe experiment's observed difference may be due to chance; statistically, we can't conclude a real effect at conventional significance levels with current data. Further data or larger samples would reduce uncertainty.",
+      "latencyMs": 7494.725708999991,
+      "inputTokens": 32,
+      "outputTokens": 903,
+      "costUsd": 0.007287999999999999,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "analysis-03",
+      "success": true,
+      "selectedModel": "gpt-4.1",
+      "provider": "openai",
+      "response": "Here’s a prioritization based on **reach**, **effort**, and **uncertainty** for the three features: **export**, **onboarding**, and **team permissions**. (Assuming reach = potential user impact; effort = estimated work; uncertainty = unknowns/risk.)\n\n---\n\n### 1. Export\n\n- **Reach:** Medium  \n  Most useful for power users or those wanting to integrate with other tools, but not every user will need it.\n- **Effort:** Medium  \n  Usually moderate engineering effort depending on data models/formats.\n- **Uncertainty:** Low  \n  Scope and requirements are generally well understood.\n\n---\n\n### 2. Onboarding\n\n- **Reach:** High  \n  Impacts all new users—improves activation, retention, and reduces support burden.\n- **Effort:** Medium  \n  Some UX/design and content work, plus potential engineering.\n- **Uncertainty:** Medium  \n  Some questions on what onboarding steps will best support users and how to measure success.\n\n---\n\n### 3. Team Permissions\n\n- **Reach:** High  \n  Important for team/workspace-based products; critical for scaling business and enterprise use.\n- **Effort:** High  \n  Can touch many parts of the system—authorization, UI, roles, access policies, etc.\n- **Uncertainty:** High  \n  Potential for edge cases and security pitfalls; requirements may change based on team feedback.\n\n---\n\n## Prioritization\n\n#### 1. **Onboarding**\n- **Reason:** High reach, moderate effort, moderate uncertainty. Biggest immediate impact on user success and engagement, manageable risk.\n\n#### 2. **Export**\n- **Reason:** Medium reach, medium effort, low uncertainty. Useful, known scope, less risky and faster to deploy than large permission work.\n\n#### 3. **Team Permissions**\n- **Reason:** High reach but high effort and high uncertainty require careful planning, so lower immediate priority. Potentially a “phase 2” or parallel project with more discovery needed.\n\n---\n\n## Summary Table\n\n| Feature           | Reach  | Effort  | Uncertainty | Priority |\n|-------------------|--------|---------|-------------|----------|\n| Onboarding        | High   | Medium  | Medium      | 1        |\n| Export            | Medium | Medium  | Low         | 2        |\n| Team Permissions  | High   | High    | High        | 3        |\n\n---\n\nLet me know if you want this tailored more to your product domain or if you have more context!",
+      "latencyMs": 8397.045375000002,
+      "inputTokens": 28,
+      "outputTokens": 514,
+      "costUsd": 0.004168,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "analysis-03",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! Let's prioritize the three roadmap items—**export**, **onboarding**, and **team permissions**—using these criteria: **Reach** (number of users impacted), **Effort** (resources/time required), and **Uncertainty** (risk/unknowns).\n\n---\n\n### 1. **Onboarding**\n\n- **Reach:** High  \n  Impacts all new users; improves activation and retention.\n- **Effort:** Medium  \n  Requires designing flows, guides—manageable if scope is focused.\n- **Uncertainty:** Low  \n  Well-understood best practices; impact is predictable.\n\n**Summary:**  \n**Prioritize first.** High reach, manageable effort, low risk. Lays foundation for user growth.\n\n---\n\n### 2. **Team Permissions**\n\n- **Reach:** Medium-High  \n  Important to teams/collaborative users (may not be all users).\n- **Effort:** High  \n  Complex logic, potential for backend restructuring, edge cases.\n- **Uncertainty:** Medium-High  \n  Need clear requirements. Can introduce unexpected issues around security/access.\n\n**Summary:**  \n**Prioritize second.** Important for expanding to teams/orgs, but higher effort/risk.\n\n---\n\n### 3. **Export**\n\n- **Reach:** Medium  \n  Impacts power users, useful for retention but not necessary for all.\n- **Effort:** Low-Medium  \n  Straightforward (e.g., CSV export), unless complex export formats are required.\n- **Uncertainty:** Low  \n  Well-defined, few unknowns.\n\n**Summary:**  \n**Prioritize third.** Quick win, but lower reach compared to onboarding/permissions.\n\n---\n\n## **Overall Prioritization:**\n\n1. **Onboarding** (High Reach, Manageable Effort, Low Uncertainty)\n2. **Team Permissions** (Medium-High Reach, High Effort, Medium-High Uncertainty)\n3. **Export** (Medium Reach, Low-Medium Effort, Low Uncertainty)\n\n---\n\n**If you want a table:**\n\n| Feature           | Reach   | Effort    | Uncertainty | Priority |\n|-------------------|---------|-----------|-------------|----------|\n| Onboarding        | High    | Medium    | Low         | 1        |\n| Team Permissions  | Med-High| High      | Med-High    | 2        |\n| Export            | Medium  | Low-Med   | Low         | 3        |\n\nLet me know if you want this adapted to your specific context!",
+      "latencyMs": 7078.800999999992,
+      "inputTokens": 28,
+      "outputTokens": 513,
+      "costUsd": 0.00416,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "analysis-04",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini",
+      "provider": "openai",
+      "response": "Evaluating whether a five-person startup should build or buy a customer-support tool involves analyzing several factors related to resources, speed, customization needs, costs, and strategic focus. Here’s a structured approach to help make that decision:\n\n### 1. **Resource Availability and Expertise**\n- **Build:** Developing a customer-support tool from scratch requires engineering time, product design, and ongoing maintenance. For a small team of five, this can be a significant strain, potentially diverting focus away from core product development.\n- **Buy:** Purchasing or subscribing to an existing tool means minimal setup effort and frees your engineers to build features that differentiate your startup.\n\n### 2. **Time to Market**\n- **Build:** Building a reliable, scalable support tool can take months and require iterations to reach a quality level acceptable to customers.\n- **Buy:** Existing SaaS solutions (like Zendesk, Freshdesk, Intercom, or Help Scout) are ready to deploy almost immediately.\n\n### 3. **Cost Considerations**\n- **Build:** Upfront engineering costs may be high, but no ongoing licensing fees. However, don’t underestimate ongoing maintenance and updates costs.\n- **Buy:** There are subscription fees, usually tiered by number of users or volume of tickets. For early-stage startups, many vendors offer free or discounted plans, lowering barrier to entry.\n\n### 4. **Customization & Integration Needs**\n- **Build:** If your customer support workflows are special and require deep integration with your product or unique automation, building may provide better alignment.\n- **Buy:** Many purchased tools offer APIs and customizable workflows that may cover your needs without building from scratch.\n\n### 5. **Scalability**\n- **Build:** Your custom solution may need redesigning as you scale, and supporting increased volume could be challenging.\n- **Buy:** Established tools are built to scale customer support volume and users efficiently.\n\n### 6. **Focus on Core Competencies**\n- Startups should ideally focus on differentiating features of their core product rather than building generic infrastructure unless it is a competitive advantage.\n\n---\n\n### Conclusion & Recommendation\n\nFor a five-person startup, **buying a customer-support tool is generally recommended** because it:\n\n- Saves engineering time to focus on core product development.\n- Provides quick deployment and established reliability.\n- Offers scalability as the startup grows.\n- Usually costs less in the short-to-medium term when considering engineering hours.\n\nOnly consider building if you have **very specific needs** unmet by existing tools or customer support is a core part of your product differentiation.\n\n---\n\nIf you want, I can also help you compare specific tools suitable for your startup size and industry!",
+      "latencyMs": 6827.429291000008,
+      "inputTokens": 22,
+      "outputTokens": 532,
+      "costUsd": 0.00086,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "analysis-04",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Let’s break down whether a five-person startup should **build** or **buy** a customer-support tool, considering the realities of early-stage companies.\n\n---\n\n## Key Considerations\n\n### 1. **Core Competency**\n- **Is customer support software your core product?**\n  - **Yes:** Building may make sense if this is your unique value proposition.\n  - **No:** Lean towards buying. Don’t reinvent the wheel for a non-core function.\n\n### 2. **Resources & Focus**\n- **Team Size:** Five-person teams have limited engineering/design capacity.\n- **Opportunity Cost:** Every hour building support tools is an hour *not* spent on your main product or talking to users.\n\n### 3. **Speed and Agility**\n- **Buy:** Get up and running in hours/days, letting you serve customers immediately.\n- **Build:** Can take weeks or months for an MVP and likely will lack features mature tools provide.\n\n### 4. **Costs**\n- **Buying**: Monthly SaaS pricing (e.g., $15-50/user/month).\n- **Building**: Engineer time is expensive; maintenance ongoing.\n    - 1 engineer × 1 month = 160+ hours × (fully loaded cost).\n    - Also incurs ongoing maintenance/compliance costs.\n\n### 5. **Features**\n- Mature tools (e.g., Zendesk, Intercom, Help Scout, Freshdesk) offer:\n    - Shared inbox, tagging, automations, reporting, search, integrations, multi-channel support, etc.\n- Building these from scratch is complex; will your DIY version suffice?\n\n### 6. **Scalability**\n- Bought tools are proven to scale as you grow.\n- Homemade tools may quickly become a bottleneck.\n\n### 7. **Flexibility/Customization**\n- Building gives you full control, but…\n- Most SaaS tools are highly customizable or have APIs for your needs.\n\n### 8. **Security/Compliance**\n- Trusted vendors handle GDPR, SOC2, etc.; building your own brings significant risk/responsibility and *slows you down*.\n\n---\n\n## When Building Might Make Sense\n\n- Your startup **is** a customer-support or communications product.\n- You need a niche feature that no vendor supports, and it is critical to your business.\n- Regulation/industry (e.g., health data, fintech) prevents using SaaS solutions.\n- You have excess, idle engineering capacity (rare at 5-person startups).\n\n---\n\n## Recommendation\n\n### **Buy, Don’t Build**\n\n- **For 99% of five-person startups, buy:** Focus your limited resources on your actual value proposition. You can always customize, integrate, or switch tools later.\n- Once you are larger and if/when your needs exceed what the market can offer, re-evaluate.\n\n---\n\n## Actionable Steps\n\n1. **Compare Top Tools:**\n   - Zendesk, Intercom, Freshdesk, Help Scout, etc.\n2. **Pick the Simplest Plan:** Start with baseline features; upgrade as you scale.\n3. **Integrate with Your Product/CRM:** Most tools offer APIs/Zapier/Slack integrations.\n4. **Revisit in 6–12 months:** Re-assess as your needs evolve.\n\n---\n\n**Summary Table:**\n\n| Factor             | Build                        | Buy                    |\n|--------------------|-----------------------------|------------------------|\n| Upfront time/cost  | High                        | Low                    |\n| Features           | Basic (at first)            | Mature, robust         |\n| Customization      | Max, but time-consuming     | Limited, but APIs      |\n| Maintenance        | Ongoing, your problem       | Included in price      |\n| Security/Compliance| Your responsibility         | Vendor responsibility  |\n| Speed to market    | Weeks/months                | Hours/days             |\n| Focus retention    | Low                         | High                   |\n\n> **Conclusion:**  \n> **Buy a reputable customer-support tool. \"Don't build what you can buy\" is especially true early on—keep your team focused on your core product and evolving with your customers!**",
+      "latencyMs": 6482.720874999999,
+      "inputTokens": 22,
+      "outputTokens": 835,
+      "costUsd": 0.006723999999999999,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "analysis-05",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini",
+      "provider": "openai",
+      "response": "Certainly! A **pre-mortem** is a proactive exercise where a team imagines a future failure and works backward to identify what could lead to that failure. For launching a mobile app in a new market, a pre-mortem helps uncover risks and mitigations before launch.\n\n---\n\n### Pre-Mortem Outline for Launching a Mobile App in a New Market\n\n#### 1. **Set the Context**\n- Define the product: mobile app features, value proposition.\n- Define the new market: geography, target audience, competitors, language, culture.\n- Define success criteria: user acquisition, engagement, revenue, ratings.\n\n#### 2. **Imagining Failure**\n- Prompt the team to envision a scenario **6 months after launch** where the app is considered a failure (e.g., low downloads, poor user ratings, negative ROI).\n- Ask: “Why did the app fail in this market?”\n\n#### 3. **Brainstorm Potential Causes of Failure**\nDivided by category for thoroughness:\n\n##### a. Market Understanding and Fit\n- Misunderstood user needs or preferences.\n- Features don’t resonate with local culture or habits.\n- Poor competitive differentiation.\n\n##### b. Localization Issues\n- Inadequate translation of app content.\n- Cultural insensitive content or UX design.\n- Failure to comply with local regulations or norms.\n\n##### c. Marketing and User Acquisition\n- Ineffective marketing channels or messaging.\n- Insufficient budget leading to low reach.\n- Misjudged influencers or partnerships.\n\n##### d. Technical Issues\n- App performance struggles on local devices or networks.\n- Incompatibility with local mobile operating systems or carriers.\n- Bugs or crashes leading to bad reviews.\n\n##### e. Customer Support & Community\n- Lack of local language support.\n- Poor response times to user issues.\n- No community engagement or feedback loops.\n\n##### f. Monetization and Legal\n- Pricing or payment methods not adapted.\n- Legal restrictions on app content or business practices.\n- Data privacy laws not adhered to.\n\n##### g. Internal Execution\n- Team coordination problems.\n- Unrealistic timeline or resource allocation.\n- Insufficient expertise on local market.\n\n#### 4. **Prioritize Risks**\n- Identify which causes are most likely and/or would have the greatest impact.\n- Use voting or a risk matrix (Likelihood x Impact).\n\n#### 5. **Develop Mitigation Strategies**\nFor each prioritized risk, outline:\n- Preventive actions (e.g., market research, localized testing).\n- Contingency plans (e.g., quick iteration cycles, emergency marketing funds).\n- Responsibility assignment.\n\n#### 6. **Document Learnings and Action Plan**\n- Summarize key risk areas and planned mitigations.\n- Incorporate findings into launch plan and roadmap.\n- Schedule follow-ups and monitoring checkpoints.\n\n---\n\nWould you like me to create a detailed example or fill in specific content for any of the sections?",
+      "latencyMs": 5207.933082999996,
+      "inputTokens": 23,
+      "outputTokens": 583,
+      "costUsd": 0.0009419999999999999,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "analysis-05",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! A **pre-mortem** is a strategic exercise conducted before a project launch where the team imagines that the project has failed and works backward to determine what potentially could have led to that failure. This helps identify risks and mitigations early.\n\nHere’s an **outline for a pre-mortem for launching a mobile app in a new market**:\n\n---\n\n### Pre-Mortem Outline: Launching a Mobile App in a New Market\n\n#### 1. **Set the Context**\n- Define the scope of the launch:\n  - What is the app?\n  - Which new market (country/region)?\n  - What is the launch timeline?\n- Clarify success criteria:\n  - Downloads, active users, revenue, engagement metrics, etc.\n\n#### 2. **Gather the Team**\n- Include cross-functional stakeholders:\n  - Product Managers\n  - Marketing Team\n  - Developers/Engineers\n  - QA/Testers\n  - Customer Support\n  - Local market experts or consultants\n\n#### 3. **Imagine the Failure**\n- Ask the team to assume that 3-6 months post-launch the app was a *complete failure*.\n- Define \"failure\":\n  - Not meeting user adoption goals\n  - Poor app performance\n  - Negative user reviews\n  - Regulatory/legal issues\n  - Financial losses\n\n#### 4. **Identify Possible Reasons for Failure**\nEach team member writes down all reasons they believe could have caused the failure, considering different perspectives:\n\n**Potential failure points to explore:**\n\n- **Market Understanding**\n  - Inadequate research on user preferences and behavior\n  - Misalignment with cultural norms or language nuances\n  - Ignoring local competitor landscape\n\n- **Product Localization**\n  - Poor translation and localization of content/UI\n  - Failure to adapt features to local needs/customs\n  - Ignoring local device usage/preferences\n\n- **Regulatory and Compliance**\n  - Missed legal or data privacy requirements (e.g., GDPR, local data laws)\n  - Not obtaining necessary certifications or permissions\n\n- **Technical Challenges**\n  - App instability on popular local devices or networks\n  - Inadequate backend capacity to handle local traffic\n  - Security vulnerabilities\n\n- **Marketing & User Acquisition**\n  - Ineffective marketing channels or messaging for the market\n  - Underestimating required marketing spend\n  - Poor user onboarding experience\n\n- **Customer Support**\n  - Lack of customer support in local language/time zone\n  - Inadequate handling of user feedback or issues\n\n- **Operational Issues**\n  - Poor project management or timeline overruns\n  - Budget constraints or resource shortages\n\n#### 5. **Prioritize Failure Causes**\n- Group similar failure reasons\n- Vote or rank by likelihood and potential impact\n- Highlight the top 3-5 risks that seem most critical\n\n#### 6. **Develop Mitigation Strategies**\nFor each high-priority risk, brainstorm actionable steps to prevent or minimize it:\n\n- Conduct thorough market research and user interviews pre-launch\n- Invest in professional localization services\n- Engage local legal counsel to verify compliance\n- Test app extensively on devices used in the new market\n- Adapt marketing strategies using local channels and influencers\n- Set up dedicated local customer support\n- Allocate contingency budget and buffer time\n\n#### 7. **Assign Ownership & Next Steps**\n- Assign responsible owners to address each key risk\n- Define specific action items and deadlines\n- Plan checkpoints to review risk status post-launch\n\n#### 8. **Document & Communicate**\n- Compile findings and mitigation plans into a shared document\n- Communicate insights with wider stakeholders involved in the launch\n- Integrate identified risks and actions into the project plan\n\n---\n\nThis structured pre-mortem helps surface hidden risks, aligns the team on potential pitfalls, and improves the chances of a successful mobile app launch in a new market.",
+      "latencyMs": 6359.296667000002,
+      "inputTokens": 23,
+      "outputTokens": 786,
+      "costUsd": 0.0012668,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "writing-02",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini",
+      "provider": "openai",
+      "response": "Certainly! Here’s a respectful and considerate outage apology that acknowledges the impact without suggesting an unverified cause or recovery time:\n\n---\n\nDear Valued Users,\n\nWe are currently experiencing an outage affecting our services. We understand how important these services are to you, and we sincerely apologize for any disruption this may have caused.\n\nPlease know that our team is actively investigating the issue and working diligently to restore full functionality as quickly as possible. We appreciate your patience and understanding during this time.\n\nThank you for bearing with us.\n\nSincerely,  \n[Your Company/Team Name]\n\n---\n\nWould you like it tailored to a specific tone or channel?",
+      "latencyMs": 1593.9975000000122,
+      "inputTokens": 24,
+      "outputTokens": 125,
+      "costUsd": 0.00020959999999999997,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "writing-02",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! Here’s a revised version of an outage apology that acknowledges the impact without making promises about the cause or recovery timeline:\n\n---\n\nWe apologize for the disruption you are experiencing. We recognize the impact this outage is having on your work and are actively investigating the issue. Our team is working to resolve the situation as quickly as possible, and we will provide updates as more information becomes available. Thank you for your patience and understanding.",
+      "latencyMs": 1282.5295000000042,
+      "inputTokens": 24,
+      "outputTokens": 85,
+      "costUsd": 0.0007279999999999999,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "writing-03",
+      "success": true,
+      "selectedModel": "gpt-4.1",
+      "provider": "openai",
+      "response": "Subject: Welcome to [Tool Name]! Let’s Start Collaborating 🚀\n\nHi [First Name],\n\nWelcome to [Tool Name]! We’re excited to have you on board. Whether you’re planning, brainstorming, or sharing ideas, our collaborative note-taking tool helps you work smarter—together.\n\nTo get started, create your first shared note and invite teammates with just a click.\n\n👉 [Create your first note now!](#)\n\nIf you have any questions, our support team is here to help.\n\nHappy collaborating,  \nThe [Tool Name] Team",
+      "latencyMs": 1314.1660409999895,
+      "inputTokens": 26,
+      "outputTokens": 112,
+      "costUsd": 0.000948,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "writing-03",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Subject: Welcome to [Tool Name]! Let’s Get Started ✨\n\nHi [First Name],\n\nWe’re excited to welcome you to [Tool Name] — your new space for seamless, collaborative note-taking.\n\nWith [Tool Name], you can easily capture ideas, organize projects, and share notes in real time with teammates. Whether you’re brainstorming, planning, or learning together, everything stays in sync and everyone stays on the same page.\n\n**Ready to dive in?**  \n[Click here to create your first note](#) and invite your team to join you!\n\nIf you have any questions, our support team is always here to help.\n\nHappy collaborating!  \nThe [Tool Name] Team",
+      "latencyMs": 1802.028833999997,
+      "inputTokens": 26,
+      "outputTokens": 140,
+      "costUsd": 0.0011719999999999999,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "writing-04",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini",
+      "provider": "openai",
+      "response": "Stay refreshed on the go with this durable reusable travel mug. Designed with a secure, leak-resistant lid and double-wall insulation, it keeps your beverages at the right temperature for hours. Made from high-quality materials, it’s easy to clean and fits most car cup holders—perfect for your daily commute or outdoor adventures.",
+      "latencyMs": 1216.8632089999737,
+      "inputTokens": 23,
+      "outputTokens": 63,
+      "costUsd": 0.00010999999999999999,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "writing-04",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Enjoy your favorite drinks on the go with this durable reusable travel mug. Designed to keep beverages hot or cold for hours, its double-wall construction ensures comfort and temperature retention. The secure, spill-resistant lid makes it ideal for commuting, road trips, or busy days. Lightweight and easy to clean, this travel mug is a convenient companion for your everyday adventures.",
+      "latencyMs": 1315.766083000024,
+      "inputTokens": 23,
+      "outputTokens": 71,
+      "costUsd": 0.000614,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "writing-05",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini",
+      "provider": "openai",
+      "response": "1. \"Mastering Your Mind: A Step-by-Step Guide to Organizing Personal Research Notes\"  \n2. \"From Chaos to Clarity: How to Efficiently Organize Your Personal Research Notes\"  \n3. \"Streamline Your Studies: Essential Tips for Organizing and Managing Research Notes\"",
+      "latencyMs": 1265.6551249999902,
+      "inputTokens": 20,
+      "outputTokens": 60,
+      "costUsd": 0.00010400000000000001,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "writing-05",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! Here are three different headline options:\n\n1. \"From Chaos to Clarity: A Step-by-Step Guide to Organizing Your Personal Research Notes\"  \n2. \"Master Your Research: Essential Strategies for Organizing Personal Notes Efficiently\"  \n3. \"Take Control of Your Ideas: The Ultimate Guide to Structuring and Managing Research Notes\"",
+      "latencyMs": 1459.5544579999987,
+      "inputTokens": 20,
+      "outputTokens": 70,
+      "costUsd": 0.0006,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "qa-02",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini",
+      "provider": "openai",
+      "response": "HTTP 404 is a client-side error indicating that the requested resource could not be found on the server. It typically occurs when the URL is incorrect or the resource has been moved or deleted. When a user tries to access a webpage or file that doesn't exist, the server responds with a 404 status code to inform the client that the requested content is unavailable.\n\nHTTP 500, on the other hand, is a server-side error indicating that something has gone wrong on the server while processing the request. This status code means that the server encountered an unexpected condition or internal failure that prevented it from fulfilling the request. Unlike a 404 error, which is about a missing resource, a 500 error signals a problem within the server’s application or configuration that needs to be resolved by the server administrators or developers.",
+      "latencyMs": 1952.8992909999797,
+      "inputTokens": 20,
+      "outputTokens": 161,
+      "costUsd": 0.00026559999999999995,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "qa-02",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "An **HTTP 404** error, or \"Not Found,\" means the client was able to communicate with the server, but the server couldn’t find the specific resource (such as a web page or file) requested. This typically occurs when a user tries to visit a URL that doesn’t exist on the server, and it signals a client-side issue—either the link is broken, or the user mistyped the address.\n\nAn **HTTP 500** error, or \"Internal Server Error,\" indicates that the server encountered an unexpected condition that prevented it from fulfilling the request. Unlike a 404, this code means something went wrong on the server itself—such as a server misconfiguration, crashed application, or unhandled exception—rather than an issue with the client’s request.",
+      "latencyMs": 2143.2828750000044,
+      "inputTokens": 20,
+      "outputTokens": 156,
+      "costUsd": 0.001288,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "qa-03",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini",
+      "provider": "openai",
+      "response": "A leap year usually has **366 days** instead of the typical 365 days to help synchronize the calendar year with the astronomical year (the time it takes Earth to complete one orbit around the Sun). \n\nHere's why:\n\n- The Earth takes approximately **365.2425 days** to orbit the Sun.\n- A normal calendar year has 365 days, which is about 0.2425 days (~6 hours) shorter than the actual solar year.\n- To account for this extra fraction of a day, the calendar adds an **extra day (February 29)** every 4 years, making those years leap years with 366 days.\n\n### The Gregorian Century Exception\nTo correct for the slight overcompensation caused by adding a leap day every 4 years (which totals 0.25 days per year, slightly more than the true 0.2425), the **Gregorian calendar** introduces an exception for century years:\n\n- A year that is exactly divisible by 100 (a century year) **is NOT a leap year** **unless**:\n- The year is also divisible by 400.\n\n**Examples:**\n\n- 1900 was divisible by 100 but **not** by 400 → **Not** a leap year (365 days)\n- 2000 was divisible by 100 and by 400 → **Leap year** (366 days)\n- 2100 will be divisible by 100 but not by 400 → **Not** a leap year\n\nThis rule ensures the calendar stays closely aligned with Earth's orbit over long periods.\n\n---\n\n**Summary:**\n\n- Normal year = 365 days\n- Leap year (every 4 years) = 366 days\n- Century years divisible by 100 **are not leap years** unless divisible by 400\n- This keeps the calendar year aligned to the solar year as accurately as possible.",
+      "latencyMs": 3677.6818750000093,
+      "inputTokens": 24,
+      "outputTokens": 376,
+      "costUsd": 0.0006112,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "qa-03",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "A **leap year** usually has **366 days** instead of the usual 365 to keep the calendar year synchronized with the astronomical year. This extra day is added as February 29.\n\n### **Why?**\n- The Earth takes about **365.2422 days** to orbit the Sun (a solar year).\n- If we counted only 365 days every year, the calendar would slowly drift out of sync with the seasons.\n- Adding an extra day every 4 years (**leap year**) mostly corrects this difference.\n\n### **Gregorian Century Exception**\nHowever, just adding a day every 4 years slightly **overcorrects** the drift, since 365.25 days per year is a bit too much. So, the **Gregorian calendar** (introduced in 1582) adds these rules:\n\n- **A year is a leap year if:**\n  - It is divisible by **4**;\n  - **Except** for years that are **divisible by 100**, **unless** they are also divisible by **400**.\n\n#### **Examples:**\n- **2000** is a leap year (**divisible by 400**).\n- **1900** is **not** a leap year (**divisible by 100 but not by 400**).\n- **2024** is a leap year (**divisible by 4 and not a century year**).\n\n### **Summary**\nA leap year usually has 366 days instead of 365 to keep the calendar accurate. In the **Gregorian calendar**, years divisible by 100 are **not** leap years unless they are also divisible by 400—this is the **century exception** to the \"every 4 years\" rule.",
+      "latencyMs": 3144.152582999988,
+      "inputTokens": 24,
+      "outputTokens": 349,
+      "costUsd": 0.0028399999999999996,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "qa-04",
+      "success": true,
+      "selectedModel": "gpt-4.1-mini",
+      "provider": "openai",
+      "response": "Database normalization aims to prevent **data anomalies** such as **insertion, update, and deletion anomalies** by organizing data into tables and defining relationships between them in a way that reduces redundancy and dependency.\n\n### Concrete example:\nConsider a table that stores both customer and order information:\n\n| OrderID | CustomerName | CustomerAddress | Product | Quantity |\n|---------|--------------|-----------------|---------|----------|\n| 101     | John Smith   | 123 Elm St      | WidgetA | 10       |\n| 102     | John Smith   | 123 Elm St      | WidgetB | 5        |\n\n**Problem:** If John Smith changes his address, you have to update it in multiple rows (here, 2 rows), risking inconsistency if only some rows are updated (update anomaly).\n\n**Normalization step:** Split this into two tables:\n\n- Customers table:\n\n| CustomerID | CustomerName | CustomerAddress |\n|------------|--------------|-----------------|\n| 1          | John Smith   | 123 Elm St      |\n\n- Orders table:\n\n| OrderID | CustomerID | Product | Quantity |\n|---------|------------|---------|----------|\n| 101     | 1          | WidgetA | 10       |\n| 102     | 1          | WidgetB | 5        |\n\nNow, updating John Smith’s address requires changing it only once in the Customers table, avoiding update anomalies.",
+      "latencyMs": 3087.514583000011,
+      "inputTokens": 20,
+      "outputTokens": 286,
+      "costUsd": 0.00046559999999999993,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "qa-04",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "**Database normalization** aims to prevent **data redundancy** and **update anomalies** (such as insertion, update, and deletion anomalies). In other words, normalization is used to organize a relational database in a way that reduces repeated data and improves data integrity.\n\n**Concrete Example:**\n\nSuppose you have a single table storing information about students and the courses they enroll in, like this:\n\n| StudentID | StudentName | CourseName   | Instructor     |\n|-----------|-------------|--------------|----------------|\n| 1         | Alice       | Math         | Dr. Smith      |\n| 2         | Bob         | English      | Prof. Johnson  |\n| 1         | Alice       | Physics      | Dr. Brown      |\n\n**Problem:**  \nIf Alice changes her name, you must update all rows where her data appears. If you forget to update one row, the database becomes inconsistent. This is called **update anomaly**.\n\n**How normalization helps:**  \nBy splitting the data into multiple tables (e.g., Students, Courses, Enrollments), you store each piece of data only once.\n\n- Table: **Students**  \n  | StudentID | StudentName |\n  |-----------|-------------|\n  | 1         | Alice       |\n  | 2         | Bob         |\n\n- Table: **Enrollments**  \n  | StudentID | CourseName   | Instructor     |\n  |-----------|--------------|----------------|\n  | 1         | Math         | Dr. Smith      |\n  | 2         | English      | Prof. Johnson  |\n  | 1         | Physics      | Dr. Brown      |\n\nNow, if Alice’s name changes, you only need to update it in **one place**.\n\n**Summary:**  \nNormalization **prevents data redundancy and anomalies** (like inconsistent updates).  \n**Example:** Preventing duplicated student names in multiple rows by splitting student info into a separate table.",
+      "latencyMs": 3309.558250000002,
+      "inputTokens": 20,
+      "outputTokens": 391,
+      "costUsd": 0.003168,
+      "error": null
+    },
+    {
+      "router": "litellm",
+      "requestId": "qa-05",
+      "success": true,
+      "selectedModel": "gpt-4.1",
+      "provider": "openai",
+      "response": "Certainly! Let’s use a **shared document** (like a Google Doc or a file on Dropbox) as an analogy to clarify the difference between **authentication** and **authorization**:\n\n---\n\n### **Authentication:** _Who are you?_\n\n- **Definition:** Authentication is the process of verifying **your identity**—proving that you are who you claim to be.\n- **In the context of a shared document:**  \n  When you try to access the document, the system may ask you to **log in** with your username and password, or confirm with your email.  \n  **Example:** You enter your email and password to log into your Google account.\n\n---\n\n### **Authorization:** _What are you allowed to do?_\n\n- **Definition:** Authorization is the process of granting or denying **permissions** to resources—determining **what actions you are allowed to perform** after you have been authenticated.\n- **In the context of a shared document:**  \n  After you log in, the system checks **what access rights you have** for that document.\n  - Can you **view** the document?\n  - Can you **comment** on it?\n  - Can you **edit** it?\n- **Example:** You are authenticated into Google, but the document owner has only given you \"view\" rights, so you can see the document but cannot make edits.\n\n---\n\n### **Summary Table**\n\n|          | Shared Document Example                      |\n|----------|---------------------------------------------|\n| **Authentication** | Verifying you are an authorized user (logging in) |\n| **Authorization**  | Deciding what you can do with the document (view, comment, edit, share) |\n\n---\n\n**In short:**  \n- **Authentication** is about your **identity**.  \n- **Authorization** is about your **permissions**.\n\n**You can be authenticated but not authorized to edit the document.**",
+      "latencyMs": 1997.4936659999948,
+      "inputTokens": 19,
+      "outputTokens": 382,
+      "costUsd": 0.0030939999999999995,
+      "error": null
+    },
+    {
+      "router": "notdiamond",
+      "requestId": "qa-05",
+      "success": true,
+      "selectedModel": "gpt-4.1-2025-04-14",
+      "provider": "openai",
+      "response": "Certainly! Let’s use a **shared document** (like a Google Doc) as an analogy to explain the difference between **authentication** and **authorization**:\n\n---\n\n### **Authentication**\n**Authentication** is about **verifying your identity**—proving *who you are*.\n\n**In the context of a shared document:**  \nWhen you try to open the shared document, the system might ask you to log in (for example, using your Google account). This step checks that you are really **you**—\"Are you Alice@example.com or Bob@gmail.com?\"\n\n- **Example:**  \n  - You enter your email and password to access Google Docs.  \n  - Google checks your credentials and confirms your identity.\n\n---\n\n### **Authorization**\n**Authorization** is about **what you are allowed to do**—determining *your permissions*.\n\n**In the context of a shared document:**  \nAfter you’re authenticated (logged in), the document checks **what you can do** with it:\n\n- **View:** You can only look at the document.\n- **Comment:** You can view and leave comments.\n- **Edit:** You can make changes to the document.\n\n- **Example:**\n  - Alice logs in and she’s allowed to **edit** the document.\n  - Bob logs in and he’s allowed to only **view** it.\n  - Even if Bob and Alice are both authenticated users, their **authorizations** (permissions) can be different.\n\n---\n\n## **Summary Table**\n\n|               | **Authentication**                              | **Authorization**                           |\n|---------------|------------------------------------------------|---------------------------------------------|\n| **Question**  | Who are you?                                   | What are you allowed to do?                 |\n| **Shared Doc**| Logging into Google with your email/password    | Can you view, comment, or edit the document?|\n| **Order**     | Happens first                                  | Happens after authentication                |\n\n---\n\n**In short:**  \n- **Authentication** = Proving you are who you say you are. (Login)\n- **Authorization** = What you can do after you’re logged in. (Permissions)\n\nLet me know if you want more detailed examples!",
+      "latencyMs": 2339.736042000004,
+      "inputTokens": 19,
+      "outputTokens": 439,
+      "costUsd": 0.0035499999999999998,
+      "error": null
+    }
+  ],
+  "summary": [
+    {
+      "router": "litellm",
+      "totalRequests": 20,
+      "successfulRequests": 20,
+      "successRate": 1,
+      "averageCostUsd": 0.0016597599999999997,
+      "totalCostUsd": 0.033195199999999994,
+      "averageLatencyMs": 4251.884364449998,
+      "p50LatencyMs": 3654.408895500006,
+      "p95LatencyMs": 8510.523493750003
+    },
+    {
+      "router": "notdiamond",
+      "totalRequests": 20,
+      "successfulRequests": 20,
+      "successRate": 1,
+      "averageCostUsd": 0.003272719999999999,
+      "totalCostUsd": 0.06545439999999998,
+      "averageLatencyMs": 5127.1207104000005,
+      "p50LatencyMs": 3313.8158330000006,
+      "p95LatencyMs": 8788.77192355001
+    }
+  ]
+}
