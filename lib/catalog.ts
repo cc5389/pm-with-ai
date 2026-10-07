@@ -1,0 +1,115 @@
+import type { ModelProfile, RequestInput, Settings } from "./types";
+
+export const SCENARIOS = {
+  early: {
+    label: "Early month · room to explore",
+    date: "2026-10-04",
+    utilization: 0.1,
+  },
+  balanced: {
+    label: "Midmonth · balanced spend",
+    date: "2026-10-16",
+    utilization: 0.5,
+  },
+  tight: {
+    label: "Late month · tight budget",
+    date: "2026-10-28",
+    utilization: 0.92,
+  },
+} as const;
+
+/** Fictional profiles for teaching policy tradeoffs; these are not vendor claims. */
+export const MODELS: ModelProfile[] = [
+  {
+    id: "atlas-pro",
+    name: "Atlas Pro",
+    provider: "Illustrative cloud",
+    tier: "Flagship",
+    inputPrice: 40,
+    outputPrice: 80,
+    contextWindow: 128000,
+    quality: { coding: 0.96, analysis: 0.97, writing: 0.95, qa: 0.96 },
+    latency: { coding: 4.8, analysis: 5.2, writing: 4.1, qa: 3.6 },
+    source: "illustrative",
+    measuredAt: null,
+    sampleCount: 0,
+    local: false,
+  },
+  {
+    id: "nova-balanced",
+    name: "Nova Balanced",
+    provider: "Illustrative cloud",
+    tier: "Balanced",
+    inputPrice: 10,
+    outputPrice: 20,
+    contextWindow: 64000,
+    quality: { coding: 0.87, analysis: 0.86, writing: 0.89, qa: 0.88 },
+    latency: { coding: 2.4, analysis: 2.7, writing: 2.1, qa: 1.8 },
+    source: "illustrative",
+    measuredAt: null,
+    sampleCount: 0,
+    local: false,
+  },
+  {
+    id: "spark-mini",
+    name: "Spark Mini",
+    provider: "Illustrative cloud",
+    tier: "Economy",
+    inputPrice: 1,
+    outputPrice: 4,
+    contextWindow: 16000,
+    quality: { coding: 0.75, analysis: 0.74, writing: 0.8, qa: 0.82 },
+    latency: { coding: 1.1, analysis: 1.3, writing: 0.9, qa: 0.7 },
+    source: "illustrative",
+    measuredAt: null,
+    sampleCount: 0,
+    local: false,
+  },
+  {
+    id: "swift-lite",
+    name: "Swift Lite",
+    provider: "Illustrative cloud",
+    tier: "Fast specialist",
+    inputPrice: 3,
+    outputPrice: 8,
+    contextWindow: 32000,
+    quality: { coding: 0.79, analysis: 0.78, writing: 0.86, qa: 0.91 },
+    latency: { coding: 0.8, analysis: 0.9, writing: 0.6, qa: 0.4 },
+    source: "illustrative",
+    measuredAt: null,
+    sampleCount: 0,
+    local: false,
+  },
+];
+
+export const DEFAULT_SETTINGS: Settings = {
+  teamName: "Studio team",
+  monthlyBudget: 1000,
+  monthlyRequests: 10000,
+  scenario: "early",
+  simulatedDate: SCENARIOS.early.date,
+  openingSpend: 100,
+  users: [
+    { id: "alex", name: "Alex Chen", role: "Product manager", budget: null },
+    { id: "maya", name: "Maya Patel", role: "Engineer", budget: 120 },
+    { id: "jordan", name: "Jordan Lee", role: "Researcher", budget: 80 },
+  ],
+  blockedModels: [],
+};
+export const DEFAULT_INPUT: RequestInput = {
+  prompt:
+    "Compare three approaches to launching a small team's AI assistant. Explain the tradeoffs, identify the biggest risks, and recommend a practical first experiment.",
+  task: "analysis",
+  importance: "medium",
+  userId: "alex",
+  qualityFloor: 0.72,
+  latencyTarget: 6,
+  strictLatency: false,
+  maxRequestCost: null,
+  outputTokens: 1000,
+  weights: { quality: 0.8, cost: 0.15, latency: 0.05 },
+  preferredModels: [],
+  blockedModels: [],
+  localOnly: false,
+  mode: "simulation",
+};
