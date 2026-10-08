@@ -1,7 +1,7 @@
 import { evaluate, BENCHMARK_PROMPTS } from "@/lib/benchmark";
 import { AppError, getSettings } from "@/lib/db";
 import { MODELS } from "@/lib/catalog";
-import { inputSchema } from "@/lib/validation";
+import { inputSchema, settingsSchema } from "@/lib/validation";
 import { body, failure } from "@/lib/http";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,13 +10,21 @@ export async function GET() {
 }
 export async function POST(req: Request) {
   try {
-    const b = (await body(req)) as { input: unknown };
+    const b = (await body(req)) as { input: unknown; settings?: unknown };
     const input = inputSchema.parse(b?.input);
     if (input.mode !== "simulation")
       throw new AppError(
         "The comparison uses simulation profiles. Switch to Simulation mode first.",
       );
-    return Response.json(evaluate(getSettings(), MODELS, input));
+    return Response.json(
+      evaluate(
+        b?.settings === undefined
+          ? getSettings()
+          : settingsSchema.parse(b.settings),
+        MODELS,
+        input,
+      ),
+    );
   } catch (e) {
     return failure(e);
   }

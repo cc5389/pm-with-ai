@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { BudgetEditor } from "./budget-editor";
 import { suggestTask } from "@/lib/engine";
 import {
   Activity,
@@ -136,6 +137,10 @@ export default function Dashboard() {
     null,
   );
   const [draftSettings, setDraftSettings] = useState<Settings | null>(null);
+  const [budgetDraft, setBudgetDraft] = useState<Settings | null>(null);
+  const [budgetDraftError, setBudgetDraftError] = useState<string | null>(null);
+  const [calculating, setCalculating] = useState(false);
+  const [calculationError, setCalculationError] = useState<string | null>(null);
   const [ratings, setRatings] = useState({
     correctness: 4,
     completeness: 4,
@@ -150,10 +155,6 @@ export default function Dashboard() {
         setWorkspace(data);
         setDraftSettings(data.settings);
         setInput(data.defaultInput);
-        const initial = await api<Preview>("/api/preview", {
-          input: data.defaultInput,
-        });
-        if (active) setPreview(initial);
       })
       .catch((e) => {
         if (active) setError(e.message);
@@ -172,7 +173,58 @@ export default function Dashboard() {
         .catch((e) => setError(e.message));
     }
   }, [view, benchmarkPrompts.length]);
+  useEffect(() => {
+    if (!workspace || !input || busy) return;
+    setPreview(null);
+    setCalculationError(null);
+    if (budgetDraftError || !input.prompt.trim()) {
+      setCalculating(false);
+      return;
+    }
+    let active = true;
+    setCalculating(true);
+    const timer = setTimeout(() => {
+      api<Preview>("/api/preview", {
+        input,
+        ...(budgetDraft ? { settings: budgetDraft } : {}),
+      })
+        .then((data) => {
+          if (active) setPreview(data);
+        })
+        .catch((e) => {
+          if (active) setCalculationError(e.message);
+        })
+        .finally(() => {
+          if (active) setCalculating(false);
+        });
+    }, 300);
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [workspace, input, budgetDraft, budgetDraftError, busy]);
+  function changeBudget(settings: Settings | null, message: string | null) {
+    setBudgetDraft(settings);
+    setBudgetDraftError(message);
+    setCalculationError(null);
+    setPreview(null);
+    setResult(null);
+    setEvaluation(null);
+    setNotice(null);
+  }
+  async function persistBudgetDraft() {
+    if (!budgetDraft) return;
+    const data = await api<Workspace>("/api/workspace", budgetDraft);
+    setWorkspace(data);
+    setDraftSettings(data.settings);
+    setBudgetDraft(null);
+    setBudgetDraftError(null);
+  }
   function edit(patch: Partial<RequestInput>) {
+    if (patch.mode) {
+      setBudgetDraft(null);
+      setBudgetDraftError(null);
+    }
     setInput((current) => (current ? { ...current, ...patch } : current));
     setPreview(null);
     setResult(null);
@@ -205,9 +257,11 @@ export default function Dashboard() {
       const data = await api<Workspace>("/api/workspace", settings);
       setWorkspace(data);
       setDraftSettings(data.settings);
+      setBudgetDraft(null);
+      setBudgetDraftError(null);
       setNotice(
         scenario
-          ? "Budget scenario updated. Preview the request to see the new policy."
+          ? "Budget scenario updated. Calculations refresh automatically."
           : "Workspace settings saved.",
       );
     });
@@ -245,10 +299,15 @@ export default function Dashboard() {
     { id: "workspace", label: "Workspace", icon: Settings2 },
   ];
   const balance = workspace && input ? workspace.balances[input.mode] : null;
-  const spent = balance?.spent ?? 0;
-  const budget = workspace?.settings.monthlyBudget || 0;
-  const remaining = balance?.remaining ?? budget;
-  const usage = budget ? (spent + (balance?.reserved ?? 0)) / budget : 0;
+  const effectiveSettings = budgetDraft ?? workspace?.settings;
+  const spent = budgetDraft
+    ? (preview?.policy.budget.spent ?? budgetDraft.openingSpend)
+    : (balance?.spent ?? 0);
+  const budget = effectiveSettings?.monthlyBudget || 0;
+  const remaining = budgetDraft
+    ? (preview?.policy.budget.remaining ?? Math.max(0, budget - spent))
+    : (balance?.remaining ?? budget);
+  const usage = budget ? spent / budget : 0;
   const titles = {
     lab: "Request lab",
     history: "Run history",
@@ -412,6 +471,21 @@ export default function Dashboard() {
                   </a>
                 )}
               </div>
+              {input.mode === "simulation" && (
+                <div hidden={view !== "lab"}>
+                  <BudgetEditor
+                    settings={workspace.settings}
+                    onChange={changeBudget}
+                    onSave={() => {
+                      if (budgetDraft) void saveSettings(budgetDraft);
+                    }}
+                    dirty={!!budgetDraft}
+                    disabled={!!busy}
+                    calculating={calculating}
+                    error={budgetDraftError || calculationError}
+                  />
+                </div>
+              )}
               <section className="stats-grid" aria-label="Budget overview">
                 <div className="stat-card">
                   <div className="stat-label">
@@ -421,14 +495,14 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <div className="stat-value">
-                    {money(budget)}
+                    {budgetDraftError ? "—" : money(budget)}
                     <span> / month</span>
                   </div>
                   <div className="stat-bottom">
                     {(input.mode === "local"
                       ? new Date()
                       : new Date(
-                          workspace.settings.simulatedDate + "T12:00:00Z",
+                          effectiveSettings!.simulatedDate + "T12:00:00Z",
                         )
                     ).toLocaleDateString("en-US", {
                       month: "long",
@@ -448,7 +522,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <div className="stat-value">
-                    {money(spent)}
+                    {budgetDraftError ? "—" : money(spent)}
                     <span className="stat-percentage">{pct(usage)} used</span>
                   </div>
                   <div className="progress-track">
@@ -471,14 +545,14 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <div className="stat-value">
-                    {money(remaining)}
+                    {budgetDraftError ? "—" : money(remaining)}
                     <span className="remaining-tag">
                       <span className="status-dot" />
                       {usage >= 0.9 ? "Tight budget" : "Within budget"}
                     </span>
                   </div>
                   <div className="stat-bottom">
-                    {workspace.settings.monthlyRequests.toLocaleString()}{" "}
+                    {effectiveSettings!.monthlyRequests.toLocaleString()}{" "}
                     expected requests / month
                     <ArrowUpRight size={15} />
                   </div>
@@ -517,17 +591,25 @@ export default function Dashboard() {
                           <button
                             key={s.id}
                             disabled={!!busy}
-                            aria-pressed={workspace.settings.scenario === s.id}
+                            aria-pressed={
+                              !budgetDraft &&
+                              !budgetDraftError &&
+                              workspace.settings.scenario === s.id
+                            }
                             className={
+                              !budgetDraft &&
+                              !budgetDraftError &&
                               workspace.settings.scenario === s.id
                                 ? "selected"
                                 : ""
                             }
                             onClick={() => chooseScenario(s.id)}
                           >
-                            {workspace.settings.scenario === s.id && (
-                              <Check size={13} />
-                            )}{" "}
+                            {!budgetDraft &&
+                              !budgetDraftError &&
+                              workspace.settings.scenario === s.id && (
+                                <Check size={13} />
+                              )}{" "}
                             {s.title}
                             <span>{s.subtitle}</span>
                           </button>
@@ -906,12 +988,21 @@ export default function Dashboard() {
                         <div className="composer-actions">
                           <button
                             className="button secondary"
-                            disabled={!!busy || !input.prompt.trim()}
+                            disabled={
+                              !!busy ||
+                              !!budgetDraftError ||
+                              !input.prompt.trim()
+                            }
                             onClick={() =>
                               operate("preview", async () => {
                                 setResult(null);
                                 setPreview(
-                                  await api<Preview>("/api/preview", { input }),
+                                  await api<Preview>("/api/preview", {
+                                    input,
+                                    ...(budgetDraft
+                                      ? { settings: budgetDraft }
+                                      : {}),
+                                  }),
                                 );
                               })
                             }
@@ -927,9 +1018,14 @@ export default function Dashboard() {
                           </button>
                           <button
                             className="button primary"
-                            disabled={!!busy || !input.prompt.trim()}
+                            disabled={
+                              !!busy ||
+                              !!budgetDraftError ||
+                              !input.prompt.trim()
+                            }
                             onClick={() =>
                               operate("run", async () => {
+                                await persistBudgetDraft();
                                 const run = await api<RunRecord>("/api/run", {
                                   input,
                                   idempotencyKey: crypto.randomUUID(),
@@ -956,14 +1052,19 @@ export default function Dashboard() {
                           </button>
                         </div>
                         <p className="action-note">
-                          Preview explains the decision. Run adds a response to
-                          your history.
+                          {calculating
+                            ? "Updating policy automatically…"
+                            : calculationError
+                              ? calculationError
+                              : "Policy updates as you type. Running saves your budget and records a response."}
                         </p>
                       </div>
                     </section>
                     <PolicyInspector
                       preview={preview}
-                      loading={busy === "init" || busy === "preview"}
+                      loading={
+                        busy === "init" || busy === "preview" || calculating
+                      }
                     />
                   </div>
                   <CandidatePanel preview={preview} />
@@ -1179,12 +1280,15 @@ export default function Dashboard() {
                     </div>
                     <button
                       className="button primary"
-                      disabled={!!busy || input.mode === "local"}
+                      disabled={
+                        !!busy || !!budgetDraftError || input.mode === "local"
+                      }
                       onClick={() =>
                         operate("evaluate", async () =>
                           setEvaluation(
                             await api<EvaluationResult>("/api/evaluate", {
                               input,
+                              ...(budgetDraft ? { settings: budgetDraft } : {}),
                             }),
                           ),
                         )

@@ -89,12 +89,82 @@ try {
     .get(base + "/api/workspace")
     .then((r) => r.json());
   expect(state0.history).toHaveLength(0);
+  const calculator = page.getByRole("region", {
+    name: "Live budget calculator",
+  });
+  await calculator
+    .getByLabel("Monthly budget ($)", { exact: true })
+    .fill("2000");
+  await calculator
+    .getByLabel("Starting spend this month ($)", { exact: true })
+    .fill("500");
+  await calculator.getByLabel("As-of date").fill("2026-10-16");
+  await expect
+    .poll(async () => {
+      const text = await page
+        .locator(".policy-panel pre")
+        .textContent()
+        .catch(() => null);
+      return text ? JSON.parse(text).budget.monthlyBudget : null;
+    })
+    .toBe(2000);
+  await expect(
+    page.getByRole("region", { name: "Budget overview" }),
+  ).toContainText("$1,500.00");
+  const unsaved = await page.request
+    .get(base + "/api/workspace")
+    .then((r) => r.json());
+  expect(unsaved.settings.monthlyBudget).toBe(state0.settings.monthlyBudget);
+  expect(unsaved.history).toHaveLength(0);
+  await page.getByRole("button", { name: "Evaluation", exact: true }).click();
+  await page.getByRole("button", { name: /Request lab/ }).click();
+  await expect(
+    calculator.getByLabel("Monthly budget ($)", { exact: true }),
+  ).toHaveValue("2000");
+  await expect(
+    calculator.getByLabel("Starting spend this month ($)", { exact: true }),
+  ).toHaveValue("500");
+  await calculator.getByLabel("Monthly budget ($)", { exact: true }).fill("");
+  await expect(calculator).toContainText("Fill in all four budget fields");
+  await expect(
+    page.getByRole("button", { name: "Run simulation" }),
+  ).toBeDisabled();
+  await expect(page.locator(".selection-banner")).toHaveCount(0);
+  await calculator.getByLabel("Monthly budget ($)", { exact: true }).fill("0");
+  await expect(page.locator(".selection-banner")).toContainText(
+    "Your guardrails cannot currently be met",
+  );
+  await calculator
+    .getByLabel("Monthly budget ($)", { exact: true })
+    .fill("3000");
+  await calculator
+    .getByLabel("Monthly budget ($)", { exact: true })
+    .fill("2000");
+  await expect
+    .poll(async () => {
+      const text = await page
+        .locator(".policy-panel pre")
+        .textContent()
+        .catch(() => null);
+      return text ? JSON.parse(text).budget.monthlyBudget : null;
+    })
+    .toBe(2000);
+  await calculator.getByRole("button", { name: "Save budget" }).click();
+  await expect(page.getByRole("status")).toContainText(
+    "Workspace settings saved",
+  );
+  await page.reload();
+  await expect(
+    calculator.getByLabel("Monthly budget ($)", { exact: true }),
+  ).toHaveValue("2000");
+  await page.request.post(base + "/api/workspace", { data: state0.settings });
+  await page.reload();
+  await expect(page.locator(".selection-banner")).toContainText("Atlas Pro");
   await page.screenshot({
     path: "test-results/request-lab.png",
     fullPage: true,
   });
   await page.getByRole("slider", { name: /Minimum quality/ }).fill("99");
-  await page.getByRole("button", { name: "Preview routing" }).click();
   await expect(page.locator(".selection-banner")).toContainText(
     "Your guardrails cannot currently be met",
   );
@@ -219,6 +289,22 @@ try {
   expect(rated.balances.local.spent).toBe(0);
   await page.getByRole("button", { name: /Request lab/ }).click();
   await page.getByLabel("Execution mode").selectOption("simulation");
+  await calculator
+    .getByLabel("Monthly budget ($)", { exact: true })
+    .fill("3000");
+  await calculator
+    .getByLabel("Starting spend this month ($)", { exact: true })
+    .fill("100");
+  await page.getByRole("button", { name: "Run simulation" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Simulated response" }),
+  ).toBeVisible();
+  const savedRun = await page.request
+    .get(base + "/api/workspace")
+    .then((r) => r.json());
+  expect(savedRun.settings.monthlyBudget).toBe(3000);
+  expect(savedRun.settings.openingSpend).toBe(100);
+  expect(savedRun.history[0].preview.policy.budget.monthlyBudget).toBe(3000);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: /Request lab/ }).click();
   await page.screenshot({ path: "test-results/mobile.png", fullPage: true });
@@ -229,7 +315,7 @@ try {
   ).toBeTruthy();
   expect(errors).toEqual([]);
   console.log(
-    "Browser checks passed: desktop/mobile layout, preview, hard constraints, scenario routing, run/history, settings persistence, 40-prompt library, evaluation, export, invalid input, cross-origin guard, idempotency, mocked local execution and calibration ratings. Screenshots: test-results/",
+    "Browser checks passed: live budget edits, automatic policy updates, draft validation/persistence, save-on-run, desktop/mobile layout, preview, hard constraints, scenario routing, run/history, settings persistence, 40-prompt library, evaluation, export, invalid input, cross-origin guard, idempotency, mocked local execution and calibration ratings. Screenshots: test-results/",
   );
 } catch (error) {
   await page

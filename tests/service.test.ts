@@ -263,3 +263,21 @@ test("interrupted requests release reservations and become visible failures", ()
   assert.match(records[0].error!, /interrupted/);
   assert.equal(budgetContext(settings, request).reserved, 0);
 });
+
+test("draft budget previews calculate without persisting settings or spend", () => {
+  const saved = getSettings(),
+    request = input();
+  const draft = {
+    ...saved,
+    monthlyBudget: 2000,
+    openingSpend: 500,
+    simulatedDate: "2026-10-16",
+    scenario: "custom" as const,
+  };
+  const preview = previewRequest(request, draft);
+  assert.equal(preview.policy.budget.monthlyBudget, 2000);
+  assert.equal(preview.policy.budget.spent, 500);
+  assert.equal(preview.policy.budget.remaining, 1500);
+  assert.deepEqual(getSettings(), saved);
+  assert.equal(history().length, 0);
+});

@@ -2381,3 +2381,70 @@ tbody tr:last-child td {
 .selection-numbers strong {
   color: #4f7248;
 }
+
+.live-budget-panel {
+  margin-bottom: 20px;
+  border-color: #ccdcd0;
+}
+.live-budget-panel .panel-body {
+  padding-top: 14px;
+  padding-bottom: 16px;
+}
+.live-budget-fields {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 16px;
+}
+.live-budget-fields label {
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.live-budget-fields input {
+  width: 100%;
+  min-width: 0;
+  background: #fbfcf9;
+  font-size: 16px;
+  padding: 11px 12px;
+}
+.live-budget-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+}
+.budget-live-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #39735e;
+  font-size: 12px;
+}
+.budget-error {
+  color: #a43e2e;
+  font-size: 12px;
+}
+.budget-footnote {
+  margin: 12px 0 0;
+  line-height: 1.6;
+}
+@media (max-width: 1180px) {
+  .live-budget-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 480px) {
+  .live-budget-fields {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .live-budget-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

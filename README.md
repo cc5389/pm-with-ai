@@ -17,8 +17,8 @@ On the development machine used to build this prototype, a temporary Node runtim
 
 ## Class demonstration
 
-1. Open **Request lab**. Enter a prompt and select its task category, importance, minimum quality, and preferences.
-2. Choose **Preview policy**. Inspect forecast, spending allowance, normalized weights, eligible candidates, and explanations. Previewing never records spending.
+1. Open **Request lab**. In **Your budget**, enter monthly budget, starting spend, as-of date, and expected volume. Balances and the policy recalculate automatically as you type. Use **Save budget** to retain the numbers; running a request also saves them. Empty or invalid fields pause calculation.
+2. Enter a prompt and adjust its task category, importance, minimum quality, and preferences. Inspect the automatically updated forecast, allowance, weights, and model selection. **Preview routing** remains available to refresh manually. Neither automatic nor manual previews record spending.
 3. Compare the same request in the **10%, 50%, and 92%** scenarios. Dates change along with consumption so forecasts account for time left in the month.
 4. Choose **Run simulation**. The selected candidate and a clearly labeled placeholder are stored. This does not call a model or answer the prompt.
 5. Open **History** to inspect the recorded decision, or **Evaluation** to compare adaptive routing with strongest-only, cheapest-only, and fixed-policy baselines.
@@ -54,17 +54,17 @@ With only one configured local model, live inference validates the execution pat
 - **Execution** commits a simulation atomically or reserves before a local call. Request keys prevent duplicate execution; concurrent budget writes use SQLite transactions. Interrupted local requests are marked failed after 150 seconds.
 - Simulation ledgers are isolated by scenario and calendar month. Changing scenarios restores that scenario's accumulated history; it does not delete other scenarios. Editing an opening balance changes the starting balance, not prior request costs. Example opening spend is team-wide and is not assigned to individual users.
 
-| Endpoint                     | Purpose                                                                         |
-| ---------------------------- | ------------------------------------------------------------------------------- |
-| `GET /api/workspace`         | Settings, model profiles, history, defaults, local capability                   |
-| `POST /api/workspace`        | Validate and persist the full settings object                                   |
-| `POST /api/preview`          | `{input}` → policy and scored/excluded candidates                               |
-| `POST /api/run`              | `{input,idempotencyKey}` → persisted response or rejection                      |
-| `GET /api/history`           | Most recent 500 completed/rejected/failed records                               |
-| `GET /api/evaluate`          | 40 prompts with calibration/evaluation splits                                   |
-| `POST /api/evaluate`         | `{input}` → independent sequential simulation for four baselines                |
-| `POST /api/ratings`          | `{id,correctness,completeness,instructionFollowing}` → human-rated local record |
-| `GET /api/export?format=csv` | Full history CSV; omit format for workspace JSON                                |
+| Endpoint                     | Purpose                                                                                                             |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/workspace`         | Settings, model profiles, history, defaults, local capability                                                       |
+| `POST /api/workspace`        | Validate and persist the full settings object                                                                       |
+| `POST /api/preview`          | `{input, settings?}` → policy and scored/excluded candidates; optional validated settings preview an unsaved budget |
+| `POST /api/run`              | `{input,idempotencyKey}` → persisted response or rejection                                                          |
+| `GET /api/history`           | Most recent 500 completed/rejected/failed records                                                                   |
+| `GET /api/evaluate`          | 40 prompts with calibration/evaluation splits                                                                       |
+| `POST /api/evaluate`         | `{input}` → independent sequential simulation for four baselines                                                    |
+| `POST /api/ratings`          | `{id,correctness,completeness,instructionFollowing}` → human-rated local record                                     |
+| `GET /api/export?format=csv` | Full history CSV; omit format for workspace JSON                                                                    |
 
 The full typed contract is in `lib/types.ts`. Invalid input produces a readable 400 response. A reused request key with different input or an in-progress request returns 409. Requests with no eligible model produce a persisted `rejected` result rather than a provider call. Prompt text and responses are stored locally in SQLite and included in exports; do not publish the database or `.env.local`.
 
