@@ -1,4 +1,36 @@
 import { z } from "zod";
+import { DEFAULT_COMPANY_POLICY } from "./policy";
+export const companyPolicySchema = z
+  .object({
+    lowBalanceThreshold: z
+      .number()
+      .finite()
+      .min(0.05)
+      .max(0.5)
+      .default(DEFAULT_COMPANY_POLICY.lowBalanceThreshold),
+    costPressureStrength: z
+      .number()
+      .finite()
+      .min(0)
+      .max(5)
+      .default(DEFAULT_COMPANY_POLICY.costPressureStrength),
+    mediumMultiplier: z
+      .number()
+      .finite()
+      .min(1)
+      .max(3)
+      .default(DEFAULT_COMPANY_POLICY.mediumMultiplier),
+    highMultiplier: z
+      .number()
+      .finite()
+      .min(1)
+      .max(3)
+      .default(DEFAULT_COMPANY_POLICY.highMultiplier),
+  })
+  .refine((rules) => rules.highMultiplier >= rules.mediumMultiplier, {
+    message: "High importance must be at least Medium importance.",
+    path: ["highMultiplier"],
+  });
 const money = z.number().finite().min(0).max(1e9);
 const modelIds = z.array(z.string().min(1).max(200)).max(100);
 export const inputSchema = z.object({
@@ -27,6 +59,7 @@ export const inputSchema = z.object({
   mode: z.enum(["simulation", "local"]),
 });
 export const settingsSchema = z.object({
+  companyPolicy: companyPolicySchema.default({ ...DEFAULT_COMPANY_POLICY }),
   teamName: z.string().trim().min(1).max(100),
   monthlyBudget: money,
   monthlyRequests: z.number().int().min(1).max(10000000),

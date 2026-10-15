@@ -3,6 +3,7 @@ import { mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { createHash, randomUUID } from "node:crypto";
 import { DEFAULT_SETTINGS } from "./catalog";
+import { settingsSchema } from "./validation";
 import type {
   BudgetContext,
   Mode,
@@ -54,12 +55,14 @@ export function recoverInterrupted() {
 }
 export function getSettings(): Settings {
   recoverInterrupted();
-  return JSON.parse(
-    (
-      db().prepare("SELECT json FROM settings WHERE id=1").get() as {
-        json: string;
-      }
-    ).json,
+  return settingsSchema.parse(
+    JSON.parse(
+      (
+        db().prepare("SELECT json FROM settings WHERE id=1").get() as {
+          json: string;
+        }
+      ).json,
+    ),
   );
 }
 export function saveSettings(settings: Settings) {

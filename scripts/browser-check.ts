@@ -92,6 +92,133 @@ try {
   const calculator = page.getByRole("region", {
     name: "Live budget calculator",
   });
+  const companyPolicy = page.getByRole("region", {
+    name: "Company policy settings",
+  });
+  const calculation = page.getByRole("region", {
+    name: "Agent1 live calculation",
+  });
+  async function currentPolicy() {
+    const text = await page
+      .locator(".policy-panel pre")
+      .textContent()
+      .catch(() => null);
+    return text ? JSON.parse(text) : null;
+  }
+  await expect(
+    calculation.locator(".importance-comparison tbody tr"),
+  ).toHaveCount(3);
+  await page.getByLabel("Importance", { exact: true }).selectOption("high");
+  await expect
+    .poll(async () => (await currentPolicy())?.calculation.multiplier)
+    .toBe(2);
+  await expect(calculation.locator('tr[aria-current="true"]')).toContainText(
+    /high/i,
+  );
+  await page.getByLabel("Importance", { exact: true }).selectOption("low");
+  await expect
+    .poll(async () => (await currentPolicy())?.calculation.multiplier)
+    .toBe(1);
+  await page.getByLabel("Importance", { exact: true }).selectOption("medium");
+  await companyPolicy.getByLabel("High importance multiplier").fill("2.6");
+  await companyPolicy.getByLabel("Medium importance multiplier").fill("2.2");
+  await expect
+    .poll(async () => (await currentPolicy())?.calculation.multiplier)
+    .toBe(2.2);
+  await expect(
+    page.getByRole("button", { name: "Run simulation" }),
+  ).toBeDisabled();
+  await calculator
+    .getByLabel("Monthly budget ($)", { exact: true })
+    .fill("1500");
+  await expect
+    .poll(async () => (await currentPolicy())?.budget.monthlyBudget)
+    .toBe(1500);
+  await expect
+    .poll(async () => (await currentPolicy())?.calculation.multiplier)
+    .toBe(2.2);
+  await calculator.getByRole("button", { name: "Save budget" }).click();
+  await expect(
+    companyPolicy.getByLabel("Medium importance multiplier"),
+  ).toHaveValue("2.2");
+  await expect
+    .poll(async () => (await currentPolicy())?.calculation.multiplier)
+    .toBe(2.2);
+  const draftState = await page.request
+    .get(base + "/api/workspace")
+    .then((r) => r.json());
+  expect(draftState.settings.monthlyBudget).toBe(1500);
+  expect(draftState.settings.companyPolicy.mediumMultiplier).toBe(1.5);
+  expect(draftState.history).toHaveLength(0);
+  expect(draftState.balances.simulation.spent).toBe(
+    state0.balances.simulation.spent,
+  );
+  await calculator
+    .getByLabel("Monthly budget ($)", { exact: true })
+    .fill("1700");
+  await expect
+    .poll(async () => (await currentPolicy())?.budget.monthlyBudget)
+    .toBe(1700);
+  await companyPolicy
+    .getByRole("button", { name: "Save company policy" })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Run simulation" }),
+  ).toBeEnabled();
+  await page.reload();
+  await expect(
+    companyPolicy.getByLabel("Medium importance multiplier"),
+  ).toHaveValue("2.2");
+  await expect(
+    calculator.getByLabel("Monthly budget ($)", { exact: true }),
+  ).toHaveValue("1700");
+  await expect
+    .poll(async () => (await currentPolicy())?.calculation.multiplier)
+    .toBe(2.2);
+  await companyPolicy.getByLabel("Cost pressure strength").fill("");
+  await expect(companyPolicy).toContainText(
+    "Fill in every company policy setting",
+  );
+  await expect(calculation).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Run simulation" }),
+  ).toBeDisabled();
+  await companyPolicy.getByLabel("Cost pressure strength").fill("2");
+  await companyPolicy.getByLabel("High importance multiplier").fill("1");
+  await expect(companyPolicy).toContainText(
+    "High importance must be at least Medium",
+  );
+  await companyPolicy
+    .getByRole("button", { name: "Reset to defaults" })
+    .click();
+  await expect
+    .poll(async () => (await currentPolicy())?.calculation.multiplier)
+    .toBe(1.5);
+  const notReset = await page.request
+    .get(base + "/api/workspace")
+    .then((r) => r.json());
+  expect(notReset.settings.companyPolicy.mediumMultiplier).toBe(2.2);
+  await companyPolicy
+    .getByRole("button", { name: "Save company policy" })
+    .click();
+  await page.getByRole("button", { name: "Advanced preferences" }).click();
+  await page
+    .getByLabel("Maximum request cost ($)", { exact: true })
+    .fill("0.00001");
+  await expect(calculation).toContainText(
+    "The allowance is unchanged across importance levels",
+  );
+  await expect(calculation).toContainText("Explicit request cap");
+  const noSpend = await page.request
+    .get(base + "/api/workspace")
+    .then((r) => r.json());
+  expect(noSpend.history).toHaveLength(0);
+  expect(noSpend.balances.simulation.spent).toBe(
+    state0.balances.simulation.spent,
+  );
+  await page.request.post(base + "/api/workspace", { data: state0.settings });
+  await page.reload();
+  await expect(page.locator(".selection-banner")).toContainText("Atlas Pro");
   await calculator
     .getByLabel("Monthly budget ($)", { exact: true })
     .fill("2000");
@@ -194,11 +321,25 @@ try {
     before.balances.simulation.spent,
   );
   expect(after.history[0].actualCost).toBe(0);
+  await page.route("**/api/workspace", async (route) => {
+    if (route.request().method() !== "GET") return route.continue();
+    const response = await route.fetch();
+    const data = await response.json();
+    // Exercise a pre-v1.1 historical snapshot without rewriting the database.
+    data.history[0].preview.policy.version = "1.0";
+    delete data.history[0].preview.policy.calculation;
+    await route.fulfill({ response, json: data });
+  });
+  await page.reload();
   await page.getByRole("button", { name: /Run history/ }).click();
   await page.locator(".history-item").first().click();
   await expect(
     page.getByRole("heading", { name: "Simulated response" }),
   ).toBeVisible();
+  await expect(page.locator(".policy-panel")).toContainText(
+    "This historical v1.0 policy has no calculation trace",
+  );
+  await page.unroute("**/api/workspace");
   await page.getByRole("button", { name: "Workspace", exact: true }).click();
   await page
     .getByLabel("Workspace name", { exact: true })
@@ -315,7 +456,7 @@ try {
   ).toBeTruthy();
   expect(errors).toEqual([]);
   console.log(
-    "Browser checks passed: live budget edits, automatic policy updates, draft validation/persistence, save-on-run, desktop/mobile layout, preview, hard constraints, scenario routing, run/history, settings persistence, 40-prompt library, evaluation, export, invalid input, cross-origin guard, idempotency, mocked local execution and calibration ratings. Screenshots: test-results/",
+    "Browser checks passed: company policy drafts/save/reset, live formulas and importance comparisons, binding-limit explanations, legacy history, live budget edits, draft merging, save-on-run, desktop/mobile layout, hard constraints, scenario routing, settings persistence, 40-prompt library, evaluation, export, invalid input, cross-origin guard, idempotency, mocked local execution and calibration ratings. Screenshots: test-results/",
   );
 } catch (error) {
   await page

@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BudgetEditor } from "./budget-editor";
+import { CompanyPolicyEditor } from "./company-policy-editor";
+import { PolicyCalculationDetails } from "./policy-calculation";
+import { importanceMultiplier, resolveCompanyPolicy } from "@/lib/policy";
 import { suggestTask } from "@/lib/engine";
 import {
   Activity,
@@ -31,6 +34,7 @@ import {
 } from "lucide-react";
 import type {
   BenchmarkPrompt,
+  CompanyPolicyRules,
   EvaluationResult,
   Preview,
   RequestInput,
@@ -139,6 +143,10 @@ export default function Dashboard() {
   const [draftSettings, setDraftSettings] = useState<Settings | null>(null);
   const [budgetDraft, setBudgetDraft] = useState<Settings | null>(null);
   const [budgetDraftError, setBudgetDraftError] = useState<string | null>(null);
+  const [policyDraft, setPolicyDraft] = useState<CompanyPolicyRules | null>(
+    null,
+  );
+  const [policyDraftError, setPolicyDraftError] = useState<string | null>(null);
   const [calculating, setCalculating] = useState(false);
   const [calculationError, setCalculationError] = useState<string | null>(null);
   const [ratings, setRatings] = useState({
@@ -147,6 +155,17 @@ export default function Dashboard() {
     instructionFollowing: 4,
   });
   const activeOperation = useRef(false);
+  const policyDirty = !!policyDraftError || !!policyDraft;
+  const previewSettings = useMemo(() => {
+    const settings = budgetDraft ?? workspace?.settings;
+    return settings
+      ? {
+          ...settings,
+          companyPolicy:
+            policyDraft ?? resolveCompanyPolicy(workspace!.settings),
+        }
+      : undefined;
+  }, [budgetDraft, workspace, policyDraft]);
   useEffect(() => {
     let active = true;
     api<Workspace & { defaultInput: RequestInput }>("/api/workspace")
@@ -177,7 +196,7 @@ export default function Dashboard() {
     if (!workspace || !input || busy) return;
     setPreview(null);
     setCalculationError(null);
-    if (budgetDraftError || !input.prompt.trim()) {
+    if (budgetDraftError || policyDraftError || !input.prompt.trim()) {
       setCalculating(false);
       return;
     }
@@ -186,7 +205,7 @@ export default function Dashboard() {
     const timer = setTimeout(() => {
       api<Preview>("/api/preview", {
         input,
-        ...(budgetDraft ? { settings: budgetDraft } : {}),
+        ...(previewSettings ? { settings: previewSettings } : {}),
       })
         .then((data) => {
           if (active) setPreview(data);
@@ -202,7 +221,29 @@ export default function Dashboard() {
       active = false;
       clearTimeout(timer);
     };
-  }, [workspace, input, budgetDraft, budgetDraftError, busy]);
+  }, [
+    workspace,
+    input,
+    previewSettings,
+    budgetDraftError,
+    policyDraftError,
+    busy,
+  ]);
+  function changePolicy(
+    rules: CompanyPolicyRules | null,
+    message: string | null,
+  ) {
+    const saved = workspace ? resolveCompanyPolicy(workspace.settings) : null;
+    setPolicyDraft(
+      rules && JSON.stringify(rules) !== JSON.stringify(saved) ? rules : null,
+    );
+    setPolicyDraftError(message);
+    setPreview(null);
+    setResult(null);
+    setEvaluation(null);
+    setNotice(null);
+    setCalculationError(null);
+  }
   function changeBudget(settings: Settings | null, message: string | null) {
     setBudgetDraft(settings);
     setBudgetDraftError(message);
@@ -249,7 +290,11 @@ export default function Dashboard() {
       setBusy(null);
     }
   }
-  async function saveSettings(settings: Settings, scenario = false) {
+  async function saveSettings(
+    settings: Settings,
+    scenario = false,
+    savePolicy = false,
+  ) {
     await operate("settings", async () => {
       setPreview(null);
       setResult(null);
@@ -259,6 +304,10 @@ export default function Dashboard() {
       setDraftSettings(data.settings);
       setBudgetDraft(null);
       setBudgetDraftError(null);
+      if (savePolicy) {
+        setPolicyDraft(null);
+        setPolicyDraftError(null);
+      }
       setNotice(
         scenario
           ? "Budget scenario updated. Calculations refresh automatically."
@@ -299,7 +348,7 @@ export default function Dashboard() {
     { id: "workspace", label: "Workspace", icon: Settings2 },
   ];
   const balance = workspace && input ? workspace.balances[input.mode] : null;
-  const effectiveSettings = budgetDraft ?? workspace?.settings;
+  const effectiveSettings = previewSettings ?? workspace?.settings;
   const spent = budgetDraft
     ? (preview?.policy.budget.spent ?? budgetDraft.openingSpend)
     : (balance?.spent ?? 0);
@@ -471,21 +520,38 @@ export default function Dashboard() {
                   </a>
                 )}
               </div>
-              {input.mode === "simulation" && (
-                <div hidden={view !== "lab"}>
-                  <BudgetEditor
-                    settings={workspace.settings}
-                    onChange={changeBudget}
-                    onSave={() => {
-                      if (budgetDraft) void saveSettings(budgetDraft);
-                    }}
-                    dirty={!!budgetDraft}
-                    disabled={!!busy}
-                    calculating={calculating}
-                    error={budgetDraftError || calculationError}
-                  />
-                </div>
-              )}
+              <div
+                className={`company-controls ${input.mode === "local" ? "local-controls" : ""}`}
+                hidden={view !== "lab"}
+              >
+                {input.mode === "simulation" && (
+                  <div>
+                    <BudgetEditor
+                      settings={workspace.settings}
+                      onChange={changeBudget}
+                      onSave={() => {
+                        if (budgetDraft) void saveSettings(budgetDraft);
+                      }}
+                      dirty={!!budgetDraft}
+                      disabled={!!busy}
+                      calculating={calculating}
+                      error={budgetDraftError || calculationError}
+                    />
+                  </div>
+                )}
+                <CompanyPolicyEditor
+                  rules={resolveCompanyPolicy(workspace.settings)}
+                  onChange={changePolicy}
+                  onSave={() => {
+                    if (previewSettings && policyDraft && !budgetDraftError)
+                      void saveSettings(previewSettings, false, true);
+                  }}
+                  dirty={policyDirty}
+                  disabled={!!busy}
+                  saveDisabled={!!budgetDraftError}
+                  error={policyDraftError}
+                />
+              </div>
               <section className="stats-grid" aria-label="Budget overview">
                 <div className="stat-card">
                   <div className="stat-label">
@@ -651,6 +717,8 @@ export default function Dashboard() {
                             <label>
                               Importance
                               <select
+                                aria-label="Importance"
+                                aria-describedby="importance-help"
                                 value={input.importance}
                                 onChange={(e) =>
                                   edit({
@@ -680,6 +748,15 @@ export default function Dashboard() {
                               </select>
                             </label>
                           </div>
+                          <p id="importance-help" className="importance-help">
+                            {importanceMultiplier(
+                              input.importance,
+                              resolveCompanyPolicy(effectiveSettings!),
+                            )}
+                            × allowance and quality preference. Low: routine
+                            ideas; Medium: regular updates; High: urgent
+                            customer issues. Quality floor stays fixed.
+                          </p>
                           <label className="prompt-label">
                             Your prompt <span>Be as specific as you like</span>
                             <textarea
@@ -991,6 +1068,7 @@ export default function Dashboard() {
                             disabled={
                               !!busy ||
                               !!budgetDraftError ||
+                              !!policyDraftError ||
                               !input.prompt.trim()
                             }
                             onClick={() =>
@@ -999,8 +1077,8 @@ export default function Dashboard() {
                                 setPreview(
                                   await api<Preview>("/api/preview", {
                                     input,
-                                    ...(budgetDraft
-                                      ? { settings: budgetDraft }
+                                    ...(previewSettings
+                                      ? { settings: previewSettings }
                                       : {}),
                                   }),
                                 );
@@ -1021,6 +1099,7 @@ export default function Dashboard() {
                             disabled={
                               !!busy ||
                               !!budgetDraftError ||
+                              policyDirty ||
                               !input.prompt.trim()
                             }
                             onClick={() =>
@@ -1054,9 +1133,12 @@ export default function Dashboard() {
                         <p className="action-note">
                           {calculating
                             ? "Updating policy automatically…"
-                            : calculationError
-                              ? calculationError
-                              : "Policy updates as you type. Running saves your budget and records a response."}
+                            : policyDirty
+                              ? (policyDraftError ??
+                                "Save company policy before running this request. Previews use your draft rules.")
+                              : calculationError
+                                ? calculationError
+                                : "Policy updates as you type. Running saves your budget and records a response."}
                         </p>
                       </div>
                     </section>
@@ -1281,14 +1363,19 @@ export default function Dashboard() {
                     <button
                       className="button primary"
                       disabled={
-                        !!busy || !!budgetDraftError || input.mode === "local"
+                        !!busy ||
+                        !!budgetDraftError ||
+                        !!policyDraftError ||
+                        input.mode === "local"
                       }
                       onClick={() =>
                         operate("evaluate", async () =>
                           setEvaluation(
                             await api<EvaluationResult>("/api/evaluate", {
                               input,
-                              ...(budgetDraft ? { settings: budgetDraft } : {}),
+                              ...(previewSettings
+                                ? { settings: previewSettings }
+                                : {}),
                             }),
                           ),
                         )
@@ -1736,7 +1823,7 @@ function PolicyInspector({
                 <div key={key}>
                   <span className={`legend-dot weight-${key}`} />
                   <span className="capitalize">{key}</span>
-                  <strong>{pct(policy.weights[key])}</strong>
+                  <strong>{(policy.weights[key] * 100).toFixed(1)}%</strong>
                 </div>
               ))}
             </div>
@@ -1785,6 +1872,7 @@ function PolicyInspector({
                 </div>
               )}
             </div>
+            <PolicyCalculationDetails policy={policy} />
             <div className="reasoning">
               <h3>
                 <Sparkles size={14} />

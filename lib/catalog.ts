@@ -1,4 +1,5 @@
 import type { ModelProfile, RequestInput, Settings } from "./types";
+import { DEFAULT_COMPANY_POLICY } from "./policy";
 
 export const SCENARIOS = {
   early: {
@@ -83,6 +84,7 @@ export const MODELS: ModelProfile[] = [
 ];
 
 export const DEFAULT_SETTINGS: Settings = {
+  companyPolicy: { ...DEFAULT_COMPANY_POLICY },
   teamName: "Studio team",
   monthlyBudget: 1000,
   monthlyRequests: 10000,

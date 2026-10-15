@@ -2,6 +2,12 @@ export type Task = "coding" | "analysis" | "writing" | "qa";
 export type Importance = "low" | "medium" | "high";
 export type Mode = "simulation" | "local";
 export type Weights = { quality: number; cost: number; latency: number };
+export type CompanyPolicyRules = {
+  lowBalanceThreshold: number;
+  costPressureStrength: number;
+  mediumMultiplier: number;
+  highMultiplier: number;
+};
 export type User = {
   id: string;
   name: string;
@@ -9,6 +15,7 @@ export type User = {
   budget: number | null;
 };
 export type Settings = {
+  companyPolicy?: CompanyPolicyRules;
   teamName: string;
   monthlyBudget: number;
   monthlyRequests: number;
@@ -65,7 +72,8 @@ export type BudgetSnapshot = {
   userRemaining: number | null;
 };
 export type Policy = {
-  version: "1.0";
+  version: "1.0" | "1.1";
+  calculation?: PolicyCalculation;
   task: Task;
   importance: Importance;
   weights: Weights;
@@ -77,6 +85,32 @@ export type Policy = {
   budget: BudgetSnapshot;
   reasons: string[];
   assumptions: string[];
+};
+export type ImportanceComparison = {
+  importance: Importance;
+  multiplier: number;
+  allowance: number;
+  weights: Weights;
+  bindingLimits: string[];
+};
+export type PolicyCalculation = {
+  rules: CompanyPolicyRules;
+  multiplier: number;
+  baseWeights: Weights;
+  adjustedWeights: Weights;
+  daysLeft: number;
+  completedRequests: number;
+  coldStart: boolean;
+  configuredRemaining: number;
+  observedRemaining: number | null;
+  projectionPressure: number;
+  lowBalancePressure: number;
+  baseAllowance: number;
+  teamAllowance: number;
+  userAllowance: number | null;
+  allowanceLimits: { name: string; amount: number }[];
+  bindingLimits: string[];
+  importanceComparison: ImportanceComparison[];
 };
 export type Candidate = {
   model: ModelProfile;

@@ -18,7 +18,7 @@ On the development machine used to build this prototype, a temporary Node runtim
 ## Class demonstration
 
 1. Open **Request lab**. In **Your budget**, enter monthly budget, starting spend, as-of date, and expected volume. Balances and the policy recalculate automatically as you type. Use **Save budget** to retain the numbers; running a request also saves them. Empty or invalid fields pause calculation.
-2. Enter a prompt and adjust its task category, importance, minimum quality, and preferences. Inspect the automatically updated forecast, allowance, weights, and model selection. **Preview routing** remains available to refresh manually. Neither automatic nor manual previews record spending.
+2. Enter a prompt and adjust its task category, importance, minimum quality, and preferences. Inspect the automatically updated forecast, allowance, weights, and model selection. **Company policy** lets you tune the low-balance threshold, cost pressure strength, and importance multipliers. The policy inspector shows each calculation, every binding spending limit, and a Low/Medium/High comparison. Save company policy before running with changed rules; Reset to defaults only changes the draft. **Preview routing** remains available to refresh manually. Neither automatic nor manual previews record spending.
 3. Compare the same request in the **10%, 50%, and 92%** scenarios. Dates change along with consumption so forecasts account for time left in the month.
 4. Choose **Run simulation**. The selected candidate and a clearly labeled placeholder are stored. This does not call a model or answer the prompt.
 5. Open **History** to inspect the recorded decision, or **Evaluation** to compare adaptive routing with strongest-only, cheapest-only, and fixed-policy baselines.
@@ -49,7 +49,7 @@ With only one configured local model, live inference validates the execution pat
 
 ## Architecture and API
 
-- **Agent 1** derives policy from user input and the current ledger: quality floor, weights, allowance, restrictions, and reasons.
+- **Agent 1** uses a pure, independently testable calculator (`lib/policy.ts`) to derive quality floor, weights, allowance, and calculation explanations from request input, company rules, and budget context. New version 1.1 snapshots preserve the effective rules; older history remains readable. No LiteLLM integration is required for this layer.
 - **Agent 2** filters and ranks candidates. Hard constraints are never silently weakened. A preferred model only breaks an otherwise equal score.
 - **Execution** commits a simulation atomically or reserves before a local call. Request keys prevent duplicate execution; concurrent budget writes use SQLite transactions. Interrupted local requests are marked failed after 150 seconds.
 - Simulation ledgers are isolated by scenario and calendar month. Changing scenarios restores that scenario's accumulated history; it does not delete other scenarios. Editing an opening balance changes the starting balance, not prior request costs. Example opening spend is team-wide and is not assigned to individual users.
