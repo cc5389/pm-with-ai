@@ -47,6 +47,10 @@ This calls the running local app, which calls your local model. It uses your mac
 
 With only one configured local model, live inference validates the execution path, not comparative multi-model quality. Hosted free models and trained third-party routers are extension points, not dependencies included in this version. See [Agent 2 readiness](docs/AGENT2.md).
 
+## Optional local LiteLLM gateway
+
+Real LiteLLM calls stay off until you opt in. Simulation, mock evaluation, and local Ollama remain available. Orchestra still selects a model in `lib/engine.ts` and sends that configured alias to the gateway. The Stage A baseline instead sends `smart-router`, and the gateway chooses a model itself. Windows setup for a private local gateway is in [the LiteLLM guide](docs/LITELLM-WINDOWS.md). Keep the app on this computer. Do not start a paid run until you intend to pay for the requests named by `EVAL_LIMIT`.
+
 ## Architecture and API
 
 - **Agent 1** uses a pure, independently testable calculator (`lib/policy.ts`) to derive quality floor, weights, allowance, and calculation explanations from request input, company rules, and budget context. New version 1.1 snapshots preserve the effective rules; older history remains readable. No LiteLLM integration is required for this layer.

@@ -7,3 +7,10 @@ data/
 playwright-report/
 test-results/
 .venv/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+eval/results/**/*.tmp
+eval/results/stage-b/real-*
+eval/results/stage-c/real-*

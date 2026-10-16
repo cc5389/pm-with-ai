@@ -37,6 +37,16 @@ export interface RouterResult {
   outputTokens: number | null;
   costUsd: number | null;
 
+  // Present on Stage B/C LiteLLM runs. Stage A results omit them.
+  requestedModel?: string | null;
+  returnedModel?: string | null;
+  costBasis?: "actual" | "estimated" | "none" | "unknown" | "unresolved";
+  outcome?: "completed" | "rejected" | "failed";
+  reservedCostUsd?: number | null;
+  attempts?: number;
+  providerContacted?: boolean;
+  outputTokenCap?: number | null;
+
   // Useful for diagnosing failures
   error: string | null;
 }

@@ -24,10 +24,11 @@ import type {
     const selectedModel = result.generation.selectedModel;
     const cost = result.generation.costUsd;
   
-    // Baseline has no policy-specific allowed-model list.
+    // A rejection never called a model, so it is not a model-compliance failure.
     let allowedModelCompliant: boolean | null = null;
   
-    if (result.policy?.allowedModels !== null &&
+    if (result.generation.outcome !== "rejected" &&
+        result.policy?.allowedModels !== null &&
         result.policy?.allowedModels !== undefined) {
       allowedModelCompliant =
         selectedModel !== null &&
@@ -43,7 +44,7 @@ import type {
       request.organizationState.spentUsd;
   
     const budgetFeasible =
-      result.generation.success && cost !== null
+      cost !== null && Number.isFinite(cost)
         ? cost <= remainingBudget + 1e-9
         : null;
   
