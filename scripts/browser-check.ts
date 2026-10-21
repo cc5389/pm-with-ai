@@ -98,6 +98,12 @@ try {
   const calculation = page.getByRole("region", {
     name: "Agent1 live calculation",
   });
+  /** The calculation lives under Evaluation; the request is edited in Request lab. */
+  async function inEvaluation(check: () => Promise<void>) {
+    await page.getByRole("button", { name: "Evaluation", exact: true }).click();
+    await check();
+    await page.getByRole("button", { name: /Request lab/ }).click();
+  }
   async function currentPolicy() {
     const text = await page
       .locator(".policy-panel pre")
@@ -105,15 +111,22 @@ try {
       .catch(() => null);
     return text ? JSON.parse(text) : null;
   }
-  await expect(
-    calculation.locator(".importance-comparison tbody tr"),
-  ).toHaveCount(3);
+  await expect(page.locator(".policy-panel")).not.toContainText(
+    "How this policy is calculated",
+  );
+  await inEvaluation(() =>
+    expect(calculation.locator(".importance-comparison tbody tr")).toHaveCount(
+      3,
+    ),
+  );
   await page.getByLabel("Importance", { exact: true }).selectOption("high");
   await expect
     .poll(async () => (await currentPolicy())?.calculation.multiplier)
     .toBe(2);
-  await expect(calculation.locator('tr[aria-current="true"]')).toContainText(
-    /high/i,
+  await inEvaluation(() =>
+    expect(calculation.locator('tr[aria-current="true"]')).toContainText(
+      /high/i,
+    ),
   );
   await page.getByLabel("Importance", { exact: true }).selectOption("low");
   await expect
@@ -179,7 +192,7 @@ try {
   await expect(companyPolicy).toContainText(
     "Fill in every company policy setting",
   );
-  await expect(calculation).toHaveCount(0);
+  await inEvaluation(() => expect(calculation).toHaveCount(0));
   await expect(
     page.getByRole("button", { name: "Run simulation" }),
   ).toBeDisabled();
@@ -205,10 +218,12 @@ try {
   await page
     .getByLabel("Maximum request cost ($)", { exact: true })
     .fill("0.00001");
-  await expect(calculation).toContainText(
-    "The allowance is unchanged across importance levels",
-  );
-  await expect(calculation).toContainText("Explicit request cap");
+  await inEvaluation(async () => {
+    await expect(calculation).toContainText(
+      "The allowance is unchanged across importance levels",
+    );
+    await expect(calculation).toContainText("Explicit request cap");
+  });
   const noSpend = await page.request
     .get(base + "/api/workspace")
     .then((r) => r.json());

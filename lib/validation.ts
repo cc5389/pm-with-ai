@@ -56,7 +56,7 @@ export const inputSchema = z.object({
   preferredModels: modelIds,
   blockedModels: modelIds,
   localOnly: z.boolean(),
-  mode: z.enum(["simulation", "local"]),
+  mode: z.enum(["simulation", "local", "gateway"]),
 });
 export const settingsSchema = z.object({
   companyPolicy: companyPolicySchema.default({ ...DEFAULT_COMPANY_POLICY }),

@@ -14,10 +14,7 @@ interface SavedResults {
 async function main() {
   const mode = executionMode();
   const input = resultsPath("stage-b", mode);
-  const output =
-    mode === "real"
-      ? "eval/results/stage-b/real-constraints.json"
-      : "eval/results/stage-b/mock-constraints.json";
+  const output = resultsPath("stage-b", mode, undefined, "constraints");
   const raw = await readFile(input, "utf8");
   const parsed: SavedResults = JSON.parse(raw);
 

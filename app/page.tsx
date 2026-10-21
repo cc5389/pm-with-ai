@@ -435,7 +435,11 @@ export default function Dashboard() {
           <div className="topbar-right">
             <Badge tone="sage">
               <span className="status-dot" />
-              {input?.mode === "local" ? "Local execution" : "Simulation mode"}
+              {input?.mode === "local"
+                ? "Local execution"
+                : input?.mode === "gateway"
+                  ? "Gateway execution"
+                  : "Simulation mode"}
             </Badge>
             <span className="topbar-divider" />
             <button
@@ -524,7 +528,7 @@ export default function Dashboard() {
                 className={`company-controls ${input.mode === "local" ? "local-controls" : ""}`}
                 hidden={view !== "lab"}
               >
-                {input.mode === "simulation" && (
+                {input.mode !== "local" && (
                   <div>
                     <BudgetEditor
                       settings={workspace.settings}
@@ -582,7 +586,9 @@ export default function Dashboard() {
                   <div className="stat-label">
                     {input.mode === "simulation"
                       ? "Simulated spend"
-                      : "Actual API spend"}{" "}
+                      : input.mode === "gateway"
+                        ? "Gateway spend"
+                        : "Actual API spend"}{" "}
                     <span className="stat-icon">
                       <Activity size={17} />
                     </span>
@@ -597,7 +603,9 @@ export default function Dashboard() {
                   <div className="stat-footnote">
                     {input.mode === "simulation"
                       ? "Opening balance + this scenario’s runs"
-                      : "Actual charges · current UTC month"}
+                      : input.mode === "gateway"
+                        ? "Opening balance + this scenario’s gateway runs"
+                        : "Actual charges · current UTC month"}
                     {balance && balance.reserved > 0
                       ? ` · ${money(balance.reserved, 5)} reserved`
                       : ""}
@@ -627,7 +635,7 @@ export default function Dashboard() {
 
               {view === "lab" && (
                 <>
-                  {input.mode === "simulation" && (
+                  {input.mode !== "local" && (
                     <div className="scenario-bar">
                       <div>
                         <SlidersHorizontal size={17} />
@@ -775,7 +783,9 @@ export default function Dashboard() {
                               <ShieldCheck size={12} />
                               {input.mode === "simulation"
                                 ? "Simulated · no model API call"
-                                : "Sent to your local model"}
+                                : input.mode === "gateway"
+                                  ? "Sent to the selected gateway model"
+                                  : "Sent to your local model"}
                             </span>
                           </div>
                           <div className="example-row">
@@ -905,6 +915,15 @@ export default function Dashboard() {
                                   {!workspace.localAvailable
                                     ? " · unavailable"
                                     : ` · ${workspace.localModel}`}
+                                </option>
+                                <option
+                                  value="gateway"
+                                  disabled={!workspace.gatewayAvailable}
+                                >
+                                  Gateway models
+                                  {!workspace.gatewayAvailable
+                                    ? " · unavailable"
+                                    : ` · ${workspace.gatewayPool}`}
                                 </option>
                               </select>
                             </label>
@@ -1124,7 +1143,9 @@ export default function Dashboard() {
                                 <Play size={14} fill="currentColor" />
                                 {input.mode === "local"
                                   ? "Run locally"
-                                  : "Run simulation"}
+                                  : input.mode === "gateway"
+                                    ? "Run on gateway"
+                                    : "Run simulation"}
                                 <ArrowRight size={15} />
                               </>
                             )}
@@ -1147,6 +1168,7 @@ export default function Dashboard() {
                       loading={
                         busy === "init" || busy === "preview" || calculating
                       }
+                      showCalculation={false}
                     />
                   </div>
                   <CandidatePanel preview={preview} />
@@ -1236,7 +1258,9 @@ export default function Dashboard() {
                               <small>
                                 {run.input.mode === "simulation"
                                   ? "Simulated"
-                                  : "Local"}{" "}
+                                  : run.input.mode === "gateway"
+                                    ? "Gateway"
+                                    : "Local"}{" "}
                                 ·{" "}
                                 {money(run.simulatedCost || run.actualCost, 5)}
                               </small>
@@ -1255,7 +1279,7 @@ export default function Dashboard() {
                         loading={false}
                       />
                       <CandidatePanel preview={selectedHistory.preview} />
-                      {selectedHistory.input.mode === "local" &&
+                      {selectedHistory.input.mode !== "simulation" &&
                         selectedHistory.status === "completed" && (
                           <section className="panel">
                             <div className="panel-heading">
@@ -1267,7 +1291,7 @@ export default function Dashboard() {
                             </div>
                             <div className="panel-body">
                               <p className="helper">
-                                Rate this actual local response from 1 (poor) to
+                                Rate this actual model response from 1 (poor) to
                                 5 (excellent). Ratings on benchmark calibration
                                 prompts update routing estimates. Ratings on
                                 other prompts are saved for evaluation only.
@@ -1347,11 +1371,11 @@ export default function Dashboard() {
                         budget. Every strategy receives the same illustrative
                         workload.
                       </p>
-                      {input.mode === "local" && (
+                      {input.mode !== "simulation" && (
                         <p className="inline-warning">
                           This comparison uses simulated model profiles. Switch
                           execution mode to Simulation in Request lab to run it.
-                          Real local responses remain available in Run history.
+                          Real model responses remain available in Run history.
                         </p>
                       )}
                       <div className="inline-tags">
@@ -1366,7 +1390,7 @@ export default function Dashboard() {
                         !!busy ||
                         !!budgetDraftError ||
                         !!policyDraftError ||
-                        input.mode === "local"
+                        input.mode !== "simulation"
                       }
                       onClick={() =>
                         operate("evaluate", async () =>
@@ -1402,6 +1426,28 @@ export default function Dashboard() {
                       />
                     </section>
                   )}
+                  <section className="panel calculation-panel">
+                    <div className="panel-heading">
+                      <div>
+                        <span className="section-icon sage-icon">
+                          <Layers3 size={18} />
+                        </span>
+                        <h2>Policy calculation</h2>
+                      </div>
+                      <Badge tone="sage">AGENT 01</Badge>
+                    </div>
+                    <div className="panel-body">
+                      {preview?.policy ? (
+                        <PolicyCalculationDetails policy={preview.policy} />
+                      ) : (
+                        <p className="helper">
+                          {calculating
+                            ? "Updating policy automatically…"
+                            : "Compose a request in Request lab to see how its policy is calculated."}
+                        </p>
+                      )}
+                    </div>
+                  </section>
                   <section className="panel benchmark-panel">
                     <div className="panel-heading">
                       <div>
@@ -1758,9 +1804,12 @@ export default function Dashboard() {
 function PolicyInspector({
   preview,
   loading,
+  showCalculation = true,
 }: {
   preview: Preview | null;
   loading: boolean;
+  /** The Request lab shows the calculation under Evaluation instead. */
+  showCalculation?: boolean;
 }) {
   const policy = preview?.policy;
   return (
@@ -1872,7 +1921,7 @@ function PolicyInspector({
                 </div>
               )}
             </div>
-            <PolicyCalculationDetails policy={policy} />
+            {showCalculation && <PolicyCalculationDetails policy={policy} />}
             <div className="reasoning">
               <h3>
                 <Sparkles size={14} />
@@ -1960,7 +2009,7 @@ function CandidatePanel({ preview }: { preview: Preview | null }) {
               </strong>
               <p>
                 {preview.selected
-                  ? `${preview.selected.model.provider} · ${preview.selected.model.local ? "Local model" : "Simulated execution"} · Highest eligible weighted score`
+                  ? `${preview.selected.model.provider} · ${preview.selected.model.gateway ? "Gateway model" : preview.selected.model.local ? "Local model" : "Simulated execution"} · Highest eligible weighted score`
                   : "Review the candidate reasons below, then adjust the constraints or budget."}
               </p>
             </div>
@@ -2118,7 +2167,9 @@ function ResponsePanel({ run }: { run: RunRecord }) {
           <h2>
             {run.input.mode === "simulation"
               ? "Simulated response"
-              : "Local model response"}
+              : run.input.mode === "gateway"
+                ? "Gateway model response"
+                : "Local model response"}
           </h2>
         </div>
         <Badge tone={run.status === "completed" ? "sage" : "amber"}>
@@ -2129,9 +2180,15 @@ function ResponsePanel({ run }: { run: RunRecord }) {
         <div className="response-meta">
           <span>{run.preview.selected?.model.name || "No model selected"}</span>
           <span>
-            Actual charges{" "}
+            {run.gateway?.shadowPriced ? "Shadow cost" : "Actual charges"}{" "}
             <strong>{money(run.actualCost, run.actualCost ? 5 : 2)}</strong>
           </span>
+          {run.gateway && (
+            <span>
+              Returned model{" "}
+              <strong>{run.gateway.returnedModel ?? "not reported"}</strong>
+            </span>
+          )}
           <span>
             Simulated cost <strong>{money(run.simulatedCost, 5)}</strong>
           </span>
@@ -2160,7 +2217,7 @@ function ResponsePanel({ run }: { run: RunRecord }) {
           <span>
             {run.rating
               ? `Human quality: ${Math.round(run.rating.score * 100)}/100`
-              : run.input.mode === "local"
+              : run.input.mode !== "simulation"
                 ? "Quality: awaiting human rating"
                 : "Quality: illustrative catalog estimate"}
           </span>

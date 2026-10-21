@@ -6,13 +6,17 @@ import type {
   EvaluationRequest,
   EvaluationSystem,
 } from "../shared/pipeline";
+import { resultsPath } from "../shared/run-mode";
 import { buildStageBScenarios } from "./scenarios";
 
-const MODE = process.env.EVAL_MODE === "real" ? "real" : "mock";
+const MODE =
+  process.env.EVAL_MODE === "real" || process.env.EVAL_EXECUTION === "real"
+    ? "real"
+    : "mock";
 
 const OUTPUT_DIR = "eval/results/stage-b";
-const INPUT = `${OUTPUT_DIR}/${MODE}-results.json`;
-const OUTPUT = `${OUTPUT_DIR}/${MODE}-judgments.json`;
+const INPUT = resultsPath("stage-b", MODE);
+const OUTPUT = resultsPath("stage-b", MODE, undefined, "judgments");
 
 interface StageBJudgment extends QualityJudgment {
   scenarioId: string;

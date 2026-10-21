@@ -26,9 +26,11 @@ export function buildPreview(
     (inputTokens * positive(m.inputPrice) +
       outputTokens * positive(m.outputPrice)) /
     1e6;
-  const inMode = models.filter((m) =>
-    input.mode === "local" ? m.local : !m.local,
-  );
+  const servesMode = (m: ModelProfile) =>
+    input.mode === "gateway"
+      ? !!m.gateway
+      : !m.gateway && (input.mode === "local" ? m.local : !m.local);
+  const inMode = models.filter(servesMode);
   const seededAverageCost = inMode.length
     ? inMode.reduce((sum, m) => sum + costFor(m), 0) / inMode.length
     : 0;
@@ -56,9 +58,13 @@ export function buildPreview(
       reasons.push("The user's monthly budget is exhausted or reserved.");
     if (blocked.has(model.id))
       reasons.push("Blocked by team or request settings.");
-    if (input.mode === "local" && !model.local)
+    if (input.mode === "gateway" && !model.gateway)
+      reasons.push("Gateway execution requires a model configured in LiteLLM.");
+    else if (input.mode !== "gateway" && model.gateway)
+      reasons.push("This model runs only through the LiteLLM gateway.");
+    else if (input.mode === "local" && !model.local)
       reasons.push("Local execution requires a local model.");
-    if (input.mode === "simulation" && model.local)
+    else if (input.mode === "simulation" && model.local)
       reasons.push("Simulation uses illustrative cloud profiles.");
     if (input.localOnly && !model.local)
       reasons.push("Privacy setting requires a local model.");
@@ -123,7 +129,11 @@ export function buildPreview(
       assumptions: [
         ...policy.assumptions,
         "Input tokens are estimated as one token per four characters. Output uses the requested token allowance.",
-        "Cloud prices, quality, and latency are fictional illustrative profiles, not measured vendor performance.",
+        ...(input.mode === "gateway"
+          ? []
+          : [
+              "Cloud prices, quality, and latency are fictional illustrative profiles, not measured vendor performance.",
+            ]),
         ...(policy.calculation.coldStart
           ? [
               "Cold-start projection uses configured monthly volume and the mean estimated cost of profiles in the execution mode.",

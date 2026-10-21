@@ -13,8 +13,8 @@ import {
   EVAL_OUTPUT_TOKEN_CAP,
   EVAL_SIMULATED_DATE,
   EVAL_USER_ID,
-  LITELLM_MODELS,
   SMART_ROUTER_ALIAS,
+  activePool,
   conservativePoolCost,
   describeReturnedModel,
   estimateInputTokens,
@@ -87,7 +87,7 @@ function evaluationInput(request: EvaluationRequest): RequestInput {
     preferredModels: [],
     blockedModels: [],
     localOnly: false,
-    mode: "simulation",
+    mode: "gateway",
   };
 }
 
@@ -120,7 +120,9 @@ export function planOrchestra(request: EvaluationRequest): ExecutionPlan {
       allowedModels: preview.policy.allowedModels,
     };
   }
-  const priced = LITELLM_MODELS.find((model) => model.alias === selected.model.id);
+  const priced = activePool().models.find(
+    (model) => model.alias === selected.model.id,
+  );
   if (!priced) {
     return {
       kind: "reject",
@@ -249,7 +251,7 @@ function generationFromCall(
     requestId: request.id,
     success,
     selectedModel: described.selectedModel,
-    provider: call.returnedModel ? "openai" : null,
+    provider: call.returnedModel ? activePool().id : null,
     response: call.response,
     latencyMs: call.latencyMs,
     inputTokens: call.inputTokens,

@@ -1,6 +1,6 @@
 import { allowProviderRetry } from "./accounting";
 import { calculateGenerationCost } from "./pricing";
-import { pricingModelId } from "./model-pool";
+import { activePool, pricingModelId } from "./model-pool";
 
 export const LITELLM_TIMEOUT_MS = 120_000;
 
@@ -133,8 +133,11 @@ function readCost(
   pricedModel: string | null,
   inputTokens: number | null,
   outputTokens: number | null,
+  trustHeader: boolean,
 ): { costUsd: number | null; costBasis: "actual" | "estimated" | "unknown" } {
-  const header = response.headers.get("x-litellm-response-cost");
+  const header = trustHeader
+    ? response.headers.get("x-litellm-response-cost")
+    : null;
   if (header !== null && header.trim() !== "") {
     const value = Number(header);
     if (Number.isFinite(value) && value >= 0) {
@@ -241,6 +244,7 @@ export async function completeLiteLLM(options: {
         priced,
         payload.inputTokens,
         payload.outputTokens,
+        !activePool().shadowPriced,
       );
       const success = response.ok && typeof payload.content === "string";
       const error = success

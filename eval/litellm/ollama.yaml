@@ -1,0 +1,65 @@
+# Local Ollama pool for the demo and Stage B/C. Matches MODEL_POOLS.ollama in
+# eval/shared/model-pool.ts. Nothing here is billed: the costs below are shadow
+# prices that borrow the gpt-4.1 price of the same tier, so budget pressure in
+# Stage B/C stays comparable. Orchestra itself charges from its price table.
+#
+#   ollama pull gemma3:1b && ollama pull gemma3:4b && ollama pull gemma3:12b
+#   litellm --config eval/litellm/ollama.yaml --host 127.0.0.1 --port 4000
+
+model_list:
+  - model_name: gemma3-12b
+    litellm_params:
+      model: ollama_chat/gemma3:12b
+      api_base: http://127.0.0.1:11434
+      input_cost_per_token: 0.000002
+      output_cost_per_token: 0.000008
+    model_info:
+      quality_tier: 3
+      adaptive_router_preferences:
+        quality_tier: 3
+        strengths:
+          - code_generation
+          - analytical_reasoning
+          - writing
+
+  - model_name: gemma3-4b
+    litellm_params:
+      model: ollama_chat/gemma3:4b
+      api_base: http://127.0.0.1:11434
+      input_cost_per_token: 0.0000004
+      output_cost_per_token: 0.0000016
+    model_info:
+      quality_tier: 2
+      adaptive_router_preferences:
+        quality_tier: 2
+        strengths:
+          - general
+          - factual_lookup
+          - writing
+
+  - model_name: gemma3-1b
+    litellm_params:
+      model: ollama_chat/gemma3:1b
+      api_base: http://127.0.0.1:11434
+      input_cost_per_token: 0.0000001
+      output_cost_per_token: 0.0000004
+    model_info:
+      quality_tier: 1
+      adaptive_router_preferences:
+        quality_tier: 1
+        strengths:
+          - general
+          - factual_lookup
+
+  - model_name: smart-router
+    litellm_params:
+      model: auto_router/adaptive_router
+      adaptive_router_default_model: gemma3-4b
+      adaptive_router_config:
+        available_models:
+          - gemma3-12b
+          - gemma3-4b
+          - gemma3-1b
+        weights:
+          quality: 0.7
+          cost: 0.3

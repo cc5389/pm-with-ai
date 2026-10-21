@@ -1,0 +1,7 @@
+# Local quality judge. qwen3.5 thinks before answering; with Ollama's default
+# 4096-token context the thinking can fill the window and leave no room for the
+# JSON verdict. This variant shares the qwen3.5:4b weights (no extra disk).
+#
+#   ollama create qwen3.5-judge -f eval/litellm/judge.Modelfile
+FROM qwen3.5:4b
+PARAMETER num_ctx 16384

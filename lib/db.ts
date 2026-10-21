@@ -70,13 +70,14 @@ export function saveSettings(settings: Settings) {
     .prepare("UPDATE settings SET json=? WHERE id=1")
     .run(JSON.stringify(settings));
 }
+/** Simulation and gateway runs share the scenario calendar; local runs use the real one. */
 export function scopeOf(settings: Settings, mode: Mode) {
-  return `${mode}:${mode === "simulation" ? settings.scenario : "actual"}:${monthOf(settings, mode)}`;
+  return `${mode}:${mode === "local" ? "actual" : settings.scenario}:${monthOf(settings, mode)}`;
 }
 export function monthOf(settings: Settings, mode: Mode) {
-  return mode === "simulation"
-    ? settings.simulatedDate.slice(0, 7)
-    : new Date().toISOString().slice(0, 7);
+  return mode === "local"
+    ? new Date().toISOString().slice(0, 7)
+    : settings.simulatedDate.slice(0, 7);
 }
 export function history(): RunRecord[] {
   recoverInterrupted();
@@ -112,7 +113,7 @@ export function budgetContext(
     state: string;
     json: string | null;
   }[];
-  let spent = input.mode === "simulation" ? settings.openingSpend : 0,
+  let spent = input.mode === "local" ? 0 : settings.openingSpend,
     reserved = 0,
     userSpent = 0,
     userReserved = 0,
@@ -124,13 +125,13 @@ export function budgetContext(
     }
     if (row.json) {
       const r = JSON.parse(row.json) as RunRecord;
-      if (r.status === "completed") {
-        const cost =
-          input.mode === "simulation" ? r.simulatedCost : r.actualCost;
+      const cost = input.mode === "simulation" ? r.simulatedCost : r.actualCost;
+      // A failed gateway call can still carry a known or locked cost.
+      if (r.status === "completed" || cost > 0) {
         spent += cost;
-        completedRequests++;
         if (row.user_id === input.userId) userSpent += cost;
       }
+      if (r.status === "completed") completedRequests++;
     }
   }
   return { spent, reserved, userSpent, userReserved, completedRequests };
@@ -170,7 +171,9 @@ export function reserve(
   preview: Preview,
 ) {
   const id = randomUUID(),
-    createdAt = new Date().toISOString();
+    createdAt = new Date().toISOString(),
+    reserved =
+      input.mode === "local" ? 0 : (preview.selected?.estimatedCost ?? 0);
   db()
     .prepare(
       "INSERT INTO requests(id,key,hash,scope,month,user_id,mode,reserved,state,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)",
@@ -183,7 +186,7 @@ export function reserve(
       monthOf(settings, input.mode),
       input.userId,
       input.mode,
-      input.mode === "simulation" ? (preview.selected?.estimatedCost ?? 0) : 0,
+      reserved,
       "running",
       createdAt,
     );
@@ -196,14 +199,17 @@ export function reserve(
     status: "failed",
     response: "",
     simulatedCost: 0,
-    actualCost: 0,
+    // The gateway may have accepted an interrupted call, so its reservation stays locked.
+    actualCost: input.mode === "gateway" ? reserved : 0,
     simulatedLatency: null,
     measuredLatencyMs: null,
     inputTokens: 0,
     outputTokens: 0,
     rating: null,
     error:
-      "The local request was interrupted before completion. No API charge was recorded.",
+      input.mode === "gateway"
+        ? "The gateway request was interrupted before completion. Its reservation stays locked as an unresolved cost."
+        : "The local request was interrupted before completion. No API charge was recorded.",
   };
   db()
     .prepare("UPDATE requests SET draft=? WHERE id=?")
