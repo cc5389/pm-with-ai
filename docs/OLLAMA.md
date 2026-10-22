@@ -24,7 +24,13 @@ ollama create qwen3.5-judge -f eval/litellm/judge.Modelfile
 
 `qwen3.5-judge` is `qwen3.5:4b` with a 16k context and shares its weights. The judge thinks before it answers, and with Ollama's default 4096-token context the thinking can fill the window and return an empty verdict.
 
-The three Gemma models need about 12 GB together and fit in 16 GB of VRAM. The judge runs after generation, so Ollama swaps it in when it is needed.
+Start the server so that only one model is loaded at a time:
+
+```sh
+OLLAMA_MAX_LOADED_MODELS=1 ollama serve
+```
+
+On a 16 GB card the three Gemma models do not fit at once: 12b takes about 8.7 GB, 4b about 3.8 GB, and the desktop about 1 GB. If Ollama keeps them all, 1b is pushed onto the CPU and its measured latency is about five times too high. With one model loaded, every model runs fully on the GPU. Switching models in Stage B/C then adds a few seconds of load time, which both systems pay.
 
 ## 2. Start the gateway
 
@@ -67,11 +73,19 @@ node --env-file=.env.local --import tsx eval/calibration/run.ts
 
 The script writes measured per-task quality and latency to `eval/results/calibration/ollama-quality.json`, and keeps raw answers in `ollama-runs.json`. Orchestra reads the quality file on every routing decision, in the Request lab and in Stage B/C. Commit it so teammates route on the same numbers. Held-out evaluation prompts are never used for calibration.
 
-Generation uses a 1024-token output cap (`EVAL_OUTPUT_TOKEN_CAP`). At the earlier 256-token cap, 56 of 60 calibration answers were cut off, and the judge scored the truncation rather than the answer.
+Generation uses a 1024-token output cap (`EVAL_OUTPUT_TOKEN_CAP`). Every gateway call also sends the system instruction `ANSWER_LENGTH_INSTRUCTION` ("Answer in at most about 300 words"). That applies to calibration, both Stage B/C systems, and the Request lab, and the judge is told not to penalize that concision. At a 256-token cap, 56 of 60 calibration answers were cut off. At 1024 with no length instruction, 23 of 60 still were, mostly from 12b. In both cases the judge scored the truncation rather than the answer.
 
 Stage B/C use a quality floor of 0.75. If calibration scores a model below that floor for a task, Orchestra will not choose it for that task.
 
 ## 6. Stage B and C
+
+Run everything, from calibration to the metrics report, with one command:
+
+```sh
+bash eval/run-ollama-study.sh
+```
+
+It takes about two hours on an RTX 5080. Every step resumes from its checkpoint, so rerun the script after an interruption. The individual steps are:
 
 ```sh
 # Stage B: 60 scenarios × 2 systems
@@ -83,7 +97,15 @@ EVAL_MODE=real node --env-file=.env.local --import tsx eval/stage-b/judge.ts
 EVAL_EXECUTION=real node --env-file=.env.local --import tsx eval/stage-c/run.ts
 EVAL_EXECUTION=real node --env-file=.env.local --import tsx eval/stage-c/validate.ts
 EVAL_MODE=real node --env-file=.env.local --import tsx eval/stage-c/judge.ts
+
+# Metrics: budget compliance, exhaustion timing, quality over time,
+# model choice by budget state, and efficiency
+EVAL_EXECUTION=real node --env-file=.env.local --import tsx eval/report.ts
 ```
+
+The report is saved to `eval/results/stage-c/real-ollama-report.json`.
+
+Stage C's budget is $0.40 for 200 requests. It was $1. With answers near 300 words, 200 requests on 12b cost about $0.78, so $1 never constrained either system.
 
 The local pool needs no `EVAL_LIMIT`, because it cannot incur charges. Every script resumes from its checkpoint.
 

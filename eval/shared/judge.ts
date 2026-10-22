@@ -177,10 +177,19 @@ export async function judgeResponse(
   let judgment: ReturnType<typeof parseJudgeContent> | null = null;
   let lastError: unknown = null;
   // A small local judge occasionally breaks the format; retry once with a little variety.
-  for (const temperature of [0, 0.3]) {
+  // A thinking judge can also think until its context fills and return nothing, so the
+  // local judge gets a last attempt with thinking off.
+  const attempts: { temperature: number; think: boolean }[] = [
+    { temperature: 0, think: true },
+    { temperature: 0.3, think: true },
+    ...(config.local ? [{ temperature: 0, think: false }] : []),
+  ];
+  for (const { temperature, think } of attempts) {
     completion = await judgeClient(config).chat.completions.create({
       model: config.model,
       temperature,
+      // Ollama's OpenAI-compatible endpoint reads "none" as think: false.
+      ...(think ? {} : { reasoning_effort: "none" as never }),
       response_format: {
         type: "json_schema",
         json_schema: {
@@ -232,6 +241,7 @@ Instruction following:
 4 = minor deviations
 5 = fully follows instructions
 
+The answer was asked to stay within about 300 words. Do not penalize concision that this limit requires.
 Evaluate only the provided answer against the user request and rubric.
 Do not assume an answer is better because it is longer.
 Do not infer which model or router generated the answer.

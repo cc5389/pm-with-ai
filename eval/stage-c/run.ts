@@ -14,7 +14,12 @@ import {
 } from "../shared/run-mode";
 import type { EvaluationAdapter, EvaluationResult } from "../shared/pipeline";
 
-const BUDGET_USD = 1;
+/**
+ * Was $1. With answers capped near 300 words, 200 requests on the most
+ * expensive model cost about $0.78, so $1 never constrained either system.
+ * $0.40 is about half of that, so a budget-blind policy runs out partway.
+ */
+const BUDGET_USD = 0.4;
 
 interface StageCRecord {
   sequenceIndex: number;

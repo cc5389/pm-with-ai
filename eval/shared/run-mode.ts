@@ -47,7 +47,7 @@ export function resultsPath(
   stage: "stage-b" | "stage-c",
   mode: ExecutionMode,
   pool: ModelPool = activePool(),
-  kind: "results" | "judgments" | "constraints" = "results",
+  kind: "results" | "judgments" | "constraints" | "report" = "results",
 ): string {
   const label = mode === "real" && pool.id !== "openai" ? `real-${pool.id}` : mode;
   return `eval/results/${stage}/${label}-${kind}.json`;

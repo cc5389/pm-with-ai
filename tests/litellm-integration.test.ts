@@ -17,6 +17,7 @@ import {
   type LiteLLMTransport,
 } from "../eval/shared/litellm-client";
 import {
+  ANSWER_LENGTH_INSTRUCTION,
   EVAL_OUTPUT_TOKEN_CAP,
   canonicalAlias,
   estimatedRequestCost,
@@ -189,7 +190,10 @@ test("Orchestra selects one configured alias and reserves input plus the full ou
   assert.equal(body.model, planned.requestedModel);
   assert.equal(body.max_tokens, EVAL_OUTPUT_TOKEN_CAP);
   assert.equal(body.temperature, 0);
-  assert.deepEqual(body.messages, [{ role: "user", content: "Hi" }]);
+  assert.deepEqual(body.messages, [
+    { role: "system", content: ANSWER_LENGTH_INSTRUCTION },
+    { role: "user", content: "Hi" },
+  ]);
   assert.equal(JSON.stringify(body).includes("smart-router"), false);
   assert.equal(JSON.stringify(body).includes("test-gateway-master-key"), false);
   const headers = calls[0].init.headers as Record<string, string>;

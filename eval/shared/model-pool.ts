@@ -11,6 +11,14 @@ export const SMART_ROUTER_ALIAS = "smart-router";
  */
 export const EVAL_OUTPUT_TOKEN_CAP = 1024;
 
+/**
+ * Sent as the system message on every gateway call: calibration, both Stage B/C
+ * systems, and the app. Without it most answers ran past the output cap, and
+ * the judge scored the truncation instead of the answer.
+ */
+export const ANSWER_LENGTH_INSTRUCTION =
+  "Answer in at most about 300 words. Be complete but concise.";
+
 /** Fixed UTC date so Orchestra's calendar math is reproducible. */
 export const EVAL_SIMULATED_DATE = "2026-10-16";
 

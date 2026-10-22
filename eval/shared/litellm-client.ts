@@ -1,6 +1,10 @@
 import { allowProviderRetry } from "./accounting";
 import { calculateGenerationCost } from "./pricing";
-import { activePool, pricingModelId } from "./model-pool";
+import {
+  ANSWER_LENGTH_INSTRUCTION,
+  activePool,
+  pricingModelId,
+} from "./model-pool";
 
 export const LITELLM_TIMEOUT_MS = 120_000;
 
@@ -229,7 +233,10 @@ export async function completeLiteLLM(options: {
         },
         body: JSON.stringify({
           model: options.model,
-          messages: [{ role: "user", content: options.prompt }],
+          messages: [
+            { role: "system", content: ANSWER_LENGTH_INSTRUCTION },
+            { role: "user", content: options.prompt },
+          ],
           max_tokens: options.maxTokens,
           temperature: 0,
         }),
