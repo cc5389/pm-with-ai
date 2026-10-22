@@ -229,12 +229,14 @@ test("the local judge strips thinking and reads JSON from prose", () => {
 
 test("gateway mode stays off until ORCHESTRA_POOL and the gateway key are set", () => {
   assert.equal(workspace().gatewayAvailable, false);
+  assert.equal(workspace().defaultInput.mode, "simulation");
   assert.ok(workspace().models.every((m) => !m.gateway));
   assert.throws(() => previewRequest(gatewayInput()), /not configured/);
   process.env.ORCHESTRA_POOL = "ollama";
   assert.equal(workspace().gatewayAvailable, false);
   process.env.LITELLM_MASTER_KEY = "test-gateway-master-key";
   assert.equal(workspace().gatewayAvailable, true);
+  assert.equal(workspace().defaultInput.mode, "gateway");
   assert.equal(workspace().gatewayPool, ollama.label);
 });
 

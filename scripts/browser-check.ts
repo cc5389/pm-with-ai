@@ -41,6 +41,8 @@ const server = spawn(
     env: {
       ...process.env,
       ORCHESTRA_DB_PATH: join(temp, "test.sqlite"),
+      // Next would otherwise load a developer's .env.local and use a real gateway.
+      ORCHESTRA_POOL: "",
       OLLAMA_MODEL: "browser-fixture",
       OLLAMA_BASE_URL: `http://127.0.0.1:${inferencePort}`,
       NEXT_TELEMETRY_DISABLED: "1",

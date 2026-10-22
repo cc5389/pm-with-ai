@@ -1,0 +1,67 @@
+{
+  "pool": "ollama",
+  "judgeModel": "qwen3.5-judge",
+  "updatedAt": "2026-10-21T23:48:23.240Z",
+  "models": {
+    "gemma3-12b": {
+      "quality": {
+        "coding": 0.8166666666666667,
+        "analysis": 0.7833333333333333,
+        "writing": 1,
+        "qa": 1
+      },
+      "latencySeconds": {
+        "coding": 35.4385021792,
+        "analysis": 35.706607833399985,
+        "writing": 25.451065783199994,
+        "qa": 25.734884176000012
+      },
+      "samples": {
+        "coding": 5,
+        "analysis": 5,
+        "writing": 5,
+        "qa": 5
+      }
+    },
+    "gemma3-4b": {
+      "quality": {
+        "coding": 0.7166666666666667,
+        "analysis": 0.9833333333333334,
+        "writing": 0.9833333333333334,
+        "qa": 0.95
+      },
+      "latencySeconds": {
+        "coding": 5.556250459200004,
+        "analysis": 5.230718682199996,
+        "writing": 3.411238371800026,
+        "qa": 3.0619241487999913
+      },
+      "samples": {
+        "coding": 5,
+        "analysis": 5,
+        "writing": 5,
+        "qa": 5
+      }
+    },
+    "gemma3-1b": {
+      "quality": {
+        "coding": 0.8333333333333334,
+        "analysis": 0.7166666666666666,
+        "writing": 0.9166666666666667,
+        "qa": 0.75
+      },
+      "latencySeconds": {
+        "coding": 2.757428082199977,
+        "analysis": 3.5844450906000103,
+        "writing": 1.8180012053999817,
+        "qa": 1.6475237674000207
+      },
+      "samples": {
+        "coding": 5,
+        "analysis": 5,
+        "writing": 5,
+        "qa": 5
+      }
+    }
+  }
+}

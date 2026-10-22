@@ -32,8 +32,10 @@ export function workspace(): Workspace & { defaultInput: RequestInput } {
     local = localProfile(records),
     settings = getSettings(),
     pool = gatewayPool();
-  const defaultInput = {
+  const defaultInput: RequestInput = {
     ...DEFAULT_INPUT,
+    // A configured gateway is an explicit opt-in, so start there after a reload.
+    mode: pool ? "gateway" : DEFAULT_INPUT.mode,
     userId: settings.users.some((u) => u.id === DEFAULT_INPUT.userId)
       ? DEFAULT_INPUT.userId
       : settings.users[0].id,
