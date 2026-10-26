@@ -1,0 +1,1009 @@
+{
+  "experiment": "stage-b-constraints",
+  "mode": "real",
+  "comparison": {
+    "mode": "real",
+    "requests": 120,
+    "completed": 120,
+    "rejected": 0,
+    "failed": 0,
+    "completionRate": 1,
+    "rejectionRate": 0,
+    "quality": null,
+    "qualityNote": "This file does not contain judged quality. Mock text and uncalibrated routing estimates are not quality measurements.",
+    "totalCostUsd": 0.09730539999999999,
+    "estimatedCostRequests": 120,
+    "unresolvedCostRequests": 0,
+    "budgetViolations": 0,
+    "savingsClaimAllowed": false,
+    "savingsNote": "This comparison reports actual, estimated, or locked unresolved cost. It does not convert a cost gap into a savings claim.",
+    "isolatesRoutingQuality": false,
+    "policyNote": "This compares Orchestra's budget policy with LiteLLM smart-router over the same configured model pool. The baseline cannot restrict the gateway to Orchestra's eligible models. It does not isolate routing quality.",
+    "bySystem": [
+      {
+        "system": "baseline",
+        "requests": 60,
+        "completed": 60,
+        "rejected": 0,
+        "failed": 0,
+        "completionRate": 1,
+        "rejectionRate": 0,
+        "totalCostUsd": 0.059130499999999996,
+        "budgetViolations": 0
+      },
+      {
+        "system": "orchestra",
+        "requests": 60,
+        "completed": 60,
+        "rejected": 0,
+        "failed": 0,
+        "completionRate": 1,
+        "rejectionRate": 0,
+        "totalCostUsd": 0.0381749,
+        "budgetViolations": 0
+      }
+    ]
+  },
+  "evaluations": [
+    {
+      "scenarioId": "coding-06-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-06-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-07-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-07-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-08-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-08-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-09-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-09-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-10-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-10-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-06-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-06-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-07-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-07-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-08-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-08-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-09-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-09-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-10-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-10-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-06-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-06-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-07-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-07-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-08-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-08-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-09-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-09-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-10-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-10-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-06-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-06-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-07-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-07-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-08-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-08-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-09-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-09-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-10-budget-10",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-10-budget-10",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-06-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-06-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-07-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-07-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-08-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-08-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-09-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-09-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-10-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-10-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-06-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-06-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-07-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-07-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-08-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-08-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-09-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-09-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-10-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-10-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-06-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-06-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-07-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-07-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-08-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-08-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-09-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-09-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-10-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-10-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-06-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-06-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-07-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-07-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-08-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-08-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-09-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-09-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-10-budget-50",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-10-budget-50",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-06-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-06-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-07-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-07-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-08-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-08-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-09-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-09-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-10-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "coding-10-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-06-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-06-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-07-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-07-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-08-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-08-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-09-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-09-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-10-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "analysis-10-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-06-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-06-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-07-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-07-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-08-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-08-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-09-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-09-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-10-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "writing-10-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-06-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-06-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-07-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-07-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-08-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-08-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-09-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-09-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-10-budget-92",
+      "system": "baseline",
+      "allowedModelCompliant": null,
+      "budgetFeasible": true,
+      "policyApplied": null,
+      "violations": []
+    },
+    {
+      "scenarioId": "qa-10-budget-92",
+      "system": "orchestra",
+      "allowedModelCompliant": true,
+      "budgetFeasible": true,
+      "policyApplied": true,
+      "violations": []
+    }
+  ]
+}

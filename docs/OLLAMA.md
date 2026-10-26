@@ -61,7 +61,7 @@ JUDGE_MODEL=qwen3.5-judge
 EVAL_EXECUTION=real EVAL_LIMIT=1 node --env-file=.env.local --import tsx eval/stage-b/run.ts
 ```
 
-This runs one scenario through both systems and shows the time per request on your machine. The result goes to `eval/results/stage-b/real-ollama-results.json`. That file is gitignored and never mixes with OpenAI results.
+This runs one scenario through both systems and shows the time per request on your machine. The result goes to `eval/results/stage-b/real-ollama-results.json`. It never mixes with OpenAI results. The committed `real-ollama-*` files hold a full reference run, so move them aside before a smoke test (see section 6).
 
 ## 5. Calibrate before routing
 
@@ -110,6 +110,8 @@ Stage C's budget is $0.40 for 200 requests. It was $1. With answers near 300 wor
 The local pool needs no `EVAL_LIMIT`, because it cannot incur charges. Every script resumes from its checkpoint.
 
 Stage C refuses to resume a file made with a different `EVAL_LIMIT`. Delete `eval/results/stage-c/real-ollama-results.json` after a smoke test before you start the full run. The Stage C judge reuses one judgment for identical answers to repeated prompts.
+
+The `real-ollama-*` files under `eval/results/stage-b/` and `eval/results/stage-c/` are committed as a reference run (Stage C finished on 2026-10-22). Because every script resumes from those files, a fresh run first needs them deleted or moved: `rm eval/results/stage-{b,c}/real-ollama-*`.
 
 Changing the pool, calibration, or policy changes the experiment, so start from fresh result files. To measure variance, repeat the full run two or three times. LiteLLM's adaptive router learns from earlier requests, so baseline choices can differ between runs.
 
