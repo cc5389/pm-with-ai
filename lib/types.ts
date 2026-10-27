@@ -29,6 +29,7 @@ export type RequestInput = {
   prompt: string;
   task: Task;
   importance: Importance;
+  importanceMode?: "fixed" | "inferred";
   userId: string;
   qualityFloor: number;
   latencyTarget: number;

@@ -1,27 +1,34 @@
+import { classifyTask } from "../../lib/classification";
+import { stageCConfig, stageCPath, VARIANTS } from "./config";
+import { planBaseline, planOrchestra } from "../shared/pipelines";
+import { summarizeStageC } from "./report";
 import { restoreCheckpoint } from "./checkpoint";
 import { mkdir } from "node:fs/promises";
 import { readCheckpoint, writeCheckpoint } from "../shared/checkpoint-io";
 import { buildStageCWorkload } from "./workload";
 import { MockEvaluationAdapter } from "../stage-b/mock-adapter";
 import { IntegratedEvaluationAdapter } from "../shared/integrated-adapter";
-import { applyExperimentCost, unresolvedCostMessage } from "../shared/accounting";
+import {
+  applyExperimentCost,
+  unresolvedCostMessage,
+} from "../shared/accounting";
 import { runBaseline, runOrchestra } from "../shared/pipelines";
 import {
   assertPaidRunIsExplicit,
   executionLimit,
   executionMode,
-  resultsPath,
 } from "../shared/run-mode";
-import type { EvaluationAdapter, EvaluationResult } from "../shared/pipeline";
+import type { EvaluationResult } from "../shared/pipeline";
 
 /**
- * Was $1. With answers capped near 300 words, 200 requests on the most
+ * Default is $0.10; legacy $0.40 files remain untouched. Was $1. With answers capped near 300 words, 200 requests on the most
  * expensive model cost about $0.78, so $1 never constrained either system.
  * $0.40 is about half of that, so a budget-blind policy runs out partway.
  */
-const BUDGET_USD = 0.4;
+const BUDGET_USD = stageCConfig().budgetUsd;
 
 interface StageCRecord {
+  variant: string;
   sequenceIndex: number;
   result: EvaluationResult;
 }
@@ -59,24 +66,13 @@ async function main() {
   const limit = executionLimit();
   assertPaidRunIsExplicit(mode, limit);
 
-  const output = resultsPath("stage-c", mode);
+  const output = stageCPath(mode);
   await mkdir("eval/results/stage-c", { recursive: true });
 
   const fullWorkload = buildStageCWorkload();
   const workload = limit === null ? fullWorkload : fullWorkload.slice(0, limit);
-  const adapters: EvaluationAdapter[] =
-    mode === "mock"
-      ? [
-          new MockEvaluationAdapter("baseline"),
-          new MockEvaluationAdapter("orchestra"),
-        ]
-      : [
-          new IntegratedEvaluationAdapter("baseline", runBaseline),
-          new IntegratedEvaluationAdapter("orchestra", runOrchestra),
-        ];
-
   const existing = await loadResults(output, mode, workload.length);
-  const records: StageCRecord[] = [];
+  const records: StageCRecord[] = [...existing];
 
   async function save() {
     await writeCheckpoint(output, {
@@ -92,9 +88,16 @@ async function main() {
   console.log(`Execution: ${mode}`);
   console.log(`Workload in this run: ${workload.length}`);
 
-  for (const adapter of adapters) {
+  for (const variant of VARIANTS.filter(
+    (v) => stageCConfig().variant === "all" || stageCConfig().variant === v,
+  )) {
+    const system = variant === "baseline" ? "baseline" : "orchestra";
+    const adapter = new IntegratedEvaluationAdapter(
+      system,
+      system === "baseline" ? runBaseline : runOrchestra,
+    );
     const previous = existing
-      .filter((record) => record.result.system === adapter.name)
+      .filter((record) => record.variant === variant)
       .sort((a, b) => a.sequenceIndex - b.sequenceIndex);
     const unresolved = previous.find(
       (record) => record.result.generation.costUsd === null,
@@ -110,10 +113,16 @@ async function main() {
     const tracker = restoreCheckpoint(
       adapter.name,
       previous,
-      workload,
+      workload.map((item) => ({
+        ...item,
+        taskImportance:
+          variant === "orchestra-inferred"
+            ? classifyTask(item.prompt).importance
+            : item.taskImportance,
+      })),
       BUDGET_USD,
+      variant,
     );
-    records.push(...previous);
     console.log(
       `${adapter.name}: resuming from ${previous.length}/${workload.length}`,
     );
@@ -121,18 +130,60 @@ async function main() {
     for (let i = previous.length; i < workload.length; i++) {
       const item = workload[i];
       const stateBefore = tracker.organizationState(
-        item.taskImportance,
+        variant === "orchestra-inferred"
+          ? classifyTask(item.prompt).importance
+          : item.taskImportance,
         item.qualityFloor,
       );
       const request = {
+        importanceMode:
+          variant === "orchestra-inferred"
+            ? ("inferred" as const)
+            : ("fixed" as const),
         id: item.id,
         prompt: item.prompt,
         task: item.task,
         rubric: item.rubric,
-        scenarioId: `stage-c-${adapter.name}-${i + 1}`,
+        scenarioId: `stage-c-${variant}-${i + 1}`,
         organizationState: stateBefore,
       };
-      const result = await adapter.execute(request);
+      const result =
+        mode === "real"
+          ? await adapter.execute(request)
+          : await (async () => {
+              const plan =
+                system === "baseline"
+                  ? planBaseline(request)
+                  : planOrchestra(request);
+              const result = await new MockEvaluationAdapter(system).execute(
+                request,
+              );
+              result.policy = {
+                applied: system === "orchestra",
+                allowedModels: plan.allowedModels,
+                reason: plan.reason,
+                predictedQuality:
+                  plan.preview?.selected?.estimatedQuality ?? null,
+                classification:
+                  variant === "orchestra-inferred"
+                    ? classifyTask(item.prompt)
+                    : undefined,
+              };
+              result.generation.selectedModel =
+                plan.kind === "call"
+                  ? (plan.preview?.selected?.model.id ??
+                    result.generation.selectedModel)
+                  : null;
+              if (plan.kind === "reject")
+                Object.assign(result.generation, {
+                  success: false,
+                  response: null,
+                  costUsd: 0,
+                  outcome: "rejected",
+                  error: plan.reason,
+                });
+              return result;
+            })();
       if (
         result.system !== adapter.name ||
         result.requestId !== request.id ||
@@ -141,11 +192,12 @@ async function main() {
         throw new Error(`Adapter result mismatch at request ${i + 1}`);
       }
 
+      result.taskCategory = item.task;
       result.stateBefore = { ...stateBefore };
       const cost = result.generation.costUsd;
       if (cost === null) {
         result.stateAfter = { ...stateBefore };
-        records.push({ sequenceIndex: i, result });
+        records.push({ variant, sequenceIndex: i, result });
         await save();
         throw new Error(
           unresolvedCostMessage(`${adapter.name} request ${i + 1}`),
@@ -162,7 +214,7 @@ async function main() {
         spentUsd: stateAfter.spentUsd,
         budgetUsedFraction: stateAfter.budgetUsedFraction,
       };
-      records.push({ sequenceIndex: i, result });
+      records.push({ variant, sequenceIndex: i, result });
       await save();
       if ((i + 1) % 25 === 0) {
         console.log(
@@ -173,6 +225,17 @@ async function main() {
   }
 
   await save();
+  await writeCheckpoint(
+    stageCPath(mode, "report"),
+    summarizeStageC(
+      records,
+      (
+        await readCheckpoint<{ judgments: import("./report").Observation[] }>(
+          stageCPath(mode, "judgments"),
+        )
+      )?.judgments ?? [],
+    ),
+  );
   console.log(`Completed records: ${records.length}`);
   console.log(`Saved to ${output}`);
   if (mode === "mock") {

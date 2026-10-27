@@ -1,3 +1,4 @@
+import { classifyTask } from "../../lib/classification";
 import { buildPreview } from "../../lib/engine";
 import { DEFAULT_COMPANY_POLICY } from "../../lib/policy";
 import type { Preview, RequestInput, Settings } from "../../lib/types";
@@ -77,6 +78,7 @@ function evaluationInput(request: EvaluationRequest): RequestInput {
     prompt: request.prompt,
     task: request.task,
     importance: request.organizationState.taskImportance,
+    importanceMode: request.importanceMode,
     userId: EVAL_USER_ID,
     qualityFloor: request.organizationState.qualityFloor,
     latencyTarget: 30,
@@ -203,6 +205,11 @@ function rejectedExecution(
   return {
     generation,
     policy: {
+      predictedQuality: plan.preview?.selected?.estimatedQuality ?? null,
+      classification:
+        request.importanceMode === "inferred"
+          ? classifyTask(request.prompt)
+          : undefined,
       applied,
       allowedModels: plan.allowedModels,
       reason: plan.reason,
@@ -279,6 +286,11 @@ async function executePlan(
   if (plan.kind === "reject") {
     return rejectedExecution(request, plan, applied, started);
   }
+  // Freeze estimates before execution; observed judgments are never routing inputs.
+  const qualitySnapshot = litellmProfiles().map((m) => ({
+    id: m.id,
+    quality: m.quality[request.task],
+  }));
   const call = await completeLiteLLM({
     model: plan.requestedModel,
     prompt: request.prompt,
@@ -288,9 +300,19 @@ async function executePlan(
       request.organizationState.budgetUsd - request.organizationState.spentUsd,
     reservedUsd: plan.reservedCostUsd,
   });
+  const generation = generationFromCall(request, plan, call);
   return {
-    generation: generationFromCall(request, plan, call),
+    generation,
     policy: {
+      predictedQuality:
+        plan.preview?.selected?.estimatedQuality ??
+        qualitySnapshot.find((m) => m.id === generation.selectedModel)
+          ?.quality ??
+        null,
+      classification:
+        request.importanceMode === "inferred"
+          ? classifyTask(request.prompt)
+          : undefined,
       applied,
       allowedModels: plan.allowedModels,
       reason: plan.reason,

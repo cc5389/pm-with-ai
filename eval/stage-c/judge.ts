@@ -1,3 +1,5 @@
+import { stageCPath } from "./config";
+import { summarizeStageC, type ReportRecord } from "./report";
 import { createHash } from "node:crypto";
 import { mkdir } from "node:fs/promises";
 import { readCheckpoint, writeCheckpoint } from "../shared/checkpoint-io";
@@ -11,8 +13,8 @@ const MODE =
     ? "real"
     : "mock";
 
-const INPUT = resultsPath("stage-c", MODE);
-const OUTPUT = resultsPath("stage-c", MODE, undefined, "judgments");
+const INPUT = stageCPath(MODE);
+const OUTPUT = stageCPath(MODE, "judgments");
 
 interface StageCJudgment extends QualityJudgment {
   sequenceIndex: number;
@@ -24,7 +26,7 @@ interface StageCJudgment extends QualityJudgment {
 }
 
 interface SavedResults {
-  records: { sequenceIndex: number; result: EvaluationResult }[];
+  records: ReportRecord[];
 }
 
 /** The workload repeats 20 prompts; identical answers get the same judgment. */
@@ -73,7 +75,8 @@ async function main() {
   console.log(`Existing judgments: ${judgments.length}`);
 
   for (const { sequenceIndex, result } of saved.records) {
-    if (completed.has(result.scenarioId)) continue;
+    if (completed.has(result.scenarioId) || !result.generation.success)
+      continue;
     const item = workload[sequenceIndex];
     if (!item || item.id !== result.requestId) {
       throw new Error(`Unknown workload item: ${result.scenarioId}`);
@@ -108,6 +111,10 @@ async function main() {
     });
   }
 
+  await writeCheckpoint(
+    stageCPath(MODE, "report"),
+    summarizeStageC(saved.records, judgments),
+  );
   console.log(`Completed judgments: ${judgments.length}`);
   console.log(`Saved to ${OUTPUT}`);
 }

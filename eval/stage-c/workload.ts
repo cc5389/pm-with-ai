@@ -1,4 +1,3 @@
-
 import { BENCHMARK_PROMPTS } from "../../lib/benchmark";
 import type { TaskImportance } from "../shared/pipeline";
 import type { RouterRequest } from "../stage-a/adapters/base";
@@ -11,6 +10,7 @@ export interface WorkloadItem extends RouterRequest {
 
 export const STAGE_C_WORKLOAD_SIZE = 200;
 
+/** Frozen legacy labels for the fixed-label control only. Inferred runs classify prompts. */
 function getTaskImportance(task: string): TaskImportance {
   switch (task) {
     case "coding":

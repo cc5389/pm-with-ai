@@ -6,7 +6,9 @@ import {
   pricingModelId,
 } from "./model-pool";
 
-export const LITELLM_TIMEOUT_MS = 120_000;
+export const LITELLM_TIMEOUT_MS = Number(
+  process.env.LITELLM_TIMEOUT_MS ?? "600000"
+);
 
 const DEFAULT_URL = "http://127.0.0.1:4000/v1/chat/completions";
 

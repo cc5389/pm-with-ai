@@ -96,7 +96,8 @@ function judgeClient(config: JudgeConfig): OpenAI {
       client: new OpenAI({
         apiKey: config.apiKey,
         ...(config.baseURL ? { baseURL: config.baseURL } : {}),
-        maxRetries: 2,
+        maxRetries: 0,
+        timeout: config.local ? 120_000 : 600_000,
       }),
     };
   }
@@ -179,11 +180,15 @@ export async function judgeResponse(
   // A small local judge occasionally breaks the format; retry once with a little variety.
   // A thinking judge can also think until its context fills and return nothing, so the
   // local judge gets a last attempt with thinking off.
-  const attempts: { temperature: number; think: boolean }[] = [
-    { temperature: 0, think: true },
-    { temperature: 0.3, think: true },
-    ...(config.local ? [{ temperature: 0, think: false }] : []),
-  ];
+  const attempts: { temperature: number; think: boolean }[] = config.local
+    ? [
+        { temperature: 0, think: false },
+        { temperature: 0.2, think: false },
+      ]
+    : [
+        { temperature: 0, think: true },
+        { temperature: 0.3, think: true },
+      ];
   for (const { temperature, think } of attempts) {
     completion = await judgeClient(config).chat.completions.create({
       model: config.model,
