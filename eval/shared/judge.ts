@@ -1,11 +1,9 @@
+import { timeoutMs } from "./timeout";
 
 import OpenAI from "openai";
 import { calculateGenerationCost } from "./pricing";
 
-import type {
-  RouterRequest,
-  RouterResult,
-} from "../stage-a/adapters/base";
+import type { RouterRequest, RouterResult } from "../stage-a/adapters/base";
 
 const DEFAULT_JUDGE_MODEL = "gpt-4.1-mini-2025-04-14";
 
@@ -19,9 +17,12 @@ export interface JudgeConfig {
   baseURL: string | null;
   apiKey: string | undefined;
   local: boolean;
+  timeoutMs: number;
 }
 
-export function judgeConfig(env: Record<string, string | undefined> = process.env): JudgeConfig {
+export function judgeConfig(
+  env: Record<string, string | undefined> = process.env,
+): JudgeConfig {
   const baseURL = env.JUDGE_BASE_URL?.trim() || null;
   let local = false;
   if (baseURL) {
@@ -43,6 +44,7 @@ export function judgeConfig(env: Record<string, string | undefined> = process.en
       ? env.JUDGE_API_KEY?.trim() || "ollama"
       : env.OPENAI_API_KEY,
     local,
+    timeoutMs: timeoutMs("JUDGE_TIMEOUT_MS", 600_000, env),
   };
 }
 
@@ -70,26 +72,30 @@ export function normalizeQualityScore(
 
   if (
     ratings.some(
-      (rating) =>
-        !Number.isInteger(rating) ||
-        rating < 1 ||
-        rating > 5,
+      (rating) => !Number.isInteger(rating) || rating < 1 || rating > 5,
     )
   ) {
     throw new Error("Quality ratings must be integers from 1 to 5.");
   }
 
   const average =
-    ratings.reduce((sum, rating) => sum + rating, 0) /
-    ratings.length;
+    ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
 
   return (average - 1) / 4;
 }
 
 let cachedClient: { key: string; client: OpenAI } | null = null;
 
-function judgeClient(config: JudgeConfig): OpenAI {
-  const key = `${config.baseURL ?? "openai"}|${config.apiKey ?? ""}`;
+function judgeClient(config: JudgeConfig, transport?: typeof fetch): OpenAI {
+  const key = `${config.baseURL ?? "openai"}|${config.apiKey ?? ""}|${config.timeoutMs}`;
+  if (transport)
+    return new OpenAI({
+      apiKey: config.apiKey,
+      ...(config.baseURL ? { baseURL: config.baseURL } : {}),
+      maxRetries: 0,
+      timeout: config.timeoutMs,
+      fetch: transport,
+    });
   if (cachedClient?.key !== key) {
     cachedClient = {
       key,
@@ -97,7 +103,7 @@ function judgeClient(config: JudgeConfig): OpenAI {
         apiKey: config.apiKey,
         ...(config.baseURL ? { baseURL: config.baseURL } : {}),
         maxRetries: 0,
-        timeout: config.local ? 120_000 : 600_000,
+        timeout: config.timeoutMs,
       }),
     };
   }
@@ -155,6 +161,7 @@ export async function judgeResponse(
   request: RouterRequest,
   result: RouterResult,
   qualityThreshold = 0.75,
+  options: { fetch?: typeof fetch } = {},
 ): Promise<QualityJudgment> {
   if (!result.success || !result.response) {
     return {
@@ -178,8 +185,7 @@ export async function judgeResponse(
   let judgment: ReturnType<typeof parseJudgeContent> | null = null;
   let lastError: unknown = null;
   // A small local judge occasionally breaks the format; retry once with a little variety.
-  // A thinking judge can also think until its context fills and return nothing, so the
-  // local judge gets a last attempt with thinking off.
+  // Every local attempt disables thinking, including format retries.
   const attempts: { temperature: number; think: boolean }[] = config.local
     ? [
         { temperature: 0, think: false },
@@ -190,7 +196,10 @@ export async function judgeResponse(
         { temperature: 0.3, think: true },
       ];
   for (const { temperature, think } of attempts) {
-    completion = await judgeClient(config).chat.completions.create({
+    completion = await judgeClient(
+      config,
+      options.fetch,
+    ).chat.completions.create({
       model: config.model,
       temperature,
       // Ollama's OpenAI-compatible endpoint reads "none" as think: false.
@@ -297,11 +306,11 @@ Return a concise justification.`,
     judgeCostUsd: config.local
       ? 0
       : completion.usage
-      ? calculateGenerationCost(
-          config.model,
-          completion.usage.prompt_tokens,
-          completion.usage.completion_tokens,
-        )
-      : null,
+        ? calculateGenerationCost(
+            config.model,
+            completion.usage.prompt_tokens,
+            completion.usage.completion_tokens,
+          )
+        : null,
   };
 }

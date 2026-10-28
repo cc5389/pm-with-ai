@@ -97,6 +97,14 @@ test("quality reporting separates rejection/failure and measures paired quality"
   const group = report.groups["orchestra-fixed/all"];
   assert.equal(group.rejected, 1);
   assert.equal(group.failed, 1);
+  assert.equal(group.successfulGenerations, 1);
+  assert.equal(group.generationSuccessRate, 1 / 3);
+  assert.equal(group.overallSuccessfulServiceRate, 0);
+  const passing = summarizeStageC(records, [
+    { scenarioId: "quality-1", overallScore: 0.9, passed: true },
+  ]).groups["orchestra-fixed/all"];
+  assert.equal(passing.observedPassRate, 1);
+  assert.equal(passing.overallSuccessfulServiceRate, 1 / 3);
   assert.equal(group.judged, 1);
   assert.equal(group.observedPassRate, 0);
   assert.equal(group.qualityFloorViolationRate, 1);

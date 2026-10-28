@@ -11,6 +11,7 @@ model_list:
     litellm_params:
       model: ollama_chat/gemma3:12b
       api_base: http://127.0.0.1:11434
+      timeout: 600
       input_cost_per_token: 0.000002
       output_cost_per_token: 0.000008
     model_info:
@@ -26,6 +27,7 @@ model_list:
     litellm_params:
       model: ollama_chat/gemma3:4b
       api_base: http://127.0.0.1:11434
+      timeout: 600
       input_cost_per_token: 0.0000004
       output_cost_per_token: 0.0000016
     model_info:
@@ -41,6 +43,7 @@ model_list:
     litellm_params:
       model: ollama_chat/gemma3:1b
       api_base: http://127.0.0.1:11434
+      timeout: 600
       input_cost_per_token: 0.0000001
       output_cost_per_token: 0.0000004
     model_info:
@@ -63,3 +66,7 @@ model_list:
         weights:
           quality: 0.7
           cost: 0.3
+
+# The evaluation client and this gateway must receive the same private value.
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY

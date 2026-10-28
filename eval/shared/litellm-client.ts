@@ -1,3 +1,4 @@
+import { timeoutMs } from "./timeout";
 import { allowProviderRetry } from "./accounting";
 import { calculateGenerationCost } from "./pricing";
 import {
@@ -6,9 +7,8 @@ import {
   pricingModelId,
 } from "./model-pool";
 
-export const LITELLM_TIMEOUT_MS = Number(
-  process.env.LITELLM_TIMEOUT_MS ?? "600000"
-);
+/** Ten minutes accommodates model loading and slower local inference. */
+export const LITELLM_TIMEOUT_MS = 600_000;
 
 const DEFAULT_URL = "http://127.0.0.1:4000/v1/chat/completions";
 
@@ -166,7 +166,8 @@ function readCost(
 function returnedModel(response: Response, requested: string): string | null {
   const named = response.headers.get("x-litellm-model-name");
   const adaptive = response.headers.get("x-litellm-adaptive-router-model");
-  const value = requested === "smart-router" ? (adaptive ?? named) : (named ?? adaptive);
+  const value =
+    requested === "smart-router" ? (adaptive ?? named) : (named ?? adaptive);
   return value && value.trim() ? value.trim() : null;
 }
 
@@ -187,7 +188,12 @@ export async function completeLiteLLM(options: {
       "The output token cap must be a positive integer.",
     );
   }
-  const apiKey = (options.apiKey ?? process.env.LITELLM_MASTER_KEY ?? "").trim();
+  const requestTimeoutMs = timeoutMs("LITELLM_TIMEOUT_MS", LITELLM_TIMEOUT_MS);
+  const apiKey = (
+    options.apiKey ??
+    process.env.LITELLM_MASTER_KEY ??
+    ""
+  ).trim();
   if (!apiKey) {
     throw new LiteLLMConfigurationError(
       "LITELLM_MASTER_KEY is not configured.",
@@ -201,10 +207,7 @@ export async function completeLiteLLM(options: {
   let attempts = 0;
   let providerContacted = false;
 
-  const fail = (
-    error: unknown,
-    contacted: boolean,
-  ): LiteLLMCompletion => ({
+  const fail = (error: unknown, contacted: boolean): LiteLLMCompletion => ({
     success: false,
     outcome: "failed",
     requestedModel: options.model,
@@ -242,7 +245,7 @@ export async function completeLiteLLM(options: {
           max_tokens: options.maxTokens,
           temperature: 0,
         }),
-        signal: AbortSignal.timeout(LITELLM_TIMEOUT_MS),
+        signal: AbortSignal.timeout(requestTimeoutMs),
       });
       providerContacted = true;
       const payload = readPayload(await response.json().catch(() => ({})));

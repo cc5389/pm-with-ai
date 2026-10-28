@@ -30,6 +30,19 @@ export interface EvaluationResult {
   // Policy information supplied by the integrated pipeline.
   policy: {
     predictedQuality?: number | null;
+    requestedModel?: string | null;
+    /** Frozen before transport; baseline selection becomes known only after LiteLLM responds. */
+    qualitySnapshot?: { model: string; quality: number }[];
+    predictionTiming?:
+      "before-generation" | "pre-generation-snapshot-post-gateway-selection";
+    requestAllowanceUsd?: number;
+    candidates?: {
+      model: string;
+      estimatedCost: number;
+      estimatedQuality: number;
+      eligible: boolean;
+      reasons: string[];
+    }[];
     classification?: import("../../lib/classification").TaskClassification;
     applied: boolean;
     allowedModels: string[] | null;

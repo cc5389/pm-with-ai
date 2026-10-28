@@ -19,6 +19,8 @@ export function summarizeStageC(
     string,
     {
       requests: number;
+      successfulGenerations: number;
+      unresolvedCosts: number;
       rejected: number;
       failed: number;
       judged: number;
@@ -76,6 +78,8 @@ export function summarizeStageC(
     ]) {
       const g = (groups[`${variant}/${dimension}`] ??= {
         requests: 0,
+        successfulGenerations: 0,
+        unresolvedCosts: 0,
         rejected: 0,
         failed: 0,
         judged: 0,
@@ -85,6 +89,11 @@ export function summarizeStageC(
         scores: [],
       });
       g.requests++;
+      g.successfulGenerations += Number(result.generation.success);
+      g.unresolvedCosts += Number(
+        result.generation.costBasis === "unresolved" ||
+          result.generation.costUsd === null,
+      );
       if (result.generation.outcome === "rejected") g.rejected++;
       else if (!result.generation.success) g.failed++;
       else if (j) {
@@ -113,6 +122,15 @@ export function summarizeStageC(
           ...g,
           predicted: undefined,
           scores: undefined,
+          providerFailures: g.failed,
+          policyRejections: g.rejected,
+          generationSuccessRate: g.successfulGenerations / g.requests,
+          judgmentCoverage: g.successfulGenerations
+            ? g.judged / g.successfulGenerations
+            : null,
+          // Missing judgments must not turn an incomplete study into a final quality-service rate.
+          overallSuccessfulServiceRate:
+            g.judged === g.successfulGenerations ? g.passed / g.requests : null,
           observedPassRate: g.judged ? g.passed / g.judged : null,
           qualityFloorViolationRate: g.judged ? g.violations / g.judged : null,
           pairedCount: g.predicted.length,

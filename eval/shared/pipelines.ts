@@ -22,11 +22,11 @@ import {
   fullCapReservation,
   litellmProfiles,
 } from "./model-pool";
-import type { EvaluationRequest } from "./pipeline";
+import type { EvaluationRequest, EvaluationResult } from "./pipeline";
 import type { PipelineExecution } from "./integrated-adapter";
 
 const ESTIMATE_NOTE =
-  "Estimated quality and latency are uncalibrated planning estimates, not guarantees. The reserved cost uses the frozen 2026-10-07 price snapshot and the full output cap.";
+  "Quality and latency use measured calibration when available, otherwise planning estimates; they are not guarantees. The reserved cost uses the frozen 2026-10-07 price snapshot and the full output cap.";
 
 export interface PaidPlan {
   kind: "call";
@@ -50,6 +50,11 @@ export type ExecutionPlan = PaidPlan | RejectPlan;
 
 export interface PipelineOptions {
   transport?: LiteLLMTransport;
+  /** Durably save the routing estimate and reservation before transport starts. */
+  onPlanned?: (
+    policy: EvaluationResult["policy"],
+    reservedCostUsd: number,
+  ) => Promise<void>;
 }
 
 function evaluationSettings(request: EvaluationRequest): Settings {
@@ -145,7 +150,7 @@ export function planOrchestra(request: EvaluationRequest): ExecutionPlan {
     inputTokens: selected.inputTokens,
     preview,
     allowedModels: preview.policy.allowedModels,
-    reason: `Selected ${selected.model.id} in lib/engine.ts and sent that alias to LiteLLM. The smart-router was not used. Quality estimates do not remove aliases from the shared pool. ${ESTIMATE_NOTE}`,
+    reason: `Selected ${selected.model.id} in lib/engine.ts and sent that alias to LiteLLM. The smart-router was not used. Orchestra filters the shared pool by calibrated quality and request allowance. ${ESTIMATE_NOTE}`,
   };
 }
 
@@ -178,7 +183,6 @@ export function planBaseline(request: EvaluationRequest): ExecutionPlan {
 function rejectedExecution(
   request: EvaluationRequest,
   plan: RejectPlan,
-  applied: boolean,
   started: number,
 ): PipelineExecution {
   const generation: RouterResult = {
@@ -204,16 +208,33 @@ function rejectedExecution(
   };
   return {
     generation,
-    policy: {
-      predictedQuality: plan.preview?.selected?.estimatedQuality ?? null,
-      classification:
-        request.importanceMode === "inferred"
-          ? classifyTask(request.prompt)
-          : undefined,
-      applied,
-      allowedModels: plan.allowedModels,
-      reason: plan.reason,
-    },
+    policy: policyForPlan(request, plan),
+  };
+}
+
+export function policyForPlan(
+  request: EvaluationRequest,
+  plan: ExecutionPlan,
+): NonNullable<EvaluationResult["policy"]> {
+  return {
+    predictedQuality: plan.preview?.selected?.estimatedQuality ?? null,
+    requestedModel: plan.kind === "call" ? plan.requestedModel : null,
+    predictionTiming: "before-generation",
+    requestAllowanceUsd: plan.preview?.policy.maxCostPerRequest,
+    candidates: plan.preview?.candidates.map((c) => ({
+      model: c.model.id,
+      estimatedCost: c.estimatedCost,
+      estimatedQuality: c.estimatedQuality,
+      eligible: c.eligible,
+      reasons: c.reasons,
+    })),
+    classification:
+      request.importanceMode === "inferred"
+        ? classifyTask(request.prompt)
+        : undefined,
+    applied: plan.preview !== null,
+    allowedModels: plan.allowedModels,
+    reason: plan.reason,
   };
 }
 
@@ -279,18 +300,23 @@ function generationFromCall(
 async function executePlan(
   request: EvaluationRequest,
   plan: ExecutionPlan,
-  applied: boolean,
   options: PipelineOptions,
 ): Promise<PipelineExecution> {
   const started = performance.now();
   if (plan.kind === "reject") {
-    return rejectedExecution(request, plan, applied, started);
+    return rejectedExecution(request, plan, started);
   }
   // Freeze estimates before execution; observed judgments are never routing inputs.
   const qualitySnapshot = litellmProfiles().map((m) => ({
-    id: m.id,
+    model: m.id,
     quality: m.quality[request.task],
   }));
+  const policy = policyForPlan(request, plan);
+  policy.qualitySnapshot = qualitySnapshot;
+  policy.predictionTiming = plan.preview
+    ? "before-generation"
+    : "pre-generation-snapshot-post-gateway-selection";
+  await options.onPlanned?.(policy, plan.reservedCostUsd);
   const call = await completeLiteLLM({
     model: plan.requestedModel,
     prompt: request.prompt,
@@ -304,18 +330,12 @@ async function executePlan(
   return {
     generation,
     policy: {
+      ...policy,
       predictedQuality:
-        plan.preview?.selected?.estimatedQuality ??
-        qualitySnapshot.find((m) => m.id === generation.selectedModel)
+        policy.predictedQuality ??
+        qualitySnapshot.find((m) => m.model === generation.selectedModel)
           ?.quality ??
         null,
-      classification:
-        request.importanceMode === "inferred"
-          ? classifyTask(request.prompt)
-          : undefined,
-      applied,
-      allowedModels: plan.allowedModels,
-      reason: plan.reason,
     },
   };
 }
@@ -324,12 +344,12 @@ export function runBaseline(
   request: EvaluationRequest,
   options: PipelineOptions = {},
 ): Promise<PipelineExecution> {
-  return executePlan(request, planBaseline(request), false, options);
+  return executePlan(request, planBaseline(request), options);
 }
 
 export function runOrchestra(
   request: EvaluationRequest,
   options: PipelineOptions = {},
 ): Promise<PipelineExecution> {
-  return executePlan(request, planOrchestra(request), true, options);
+  return executePlan(request, planOrchestra(request), options);
 }

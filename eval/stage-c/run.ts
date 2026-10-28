@@ -1,8 +1,22 @@
+import { createHash } from "node:crypto";
+import { timeoutMs } from "../shared/timeout";
+import {
+  activePool,
+  litellmProfiles,
+  EVAL_OUTPUT_TOKEN_CAP,
+  EVAL_SIMULATED_DATE,
+  estimatedRequestCost,
+} from "../shared/model-pool";
+import { DEFAULT_COMPANY_POLICY } from "../../lib/policy";
 import { classifyTask } from "../../lib/classification";
 import { stageCConfig, stageCPath, VARIANTS } from "./config";
-import { planBaseline, planOrchestra } from "../shared/pipelines";
+import {
+  planBaseline,
+  planOrchestra,
+  policyForPlan,
+} from "../shared/pipelines";
 import { summarizeStageC } from "./report";
-import { restoreCheckpoint } from "./checkpoint";
+import { assertNoPendingAttempt, restoreCheckpoint } from "./checkpoint";
 import { mkdir } from "node:fs/promises";
 import { readCheckpoint, writeCheckpoint } from "../shared/checkpoint-io";
 import { buildStageCWorkload } from "./workload";
@@ -39,12 +53,15 @@ interface SavedResults {
   budgetUsd: number;
   workloadSize: number;
   records: StageCRecord[];
+  routingFingerprint?: string;
+  pendingAttempt?: unknown;
 }
 
 async function loadResults(
   path: string,
   mode: string,
   plannedSize: number,
+  routingFingerprint: string,
 ): Promise<StageCRecord[]> {
   const parsed = await readCheckpoint<SavedResults>(path);
   if (parsed === null) return [];
@@ -58,6 +75,12 @@ async function loadResults(
       "Saved Stage C configuration mismatch. Refusing to mix mock and real results or a different request limit.",
     );
   }
+  if (
+    parsed.routingFingerprint &&
+    parsed.routingFingerprint !== routingFingerprint
+  )
+    throw new Error("Routing configuration changed; use a new STAGE_C_RUN_ID.");
+  assertNoPendingAttempt(parsed);
   return parsed.records;
 }
 
@@ -71,7 +94,40 @@ async function main() {
 
   const fullWorkload = buildStageCWorkload();
   const workload = limit === null ? fullWorkload : fullWorkload.slice(0, limit);
-  const existing = await loadResults(output, mode, workload.length);
+  const profiles = litellmProfiles();
+  if (
+    activePool().id === "ollama" &&
+    profiles.some(
+      (m) =>
+        Object.values(m.qualitySampleCounts ?? {}).length !== 4 ||
+        Object.values(m.qualitySampleCounts ?? {}).some((n) => n < 1) ||
+        m.source !== "measured",
+    )
+  )
+    throw new Error(
+      "Stage C Ollama requires the measured calibration file for every model and task.",
+    );
+  timeoutMs("LITELLM_TIMEOUT_MS", 600_000);
+  const routingFingerprint = createHash("sha256")
+    .update(
+      JSON.stringify({
+        pool: activePool(),
+        profiles,
+        workload,
+        outputCap: EVAL_OUTPUT_TOKEN_CAP,
+        date: EVAL_SIMULATED_DATE,
+        policy: DEFAULT_COMPANY_POLICY,
+        classifier: "prompt-rules-v1",
+      }),
+    )
+    .digest("hex");
+  const existing = await loadResults(
+    output,
+    mode,
+    workload.length,
+    routingFingerprint,
+  );
+  let pendingAttempt: unknown = null;
   const records: StageCRecord[] = [...existing];
 
   async function save() {
@@ -82,6 +138,8 @@ async function main() {
       workloadSize: workload.length,
       updatedAt: new Date().toISOString(),
       records,
+      routingFingerprint,
+      pendingAttempt,
     });
   }
 
@@ -92,9 +150,20 @@ async function main() {
     (v) => stageCConfig().variant === "all" || stageCConfig().variant === v,
   )) {
     const system = variant === "baseline" ? "baseline" : "orchestra";
-    const adapter = new IntegratedEvaluationAdapter(
-      system,
-      system === "baseline" ? runBaseline : runOrchestra,
+    const adapter = new IntegratedEvaluationAdapter(system, (request) =>
+      (system === "baseline" ? runBaseline : runOrchestra)(request, {
+        onPlanned: async (policy, reservedCostUsd) => {
+          pendingAttempt = {
+            scenarioId: request.scenarioId,
+            requestId: request.id,
+            stateBefore: request.organizationState,
+            policy,
+            reservedCostUsd,
+            plannedAt: new Date().toISOString(),
+          };
+          await save();
+        },
+      }),
     );
     const previous = existing
       .filter((record) => record.variant === variant)
@@ -124,7 +193,7 @@ async function main() {
       variant,
     );
     console.log(
-      `${adapter.name}: resuming from ${previous.length}/${workload.length}`,
+      `${variant}: resuming from ${previous.length}/${workload.length}`,
     );
 
     for (let i = previous.length; i < workload.length; i++) {
@@ -158,27 +227,45 @@ async function main() {
               const result = await new MockEvaluationAdapter(system).execute(
                 request,
               );
-              result.policy = {
-                applied: system === "orchestra",
-                allowedModels: plan.allowedModels,
-                reason: plan.reason,
-                predictedQuality:
-                  plan.preview?.selected?.estimatedQuality ?? null,
-                classification:
-                  variant === "orchestra-inferred"
-                    ? classifyTask(item.prompt)
-                    : undefined,
-              };
-              result.generation.selectedModel =
+              result.policy = policyForPlan(request, plan);
+              const model =
+                plan.preview?.selected?.model.id ??
+                activePool().models[1].alias;
+              const snapshot = profiles.map((p) => ({
+                model: p.id,
+                quality: p.quality[item.task],
+              }));
+              result.policy.qualitySnapshot = snapshot;
+              result.policy.predictionTiming = plan.preview
+                ? "before-generation"
+                : "pre-generation-snapshot-post-gateway-selection";
+              result.policy.predictedQuality =
                 plan.kind === "call"
-                  ? (plan.preview?.selected?.model.id ??
-                    result.generation.selectedModel)
+                  ? snapshot.find((p) => p.model === model)!.quality
                   : null;
+              result.generation.selectedModel =
+                plan.kind === "call" ? model : null;
+              const priced = activePool().models.find(
+                (m) => m.alias === model,
+              )!;
+              Object.assign(result.generation, {
+                outcome: "completed",
+                providerContacted: false,
+                attempts: 0,
+                outputTokenCap: EVAL_OUTPUT_TOKEN_CAP,
+                costBasis: "estimated",
+                reservedCostUsd:
+                  plan.kind === "call" ? plan.reservedCostUsd : 0,
+                costUsd: estimatedRequestCost(priced, 100, 50),
+                requestedModel:
+                  plan.kind === "call" ? plan.requestedModel : null,
+              });
               if (plan.kind === "reject")
                 Object.assign(result.generation, {
                   success: false,
                   response: null,
                   costUsd: 0,
+                  costBasis: "none",
                   outcome: "rejected",
                   error: plan.reason,
                 });
@@ -203,7 +290,11 @@ async function main() {
           unresolvedCostMessage(`${adapter.name} request ${i + 1}`),
         );
       }
-      if (!result.generation.success) {
+      if (result.generation.outcome === "rejected") {
+        console.log(
+          `Policy rejection: ${request.id}. ${result.policy?.reason ?? result.generation.error}`,
+        );
+      } else if (!result.generation.success) {
         console.warn(
           `Generation failed: ${request.id}. Reported cost: $${cost.toFixed(6)}. Error: ${result.generation.error ?? "unknown"}`,
         );
@@ -215,6 +306,7 @@ async function main() {
         budgetUsedFraction: stateAfter.budgetUsedFraction,
       };
       records.push({ variant, sequenceIndex: i, result });
+      pendingAttempt = null;
       await save();
       if ((i + 1) % 25 === 0) {
         console.log(

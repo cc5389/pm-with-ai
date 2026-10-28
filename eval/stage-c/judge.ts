@@ -4,8 +4,8 @@ import { createHash } from "node:crypto";
 import { mkdir } from "node:fs/promises";
 import { readCheckpoint, writeCheckpoint } from "../shared/checkpoint-io";
 import type { QualityJudgment } from "../shared/judge";
-import type { EvaluationResult, EvaluationSystem } from "../shared/pipeline";
-import { resultsPath } from "../shared/run-mode";
+import type { EvaluationSystem } from "../shared/pipeline";
+import { activePool } from "../shared/model-pool";
 import { buildStageCWorkload } from "./workload";
 
 const MODE =
@@ -43,7 +43,16 @@ async function main() {
         "Run this script with EVAL_MODE=real after a real Stage C run.",
     );
   }
-  const { judgeResponse } = await import("../shared/judge");
+  const { judgeResponse, judgeConfig } = await import("../shared/judge");
+  const config = judgeConfig();
+  if (
+    activePool().id === "ollama" &&
+    (!config.local || !/qwen/i.test(config.model))
+  ) {
+    throw new Error(
+      "Stage C Ollama judging requires a local Qwen judge. Set JUDGE_BASE_URL=http://127.0.0.1:11434/v1 and JUDGE_MODEL=qwen3.5-judge.",
+    );
+  }
   await mkdir("eval/results/stage-c", { recursive: true });
 
   const saved = await readCheckpoint<SavedResults>(INPUT);

@@ -91,3 +91,13 @@ export function restoreCheckpoint(
 
   return tracker;
 }
+
+/** An interrupted attempt may have reached the provider; never send it again implicitly. */
+export function assertNoPendingAttempt(saved: {
+  pendingAttempt?: unknown;
+}): void {
+  if (saved.pendingAttempt)
+    throw new Error(
+      "An interrupted provider attempt is saved. Do not retry automatically: reconcile its reservation and provider outcome before resuming, or use a new run ID for a separate experiment.",
+    );
+}

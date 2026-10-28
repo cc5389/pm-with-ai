@@ -22,7 +22,7 @@ ollama pull qwen3.5:4b
 ollama create qwen3.5-judge -f eval/litellm/judge.Modelfile
 ```
 
-`qwen3.5-judge` is `qwen3.5:4b` with a 16k context and shares its weights. The judge thinks before it answers, and with Ollama's default 4096-token context the thinking can fill the window and return an empty verdict.
+`qwen3.5-judge` is `qwen3.5:4b` with a 16k context and shares its weights. Stage C disables thinking on every local judging attempt via `reasoning_effort: "none"`. The larger context leaves room for the rubric, answer, and JSON verdict.
 
 Start the server so that only one model is loaded at a time:
 
@@ -37,7 +37,8 @@ On a 16 GB card the three Gemma models do not fit at once: 12b takes about 8.7 G
 ```sh
 python3 -m venv .venv
 .venv/bin/pip install 'litellm[proxy]'
-export LITELLM_MASTER_KEY=choose-a-local-password
+# Generate a private key once, then store it in ignored .env.local for the client.
+export LITELLM_MASTER_KEY="$(openssl rand -hex 32)"
 .venv/bin/litellm --config eval/litellm/ollama.yaml --host 127.0.0.1 --port 4000
 ```
 
@@ -48,10 +49,25 @@ Put these lines in `.env.local`, using the same `LITELLM_MASTER_KEY`:
 ```sh
 ORCHESTRA_POOL=ollama
 LITELLM_URL=http://127.0.0.1:4000/v1/chat/completions
-LITELLM_MASTER_KEY=choose-a-local-password
+LITELLM_MASTER_KEY=<same-private-value-as-the-gateway>
 JUDGE_BASE_URL=http://127.0.0.1:11434/v1
 JUDGE_MODEL=qwen3.5-judge
+JUDGE_TIMEOUT_MS=600000
+LITELLM_TIMEOUT_MS=600000
+ORCHESTRA_CALIBRATION_PATH=eval/results/calibration/ollama-quality.json
 ```
+
+`.env.local` is ignored by Git. The LiteLLM server reads `general_settings.master_key`
+from `LITELLM_MASTER_KEY`; the evaluation client sends the same value as its bearer
+credential. Setting a key in only one process, or generating a different key for each,
+causes authentication failures. Node evaluation scripts explicitly load `.env.local`
+with `--env-file`; the gateway needs the key in its own process environment.
+
+Client and judge timeouts are positive integer milliseconds, defaulting to 600,000.
+The gateway's per-model `timeout: 600` values in `eval/litellm/ollama.yaml` are in
+seconds and can be increased there for slower inference. If increasing the server
+limit, increase the client's `LITELLM_TIMEOUT_MS` too. A timeout may have reached
+Ollama; it is recorded as an unresolved reservation rather than a free retry.
 
 `ORCHESTRA_POOL` turns gateway mode on. Without it, the app never contacts a gateway.
 
@@ -77,43 +93,53 @@ Generation uses a 1024-token output cap (`EVAL_OUTPUT_TOKEN_CAP`). Every gateway
 
 Stage B/C use a quality floor of 0.75. If calibration scores a model below that floor for a task, Orchestra will not choose it for that task.
 
-## 6. Stage B and C
+## 6. Stage C on the RTX 5080
 
-Run everything, from calibration to the metrics report, with one command:
-
-```sh
-bash eval/run-ollama-study.sh
-```
-
-It takes about two hours on an RTX 5080. Every step resumes from its checkpoint, so rerun the script after an interruption. The individual steps are:
+Use the existing committed `eval/results/calibration/ollama-quality.json` for this
+comparison. Do not rerun calibration or change the measured scores to avoid
+rejections. Calibration was measured on another run; hardware and model-loading
+latency can differ on your machine.
 
 ```sh
-# Stage B: 60 scenarios × 2 systems
-EVAL_EXECUTION=real node --env-file=.env.local --import tsx eval/stage-b/run.ts
-EVAL_EXECUTION=real node --env-file=.env.local --import tsx eval/stage-b/evaluate.ts
-EVAL_MODE=real node --env-file=.env.local --import tsx eval/stage-b/judge.ts
-
-# Stage C: 200 sequential requests × 2 systems
-EVAL_EXECUTION=real node --env-file=.env.local --import tsx eval/stage-c/run.ts
-EVAL_EXECUTION=real node --env-file=.env.local --import tsx eval/stage-c/validate.ts
-EVAL_MODE=real node --env-file=.env.local --import tsx eval/stage-c/judge.ts
-
-# Metrics: budget compliance, exhaustion timing, quality over time,
-# model choice by budget state, and efficiency
-EVAL_EXECUTION=real node --env-file=.env.local --import tsx eval/report.ts
+export EVAL_EXECUTION=real
+export EVAL_LIMIT=200
+export STAGE_C_BUDGET_USD=0.10
+export STAGE_C_VARIANT=all
+export STAGE_C_RUN_ID=rtx5080-stage-c-001
+node --env-file=.env.local --import tsx eval/stage-c/run.ts
+node --env-file=.env.local --import tsx eval/stage-c/validate.ts
+node --env-file=.env.local --import tsx eval/stage-c/judge.ts
 ```
 
-The report is saved to `eval/results/stage-c/real-ollama-report.json`.
+This runs 200 requests per variant: `baseline`, `orchestra-fixed`, and
+`orchestra-inferred`. Each has its own $0.10 shadow budget. The 0.75 floor and
+1,024-token output cap stay fixed. Use a new run ID for a fresh experiment; reuse
+one only to resume. Files include mode, pool, budget, variant selection, and run ID.
+For this example the report is
+`eval/results/stage-c/real-ollama-v2-budget-0.1-all-rtx5080-stage-c-001-report.json`.
+No deletion or moving of original experiments is required. Different workload limits
+cannot resume the same checkpoint. Recorded configuration fingerprints prevent
+mixing changed workload/calibration/profile settings in a new checkpoint.
 
-Stage C's budget is $0.40 for 200 requests. It was $1. With answers near 300 words, 200 requests on 12b cost about $0.78, so $1 never constrained either system.
+The first five coding prompts are expected to be rejected by inferred importance:
+medium importance gives a $0.0015 allowance at zero spend, Gemma 4B costs about
+$0.00165 at the full output cap, and Gemma 1B's measured coding quality is 0.70.
+Fixed high importance gives a $0.002 allowance and can admit 4B initially. This is
+a policy outcome to report, not a provider failure or a reason to relax constraints.
+The full workload includes other categories, so the five-request outcome does not
+imply the entire inferred run will be rejected.
 
-The local pool needs no `EVAL_LIMIT`, because it cannot incur charges. Every script resumes from its checkpoint.
+Reports distinguish successful generations, provider failures, policy rejections,
+unresolved reservations, judged-response pass rate, and overall successful-service
+rate (quality-passing responses divided by all submitted requests). The latter is
+null until every successful generation has a judgment; all-rejected variants have
+zero service rate and null judged-response pass rate. See `eval/stage-c/README.md`
+for prediction timing, checkpoint recovery, and report denominators.
 
-Stage C refuses to resume a file made with a different `EVAL_LIMIT`. Delete `eval/results/stage-c/real-ollama-results.json` after a smoke test before you start the full run. The Stage C judge reuses one judgment for identical answers to repeated prompts.
-
-The `real-ollama-*` files under `eval/results/stage-b/` and `eval/results/stage-c/` are committed as a reference run (Stage C finished on 2026-10-22). Because every script resumes from those files, a fresh run first needs them deleted or moved: `rm eval/results/stage-{b,c}/real-ollama-*`.
-
-Changing the pool, calibration, or policy changes the experiment, so start from fresh result files. To measure variance, repeat the full run two or three times. LiteLLM's adaptive router learns from earlier requests, so baseline choices can differ between runs.
+Stage B and the historical `eval/report.ts` retain their legacy output paths.
+`eval/run-ollama-study.sh` is the broader legacy workflow: it includes calibration
+and Stage B. Do not use it for this frozen-calibration Stage C handoff or use its
+legacy report to summarize v2 variants. Preserve all archived reference results.
 
 ## 7. Request lab
 
@@ -122,5 +148,5 @@ Start the app (`npm run dev`) and choose **Execution mode → Gateway models**. 
 ## Known limits
 
 - The baseline `smart-router` uses LiteLLM's adaptive router. It has not yet been verified against Ollama models; the smoke test is the first check.
-- `qwen3.5-judge` is a thinking model, so judging is slower than generation. A small local judge is weaker than a hosted one and may still favor some answer styles.
+- Local Qwen judging runs with thinking disabled. A small local judge can still be noisy or favor particular answer styles; it is not a human ground truth.
 - Measured latency includes model swaps if Ollama has to reload a model. Calibration sends one warm-up request per model before it measures.
