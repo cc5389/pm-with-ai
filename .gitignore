@@ -14,3 +14,10 @@ test-results/
 eval/results/**/*.tmp
 eval/results/stage-b/real-*
 eval/results/stage-c/real-*
+!eval/results/stage-b/real-ollama-*
+!eval/results/stage-c/real-ollama-*
+
+# Generated Stage C v2 experiments (including failed local pilots); keep local.
+eval/results/stage-c/*-v2-*.json
+eval/results/stage-c/backup/
+eval/results/stage-c/mock-results.json

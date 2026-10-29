@@ -1,8 +1,14 @@
+import { timeoutMs } from "./timeout";
 import { allowProviderRetry } from "./accounting";
 import { calculateGenerationCost } from "./pricing";
-import { pricingModelId } from "./model-pool";
+import {
+  ANSWER_LENGTH_INSTRUCTION,
+  activePool,
+  pricingModelId,
+} from "./model-pool";
 
-export const LITELLM_TIMEOUT_MS = 120_000;
+/** Ten minutes accommodates model loading and slower local inference. */
+export const LITELLM_TIMEOUT_MS = 600_000;
 
 const DEFAULT_URL = "http://127.0.0.1:4000/v1/chat/completions";
 
@@ -133,8 +139,11 @@ function readCost(
   pricedModel: string | null,
   inputTokens: number | null,
   outputTokens: number | null,
+  trustHeader: boolean,
 ): { costUsd: number | null; costBasis: "actual" | "estimated" | "unknown" } {
-  const header = response.headers.get("x-litellm-response-cost");
+  const header = trustHeader
+    ? response.headers.get("x-litellm-response-cost")
+    : null;
   if (header !== null && header.trim() !== "") {
     const value = Number(header);
     if (Number.isFinite(value) && value >= 0) {
@@ -157,7 +166,8 @@ function readCost(
 function returnedModel(response: Response, requested: string): string | null {
   const named = response.headers.get("x-litellm-model-name");
   const adaptive = response.headers.get("x-litellm-adaptive-router-model");
-  const value = requested === "smart-router" ? (adaptive ?? named) : (named ?? adaptive);
+  const value =
+    requested === "smart-router" ? (adaptive ?? named) : (named ?? adaptive);
   return value && value.trim() ? value.trim() : null;
 }
 
@@ -178,7 +188,12 @@ export async function completeLiteLLM(options: {
       "The output token cap must be a positive integer.",
     );
   }
-  const apiKey = (options.apiKey ?? process.env.LITELLM_MASTER_KEY ?? "").trim();
+  const requestTimeoutMs = timeoutMs("LITELLM_TIMEOUT_MS", LITELLM_TIMEOUT_MS);
+  const apiKey = (
+    options.apiKey ??
+    process.env.LITELLM_MASTER_KEY ??
+    ""
+  ).trim();
   if (!apiKey) {
     throw new LiteLLMConfigurationError(
       "LITELLM_MASTER_KEY is not configured.",
@@ -192,10 +207,7 @@ export async function completeLiteLLM(options: {
   let attempts = 0;
   let providerContacted = false;
 
-  const fail = (
-    error: unknown,
-    contacted: boolean,
-  ): LiteLLMCompletion => ({
+  const fail = (error: unknown, contacted: boolean): LiteLLMCompletion => ({
     success: false,
     outcome: "failed",
     requestedModel: options.model,
@@ -226,11 +238,14 @@ export async function completeLiteLLM(options: {
         },
         body: JSON.stringify({
           model: options.model,
-          messages: [{ role: "user", content: options.prompt }],
+          messages: [
+            { role: "system", content: ANSWER_LENGTH_INSTRUCTION },
+            { role: "user", content: options.prompt },
+          ],
           max_tokens: options.maxTokens,
           temperature: 0,
         }),
-        signal: AbortSignal.timeout(LITELLM_TIMEOUT_MS),
+        signal: AbortSignal.timeout(requestTimeoutMs),
       });
       providerContacted = true;
       const payload = readPayload(await response.json().catch(() => ({})));
@@ -241,6 +256,7 @@ export async function completeLiteLLM(options: {
         priced,
         payload.inputTokens,
         payload.outputTokens,
+        !activePool().shadowPriced,
       );
       const success = response.ok && typeof payload.content === "string";
       const error = success

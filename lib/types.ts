@@ -1,6 +1,6 @@
 export type Task = "coding" | "analysis" | "writing" | "qa";
 export type Importance = "low" | "medium" | "high";
-export type Mode = "simulation" | "local";
+export type Mode = "simulation" | "local" | "gateway";
 export type Weights = { quality: number; cost: number; latency: number };
 export type CompanyPolicyRules = {
   lowBalanceThreshold: number;
@@ -29,6 +29,7 @@ export type RequestInput = {
   prompt: string;
   task: Task;
   importance: Importance;
+  importanceMode?: "fixed" | "inferred";
   userId: string;
   qualityFloor: number;
   latencyTarget: number;
@@ -56,6 +57,8 @@ export type ModelProfile = {
   sampleCount: number;
   qualitySampleCounts?: Record<Task, number>;
   local: boolean;
+  /** Served through the LiteLLM gateway; only eligible in gateway mode. */
+  gateway?: boolean;
 };
 export type BudgetSnapshot = {
   monthlyBudget: number;
@@ -152,6 +155,17 @@ export type RunRecord = {
   outputTokens: number;
   rating: Rating | null;
   error: string | null;
+  /** Present on gateway runs. */
+  gateway?: {
+    pool: string;
+    /** Costs are shadow prices; nothing was billed. */
+    shadowPriced: boolean;
+    requestedModel: string;
+    returnedModel: string | null;
+    costBasis: "actual" | "estimated" | "none" | "unresolved";
+    reservedCost: number;
+    attempts: number;
+  };
 };
 export type Workspace = {
   settings: Settings;
@@ -164,6 +178,8 @@ export type Workspace = {
   localAvailable: boolean;
   localModel: string | null;
   localQualityReady: boolean;
+  gatewayAvailable: boolean;
+  gatewayPool: string | null;
 };
 export type BudgetContext = {
   spent: number;

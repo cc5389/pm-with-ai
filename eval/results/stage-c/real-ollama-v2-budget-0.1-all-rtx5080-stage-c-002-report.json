@@ -1,0 +1,4397 @@
+{
+  "note": "Mock runs contain no observed quality evidence. Quality rates use judged successful responses; paired means exclude unavailable predictions. Judge costs are outside routing budgets.",
+  "trajectories": {
+    "baseline": {
+      "modelCounts": {
+        "gemma3-12b": 10,
+        "gemma3-4b": 64,
+        "gemma3-1b": 7
+      },
+      "modelSwitches": 25,
+      "firstBudgetRejection": 81,
+      "cumulativeSpend": [
+        {
+          "sequenceIndex": 0,
+          "model": "gemma3-12b",
+          "spendUsd": 0.005166,
+          "utilization": 0.05165999999999999
+        },
+        {
+          "sequenceIndex": 1,
+          "model": "gemma3-4b",
+          "spendUsd": 0.006128,
+          "utilization": 0.061279999999999994
+        },
+        {
+          "sequenceIndex": 2,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0069676,
+          "utilization": 0.069676
+        },
+        {
+          "sequenceIndex": 3,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0072081,
+          "utilization": 0.07208099999999999
+        },
+        {
+          "sequenceIndex": 4,
+          "model": "gemma3-4b",
+          "spendUsd": 0.008486500000000001,
+          "utilization": 0.08486500000000001
+        },
+        {
+          "sequenceIndex": 5,
+          "model": "gemma3-4b",
+          "spendUsd": 0.009354500000000002,
+          "utilization": 0.09354500000000002
+        },
+        {
+          "sequenceIndex": 6,
+          "model": "gemma3-4b",
+          "spendUsd": 0.010046500000000002,
+          "utilization": 0.10046500000000001
+        },
+        {
+          "sequenceIndex": 7,
+          "model": "gemma3-4b",
+          "spendUsd": 0.010765700000000001,
+          "utilization": 0.107657
+        },
+        {
+          "sequenceIndex": 8,
+          "model": "gemma3-4b",
+          "spendUsd": 0.011382900000000001,
+          "utilization": 0.11382900000000001
+        },
+        {
+          "sequenceIndex": 9,
+          "model": "gemma3-4b",
+          "spendUsd": 0.012164900000000001,
+          "utilization": 0.12164900000000001
+        },
+        {
+          "sequenceIndex": 10,
+          "model": "gemma3-4b",
+          "spendUsd": 0.012448100000000002,
+          "utilization": 0.12448100000000001
+        },
+        {
+          "sequenceIndex": 11,
+          "model": "gemma3-4b",
+          "spendUsd": 0.013054100000000003,
+          "utilization": 0.13054100000000002
+        },
+        {
+          "sequenceIndex": 12,
+          "model": "gemma3-1b",
+          "spendUsd": 0.013197100000000003,
+          "utilization": 0.13197100000000003
+        },
+        {
+          "sequenceIndex": 13,
+          "model": "gemma3-4b",
+          "spendUsd": 0.013948300000000004,
+          "utilization": 0.13948300000000002
+        },
+        {
+          "sequenceIndex": 14,
+          "model": "gemma3-4b",
+          "spendUsd": 0.014816300000000004,
+          "utilization": 0.14816300000000004
+        },
+        {
+          "sequenceIndex": 15,
+          "model": "gemma3-4b",
+          "spendUsd": 0.015173500000000005,
+          "utilization": 0.15173500000000004
+        },
+        {
+          "sequenceIndex": 16,
+          "model": "gemma3-4b",
+          "spendUsd": 0.015899900000000005,
+          "utilization": 0.15899900000000003
+        },
+        {
+          "sequenceIndex": 17,
+          "model": "gemma3-4b",
+          "spendUsd": 0.016325100000000006,
+          "utilization": 0.16325100000000003
+        },
+        {
+          "sequenceIndex": 18,
+          "model": "gemma3-4b",
+          "spendUsd": 0.016919900000000005,
+          "utilization": 0.16919900000000004
+        },
+        {
+          "sequenceIndex": 19,
+          "model": "gemma3-4b",
+          "spendUsd": 0.017337100000000005,
+          "utilization": 0.17337100000000003
+        },
+        {
+          "sequenceIndex": 20,
+          "model": "gemma3-12b",
+          "spendUsd": 0.022503100000000005,
+          "utilization": 0.22503100000000004
+        },
+        {
+          "sequenceIndex": 21,
+          "model": "gemma3-12b",
+          "spendUsd": 0.026713100000000004,
+          "utilization": 0.267131
+        },
+        {
+          "sequenceIndex": 22,
+          "model": "gemma3-4b",
+          "spendUsd": 0.027552700000000003,
+          "utilization": 0.275527
+        },
+        {
+          "sequenceIndex": 23,
+          "model": "gemma3-12b",
+          "spendUsd": 0.032518700000000005,
+          "utilization": 0.325187
+        },
+        {
+          "sequenceIndex": 24,
+          "model": "gemma3-4b",
+          "spendUsd": 0.033797100000000004,
+          "utilization": 0.337971
+        },
+        {
+          "sequenceIndex": 25,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0339667,
+          "utilization": 0.339667
+        },
+        {
+          "sequenceIndex": 26,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0346587,
+          "utilization": 0.346587
+        },
+        {
+          "sequenceIndex": 27,
+          "model": "gemma3-4b",
+          "spendUsd": 0.035377900000000004,
+          "utilization": 0.353779
+        },
+        {
+          "sequenceIndex": 28,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0359951,
+          "utilization": 0.359951
+        },
+        {
+          "sequenceIndex": 29,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0362048,
+          "utilization": 0.362048
+        },
+        {
+          "sequenceIndex": 30,
+          "model": "gemma3-4b",
+          "spendUsd": 0.036488,
+          "utilization": 0.36488
+        },
+        {
+          "sequenceIndex": 31,
+          "model": "gemma3-4b",
+          "spendUsd": 0.037094,
+          "utilization": 0.37094
+        },
+        {
+          "sequenceIndex": 32,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0375676,
+          "utilization": 0.37567599999999995
+        },
+        {
+          "sequenceIndex": 33,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0377472,
+          "utilization": 0.377472
+        },
+        {
+          "sequenceIndex": 34,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0378548,
+          "utilization": 0.378548
+        },
+        {
+          "sequenceIndex": 35,
+          "model": "gemma3-4b",
+          "spendUsd": 0.038212,
+          "utilization": 0.38212
+        },
+        {
+          "sequenceIndex": 36,
+          "model": "gemma3-4b",
+          "spendUsd": 0.038938400000000005,
+          "utilization": 0.389384
+        },
+        {
+          "sequenceIndex": 37,
+          "model": "gemma3-4b",
+          "spendUsd": 0.039363600000000006,
+          "utilization": 0.39363600000000004
+        },
+        {
+          "sequenceIndex": 38,
+          "model": "gemma3-4b",
+          "spendUsd": 0.039958400000000005,
+          "utilization": 0.39958400000000005
+        },
+        {
+          "sequenceIndex": 39,
+          "model": "gemma3-4b",
+          "spendUsd": 0.040375600000000005,
+          "utilization": 0.403756
+        },
+        {
+          "sequenceIndex": 40,
+          "model": "gemma3-12b",
+          "spendUsd": 0.0455416,
+          "utilization": 0.455416
+        },
+        {
+          "sequenceIndex": 41,
+          "model": "gemma3-12b",
+          "spendUsd": 0.0497516,
+          "utilization": 0.49751599999999996
+        },
+        {
+          "sequenceIndex": 42,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0505912,
+          "utilization": 0.505912
+        },
+        {
+          "sequenceIndex": 43,
+          "model": "gemma3-12b",
+          "spendUsd": 0.0555572,
+          "utilization": 0.555572
+        },
+        {
+          "sequenceIndex": 44,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0568356,
+          "utilization": 0.568356
+        },
+        {
+          "sequenceIndex": 45,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0577036,
+          "utilization": 0.577036
+        },
+        {
+          "sequenceIndex": 46,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0583956,
+          "utilization": 0.5839559999999999
+        },
+        {
+          "sequenceIndex": 47,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0591148,
+          "utilization": 0.591148
+        },
+        {
+          "sequenceIndex": 48,
+          "model": "gemma3-4b",
+          "spendUsd": 0.059732,
+          "utilization": 0.59732
+        },
+        {
+          "sequenceIndex": 49,
+          "model": "gemma3-4b",
+          "spendUsd": 0.060514,
+          "utilization": 0.6051399999999999
+        },
+        {
+          "sequenceIndex": 50,
+          "model": "gemma3-4b",
+          "spendUsd": 0.060797199999999996,
+          "utilization": 0.607972
+        },
+        {
+          "sequenceIndex": 51,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0614032,
+          "utilization": 0.6140319999999999
+        },
+        {
+          "sequenceIndex": 52,
+          "model": "gemma3-4b",
+          "spendUsd": 0.061876799999999996,
+          "utilization": 0.6187679999999999
+        },
+        {
+          "sequenceIndex": 53,
+          "model": "gemma3-4b",
+          "spendUsd": 0.06262799999999999,
+          "utilization": 0.6262799999999998
+        },
+        {
+          "sequenceIndex": 54,
+          "model": "gemma3-4b",
+          "spendUsd": 0.06349599999999998,
+          "utilization": 0.6349599999999997
+        },
+        {
+          "sequenceIndex": 55,
+          "model": "gemma3-1b",
+          "spendUsd": 0.06355629999999998,
+          "utilization": 0.6355629999999998
+        },
+        {
+          "sequenceIndex": 56,
+          "model": "gemma3-4b",
+          "spendUsd": 0.06428269999999998,
+          "utilization": 0.6428269999999998
+        },
+        {
+          "sequenceIndex": 57,
+          "model": "gemma3-4b",
+          "spendUsd": 0.06470789999999998,
+          "utilization": 0.6470789999999998
+        },
+        {
+          "sequenceIndex": 58,
+          "model": "gemma3-4b",
+          "spendUsd": 0.06530269999999999,
+          "utilization": 0.6530269999999999
+        },
+        {
+          "sequenceIndex": 59,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0657199,
+          "utilization": 0.657199
+        },
+        {
+          "sequenceIndex": 60,
+          "model": "gemma3-12b",
+          "spendUsd": 0.0708859,
+          "utilization": 0.708859
+        },
+        {
+          "sequenceIndex": 61,
+          "model": "gemma3-12b",
+          "spendUsd": 0.07509590000000001,
+          "utilization": 0.750959
+        },
+        {
+          "sequenceIndex": 62,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0759355,
+          "utilization": 0.759355
+        },
+        {
+          "sequenceIndex": 63,
+          "model": "gemma3-12b",
+          "spendUsd": 0.0809015,
+          "utilization": 0.8090149999999999
+        },
+        {
+          "sequenceIndex": 64,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0821799,
+          "utilization": 0.821799
+        },
+        {
+          "sequenceIndex": 65,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0830479,
+          "utilization": 0.8304789999999999
+        },
+        {
+          "sequenceIndex": 66,
+          "model": "gemma3-4b",
+          "spendUsd": 0.08373989999999999,
+          "utilization": 0.8373989999999999
+        },
+        {
+          "sequenceIndex": 67,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0844591,
+          "utilization": 0.8445909999999999
+        },
+        {
+          "sequenceIndex": 68,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0850763,
+          "utilization": 0.8507629999999999
+        },
+        {
+          "sequenceIndex": 69,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0858583,
+          "utilization": 0.858583
+        },
+        {
+          "sequenceIndex": 70,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0861415,
+          "utilization": 0.8614149999999999
+        },
+        {
+          "sequenceIndex": 71,
+          "model": "gemma3-4b",
+          "spendUsd": 0.08674749999999999,
+          "utilization": 0.8674749999999999
+        },
+        {
+          "sequenceIndex": 72,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0872211,
+          "utilization": 0.872211
+        },
+        {
+          "sequenceIndex": 73,
+          "model": "gemma3-4b",
+          "spendUsd": 0.08797229999999999,
+          "utilization": 0.8797229999999998
+        },
+        {
+          "sequenceIndex": 74,
+          "model": "gemma3-4b",
+          "spendUsd": 0.08884029999999998,
+          "utilization": 0.8884029999999998
+        },
+        {
+          "sequenceIndex": 75,
+          "model": "gemma3-4b",
+          "spendUsd": 0.08919749999999999,
+          "utilization": 0.8919749999999999
+        },
+        {
+          "sequenceIndex": 76,
+          "model": "gemma3-4b",
+          "spendUsd": 0.08992389999999999,
+          "utilization": 0.8992389999999998
+        },
+        {
+          "sequenceIndex": 77,
+          "model": "gemma3-4b",
+          "spendUsd": 0.09034909999999999,
+          "utilization": 0.9034909999999998
+        },
+        {
+          "sequenceIndex": 78,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0909439,
+          "utilization": 0.9094389999999999
+        },
+        {
+          "sequenceIndex": 79,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0913611,
+          "utilization": 0.913611
+        },
+        {
+          "sequenceIndex": 80,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 81,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 82,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 83,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 84,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 85,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 86,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 87,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 88,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 89,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 90,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 91,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 92,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 93,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 94,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 95,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 96,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 97,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 98,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 99,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 100,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 101,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 102,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 103,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 104,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 105,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 106,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 107,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 108,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 109,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 110,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 111,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 112,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 113,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 114,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 115,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 116,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 117,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 118,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 119,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 120,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 121,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 122,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 123,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 124,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 125,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 126,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 127,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 128,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 129,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 130,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 131,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 132,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 133,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 134,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 135,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 136,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 137,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 138,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 139,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 140,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 141,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 142,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 143,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 144,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 145,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 146,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 147,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 148,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 149,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 150,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 151,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 152,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 153,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 154,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 155,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 156,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 157,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 158,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 159,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 160,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 161,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 162,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 163,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 164,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 165,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 166,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 167,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 168,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 169,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 170,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 171,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 172,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 173,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 174,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 175,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 176,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 177,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 178,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 179,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 180,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 181,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 182,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 183,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 184,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 185,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 186,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 187,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 188,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 189,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 190,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 191,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 192,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 193,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 194,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 195,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 196,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 197,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 198,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        },
+        {
+          "sequenceIndex": 199,
+          "model": null,
+          "spendUsd": 0.0922343,
+          "utilization": 0.922343
+        }
+      ]
+    },
+    "orchestra-fixed": {
+      "modelCounts": {
+        "gemma3-4b": 20,
+        "gemma3-1b": 140
+      },
+      "modelSwitches": 3,
+      "firstBudgetRejection": 40,
+      "cumulativeSpend": [
+        {
+          "sequenceIndex": 0,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0008907999999999999,
+          "utilization": 0.008907999999999998
+        },
+        {
+          "sequenceIndex": 1,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0018528,
+          "utilization": 0.018528
+        },
+        {
+          "sequenceIndex": 2,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0026923999999999997,
+          "utilization": 0.026923999999999997
+        },
+        {
+          "sequenceIndex": 3,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0035623999999999994,
+          "utilization": 0.03562399999999999
+        },
+        {
+          "sequenceIndex": 4,
+          "model": "gemma3-4b",
+          "spendUsd": 0.004840799999999999,
+          "utilization": 0.04840799999999999
+        },
+        {
+          "sequenceIndex": 5,
+          "model": "gemma3-4b",
+          "spendUsd": 0.005708799999999999,
+          "utilization": 0.057087999999999986
+        },
+        {
+          "sequenceIndex": 6,
+          "model": "gemma3-4b",
+          "spendUsd": 0.006400799999999999,
+          "utilization": 0.06400799999999998
+        },
+        {
+          "sequenceIndex": 7,
+          "model": "gemma3-4b",
+          "spendUsd": 0.007119999999999999,
+          "utilization": 0.07119999999999999
+        },
+        {
+          "sequenceIndex": 8,
+          "model": "gemma3-4b",
+          "spendUsd": 0.007737199999999999,
+          "utilization": 0.07737199999999998
+        },
+        {
+          "sequenceIndex": 9,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0085192,
+          "utilization": 0.08519199999999999
+        },
+        {
+          "sequenceIndex": 10,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0085954,
+          "utilization": 0.08595399999999999
+        },
+        {
+          "sequenceIndex": 11,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0087487,
+          "utilization": 0.087487
+        },
+        {
+          "sequenceIndex": 12,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0088917,
+          "utilization": 0.088917
+        },
+        {
+          "sequenceIndex": 13,
+          "model": "gemma3-1b",
+          "spendUsd": 0.009071300000000001,
+          "utilization": 0.090713
+        },
+        {
+          "sequenceIndex": 14,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0091789,
+          "utilization": 0.091789
+        },
+        {
+          "sequenceIndex": 15,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0092392,
+          "utilization": 0.09239199999999999
+        },
+        {
+          "sequenceIndex": 16,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0094086,
+          "utilization": 0.09408599999999999
+        },
+        {
+          "sequenceIndex": 17,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0094743,
+          "utilization": 0.094743
+        },
+        {
+          "sequenceIndex": 18,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0096408,
+          "utilization": 0.096408
+        },
+        {
+          "sequenceIndex": 19,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0097217,
+          "utilization": 0.097217
+        },
+        {
+          "sequenceIndex": 20,
+          "model": "gemma3-4b",
+          "spendUsd": 0.010594899999999999,
+          "utilization": 0.10594899999999999
+        },
+        {
+          "sequenceIndex": 21,
+          "model": "gemma3-4b",
+          "spendUsd": 0.011556899999999998,
+          "utilization": 0.11556899999999998
+        },
+        {
+          "sequenceIndex": 22,
+          "model": "gemma3-4b",
+          "spendUsd": 0.012396499999999998,
+          "utilization": 0.12396499999999998
+        },
+        {
+          "sequenceIndex": 23,
+          "model": "gemma3-4b",
+          "spendUsd": 0.013266499999999997,
+          "utilization": 0.13266499999999995
+        },
+        {
+          "sequenceIndex": 24,
+          "model": "gemma3-4b",
+          "spendUsd": 0.014544899999999998,
+          "utilization": 0.14544899999999997
+        },
+        {
+          "sequenceIndex": 25,
+          "model": "gemma3-4b",
+          "spendUsd": 0.015412899999999998,
+          "utilization": 0.154129
+        },
+        {
+          "sequenceIndex": 26,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0161049,
+          "utilization": 0.16104899999999997
+        },
+        {
+          "sequenceIndex": 27,
+          "model": "gemma3-4b",
+          "spendUsd": 0.016824099999999998,
+          "utilization": 0.16824099999999997
+        },
+        {
+          "sequenceIndex": 28,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0174413,
+          "utilization": 0.17441299999999998
+        },
+        {
+          "sequenceIndex": 29,
+          "model": "gemma3-4b",
+          "spendUsd": 0.0182233,
+          "utilization": 0.182233
+        },
+        {
+          "sequenceIndex": 30,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0182995,
+          "utilization": 0.182995
+        },
+        {
+          "sequenceIndex": 31,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0184528,
+          "utilization": 0.18452799999999997
+        },
+        {
+          "sequenceIndex": 32,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0185958,
+          "utilization": 0.18595799999999998
+        },
+        {
+          "sequenceIndex": 33,
+          "model": "gemma3-1b",
+          "spendUsd": 0.018775399999999998,
+          "utilization": 0.18775399999999998
+        },
+        {
+          "sequenceIndex": 34,
+          "model": "gemma3-1b",
+          "spendUsd": 0.018882999999999997,
+          "utilization": 0.18882999999999997
+        },
+        {
+          "sequenceIndex": 35,
+          "model": "gemma3-1b",
+          "spendUsd": 0.018943299999999996,
+          "utilization": 0.18943299999999996
+        },
+        {
+          "sequenceIndex": 36,
+          "model": "gemma3-1b",
+          "spendUsd": 0.019112699999999996,
+          "utilization": 0.19112699999999996
+        },
+        {
+          "sequenceIndex": 37,
+          "model": "gemma3-1b",
+          "spendUsd": 0.019178399999999995,
+          "utilization": 0.19178399999999993
+        },
+        {
+          "sequenceIndex": 38,
+          "model": "gemma3-1b",
+          "spendUsd": 0.019344899999999995,
+          "utilization": 0.19344899999999993
+        },
+        {
+          "sequenceIndex": 39,
+          "model": "gemma3-1b",
+          "spendUsd": 0.019425799999999993,
+          "utilization": 0.19425799999999993
+        },
+        {
+          "sequenceIndex": 40,
+          "model": null,
+          "spendUsd": 0.019425799999999993,
+          "utilization": 0.19425799999999993
+        },
+        {
+          "sequenceIndex": 41,
+          "model": null,
+          "spendUsd": 0.019425799999999993,
+          "utilization": 0.19425799999999993
+        },
+        {
+          "sequenceIndex": 42,
+          "model": null,
+          "spendUsd": 0.019425799999999993,
+          "utilization": 0.19425799999999993
+        },
+        {
+          "sequenceIndex": 43,
+          "model": null,
+          "spendUsd": 0.019425799999999993,
+          "utilization": 0.19425799999999993
+        },
+        {
+          "sequenceIndex": 44,
+          "model": null,
+          "spendUsd": 0.019425799999999993,
+          "utilization": 0.19425799999999993
+        },
+        {
+          "sequenceIndex": 45,
+          "model": "gemma3-1b",
+          "spendUsd": 0.019595399999999992,
+          "utilization": 0.1959539999999999
+        },
+        {
+          "sequenceIndex": 46,
+          "model": "gemma3-1b",
+          "spendUsd": 0.01977019999999999,
+          "utilization": 0.1977019999999999
+        },
+        {
+          "sequenceIndex": 47,
+          "model": "gemma3-1b",
+          "spendUsd": 0.01990819999999999,
+          "utilization": 0.1990819999999999
+        },
+        {
+          "sequenceIndex": 48,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02007749999999999,
+          "utilization": 0.2007749999999999
+        },
+        {
+          "sequenceIndex": 49,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02028719999999999,
+          "utilization": 0.2028719999999999
+        },
+        {
+          "sequenceIndex": 50,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02036339999999999,
+          "utilization": 0.2036339999999999
+        },
+        {
+          "sequenceIndex": 51,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02051669999999999,
+          "utilization": 0.20516699999999988
+        },
+        {
+          "sequenceIndex": 52,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02065969999999999,
+          "utilization": 0.2065969999999999
+        },
+        {
+          "sequenceIndex": 53,
+          "model": "gemma3-1b",
+          "spendUsd": 0.020839299999999988,
+          "utilization": 0.20839299999999986
+        },
+        {
+          "sequenceIndex": 54,
+          "model": "gemma3-1b",
+          "spendUsd": 0.020946899999999987,
+          "utilization": 0.20946899999999985
+        },
+        {
+          "sequenceIndex": 55,
+          "model": "gemma3-1b",
+          "spendUsd": 0.021023599999999986,
+          "utilization": 0.21023599999999984
+        },
+        {
+          "sequenceIndex": 56,
+          "model": "gemma3-1b",
+          "spendUsd": 0.021192999999999986,
+          "utilization": 0.21192999999999984
+        },
+        {
+          "sequenceIndex": 57,
+          "model": "gemma3-1b",
+          "spendUsd": 0.021258699999999985,
+          "utilization": 0.21258699999999983
+        },
+        {
+          "sequenceIndex": 58,
+          "model": "gemma3-1b",
+          "spendUsd": 0.021425199999999985,
+          "utilization": 0.21425199999999983
+        },
+        {
+          "sequenceIndex": 59,
+          "model": "gemma3-1b",
+          "spendUsd": 0.021506099999999983,
+          "utilization": 0.2150609999999998
+        },
+        {
+          "sequenceIndex": 60,
+          "model": null,
+          "spendUsd": 0.021506099999999983,
+          "utilization": 0.2150609999999998
+        },
+        {
+          "sequenceIndex": 61,
+          "model": null,
+          "spendUsd": 0.021506099999999983,
+          "utilization": 0.2150609999999998
+        },
+        {
+          "sequenceIndex": 62,
+          "model": null,
+          "spendUsd": 0.021506099999999983,
+          "utilization": 0.2150609999999998
+        },
+        {
+          "sequenceIndex": 63,
+          "model": null,
+          "spendUsd": 0.021506099999999983,
+          "utilization": 0.2150609999999998
+        },
+        {
+          "sequenceIndex": 64,
+          "model": null,
+          "spendUsd": 0.021506099999999983,
+          "utilization": 0.2150609999999998
+        },
+        {
+          "sequenceIndex": 65,
+          "model": "gemma3-1b",
+          "spendUsd": 0.021675699999999982,
+          "utilization": 0.2167569999999998
+        },
+        {
+          "sequenceIndex": 66,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02185049999999998,
+          "utilization": 0.2185049999999998
+        },
+        {
+          "sequenceIndex": 67,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02198849999999998,
+          "utilization": 0.2198849999999998
+        },
+        {
+          "sequenceIndex": 68,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02215779999999998,
+          "utilization": 0.2215779999999998
+        },
+        {
+          "sequenceIndex": 69,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02236749999999998,
+          "utilization": 0.2236749999999998
+        },
+        {
+          "sequenceIndex": 70,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02244369999999998,
+          "utilization": 0.22443699999999978
+        },
+        {
+          "sequenceIndex": 71,
+          "model": "gemma3-1b",
+          "spendUsd": 0.022596999999999978,
+          "utilization": 0.22596999999999978
+        },
+        {
+          "sequenceIndex": 72,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02273999999999998,
+          "utilization": 0.22739999999999977
+        },
+        {
+          "sequenceIndex": 73,
+          "model": "gemma3-1b",
+          "spendUsd": 0.022919599999999977,
+          "utilization": 0.22919599999999976
+        },
+        {
+          "sequenceIndex": 74,
+          "model": "gemma3-1b",
+          "spendUsd": 0.023027199999999977,
+          "utilization": 0.23027199999999975
+        },
+        {
+          "sequenceIndex": 75,
+          "model": "gemma3-1b",
+          "spendUsd": 0.023103899999999976,
+          "utilization": 0.23103899999999974
+        },
+        {
+          "sequenceIndex": 76,
+          "model": "gemma3-1b",
+          "spendUsd": 0.023273299999999976,
+          "utilization": 0.23273299999999975
+        },
+        {
+          "sequenceIndex": 77,
+          "model": "gemma3-1b",
+          "spendUsd": 0.023338999999999974,
+          "utilization": 0.23338999999999974
+        },
+        {
+          "sequenceIndex": 78,
+          "model": "gemma3-1b",
+          "spendUsd": 0.023505499999999974,
+          "utilization": 0.23505499999999974
+        },
+        {
+          "sequenceIndex": 79,
+          "model": "gemma3-1b",
+          "spendUsd": 0.023586399999999973,
+          "utilization": 0.2358639999999997
+        },
+        {
+          "sequenceIndex": 80,
+          "model": null,
+          "spendUsd": 0.023586399999999973,
+          "utilization": 0.2358639999999997
+        },
+        {
+          "sequenceIndex": 81,
+          "model": null,
+          "spendUsd": 0.023586399999999973,
+          "utilization": 0.2358639999999997
+        },
+        {
+          "sequenceIndex": 82,
+          "model": null,
+          "spendUsd": 0.023586399999999973,
+          "utilization": 0.2358639999999997
+        },
+        {
+          "sequenceIndex": 83,
+          "model": null,
+          "spendUsd": 0.023586399999999973,
+          "utilization": 0.2358639999999997
+        },
+        {
+          "sequenceIndex": 84,
+          "model": null,
+          "spendUsd": 0.023586399999999973,
+          "utilization": 0.2358639999999997
+        },
+        {
+          "sequenceIndex": 85,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02375599999999997,
+          "utilization": 0.23755999999999972
+        },
+        {
+          "sequenceIndex": 86,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02393079999999997,
+          "utilization": 0.2393079999999997
+        },
+        {
+          "sequenceIndex": 87,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02406879999999997,
+          "utilization": 0.24068799999999968
+        },
+        {
+          "sequenceIndex": 88,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02423809999999997,
+          "utilization": 0.2423809999999997
+        },
+        {
+          "sequenceIndex": 89,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02444779999999997,
+          "utilization": 0.2444779999999997
+        },
+        {
+          "sequenceIndex": 90,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02452399999999997,
+          "utilization": 0.24523999999999968
+        },
+        {
+          "sequenceIndex": 91,
+          "model": "gemma3-1b",
+          "spendUsd": 0.024677299999999968,
+          "utilization": 0.24677299999999966
+        },
+        {
+          "sequenceIndex": 92,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02482029999999997,
+          "utilization": 0.24820299999999967
+        },
+        {
+          "sequenceIndex": 93,
+          "model": "gemma3-1b",
+          "spendUsd": 0.024999899999999967,
+          "utilization": 0.24999899999999967
+        },
+        {
+          "sequenceIndex": 94,
+          "model": "gemma3-1b",
+          "spendUsd": 0.025107499999999967,
+          "utilization": 0.25107499999999966
+        },
+        {
+          "sequenceIndex": 95,
+          "model": "gemma3-1b",
+          "spendUsd": 0.025184199999999966,
+          "utilization": 0.2518419999999996
+        },
+        {
+          "sequenceIndex": 96,
+          "model": "gemma3-1b",
+          "spendUsd": 0.025353599999999966,
+          "utilization": 0.25353599999999965
+        },
+        {
+          "sequenceIndex": 97,
+          "model": "gemma3-1b",
+          "spendUsd": 0.025419299999999964,
+          "utilization": 0.2541929999999996
+        },
+        {
+          "sequenceIndex": 98,
+          "model": "gemma3-1b",
+          "spendUsd": 0.025585799999999964,
+          "utilization": 0.25585799999999964
+        },
+        {
+          "sequenceIndex": 99,
+          "model": "gemma3-1b",
+          "spendUsd": 0.025666699999999962,
+          "utilization": 0.2566669999999996
+        },
+        {
+          "sequenceIndex": 100,
+          "model": null,
+          "spendUsd": 0.025666699999999962,
+          "utilization": 0.2566669999999996
+        },
+        {
+          "sequenceIndex": 101,
+          "model": null,
+          "spendUsd": 0.025666699999999962,
+          "utilization": 0.2566669999999996
+        },
+        {
+          "sequenceIndex": 102,
+          "model": null,
+          "spendUsd": 0.025666699999999962,
+          "utilization": 0.2566669999999996
+        },
+        {
+          "sequenceIndex": 103,
+          "model": null,
+          "spendUsd": 0.025666699999999962,
+          "utilization": 0.2566669999999996
+        },
+        {
+          "sequenceIndex": 104,
+          "model": null,
+          "spendUsd": 0.025666699999999962,
+          "utilization": 0.2566669999999996
+        },
+        {
+          "sequenceIndex": 105,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02583629999999996,
+          "utilization": 0.2583629999999996
+        },
+        {
+          "sequenceIndex": 106,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02601109999999996,
+          "utilization": 0.2601109999999996
+        },
+        {
+          "sequenceIndex": 107,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02614909999999996,
+          "utilization": 0.2614909999999996
+        },
+        {
+          "sequenceIndex": 108,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02631839999999996,
+          "utilization": 0.2631839999999996
+        },
+        {
+          "sequenceIndex": 109,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02652809999999996,
+          "utilization": 0.2652809999999996
+        },
+        {
+          "sequenceIndex": 110,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02660429999999996,
+          "utilization": 0.2660429999999996
+        },
+        {
+          "sequenceIndex": 111,
+          "model": "gemma3-1b",
+          "spendUsd": 0.026757599999999958,
+          "utilization": 0.26757599999999954
+        },
+        {
+          "sequenceIndex": 112,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02690059999999996,
+          "utilization": 0.2690059999999996
+        },
+        {
+          "sequenceIndex": 113,
+          "model": "gemma3-1b",
+          "spendUsd": 0.027080199999999957,
+          "utilization": 0.27080199999999954
+        },
+        {
+          "sequenceIndex": 114,
+          "model": "gemma3-1b",
+          "spendUsd": 0.027187799999999956,
+          "utilization": 0.27187799999999956
+        },
+        {
+          "sequenceIndex": 115,
+          "model": "gemma3-1b",
+          "spendUsd": 0.027264499999999955,
+          "utilization": 0.2726449999999995
+        },
+        {
+          "sequenceIndex": 116,
+          "model": "gemma3-1b",
+          "spendUsd": 0.027433899999999956,
+          "utilization": 0.27433899999999956
+        },
+        {
+          "sequenceIndex": 117,
+          "model": "gemma3-1b",
+          "spendUsd": 0.027499599999999954,
+          "utilization": 0.2749959999999995
+        },
+        {
+          "sequenceIndex": 118,
+          "model": "gemma3-1b",
+          "spendUsd": 0.027666099999999954,
+          "utilization": 0.27666099999999955
+        },
+        {
+          "sequenceIndex": 119,
+          "model": "gemma3-1b",
+          "spendUsd": 0.027746999999999952,
+          "utilization": 0.2774699999999995
+        },
+        {
+          "sequenceIndex": 120,
+          "model": null,
+          "spendUsd": 0.027746999999999952,
+          "utilization": 0.2774699999999995
+        },
+        {
+          "sequenceIndex": 121,
+          "model": null,
+          "spendUsd": 0.027746999999999952,
+          "utilization": 0.2774699999999995
+        },
+        {
+          "sequenceIndex": 122,
+          "model": null,
+          "spendUsd": 0.027746999999999952,
+          "utilization": 0.2774699999999995
+        },
+        {
+          "sequenceIndex": 123,
+          "model": null,
+          "spendUsd": 0.027746999999999952,
+          "utilization": 0.2774699999999995
+        },
+        {
+          "sequenceIndex": 124,
+          "model": null,
+          "spendUsd": 0.027746999999999952,
+          "utilization": 0.2774699999999995
+        },
+        {
+          "sequenceIndex": 125,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02791659999999995,
+          "utilization": 0.27916599999999947
+        },
+        {
+          "sequenceIndex": 126,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02809139999999995,
+          "utilization": 0.2809139999999995
+        },
+        {
+          "sequenceIndex": 127,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02822939999999995,
+          "utilization": 0.2822939999999995
+        },
+        {
+          "sequenceIndex": 128,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02839869999999995,
+          "utilization": 0.2839869999999995
+        },
+        {
+          "sequenceIndex": 129,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02860839999999995,
+          "utilization": 0.2860839999999995
+        },
+        {
+          "sequenceIndex": 130,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02868459999999995,
+          "utilization": 0.2868459999999995
+        },
+        {
+          "sequenceIndex": 131,
+          "model": "gemma3-1b",
+          "spendUsd": 0.028837899999999948,
+          "utilization": 0.28837899999999944
+        },
+        {
+          "sequenceIndex": 132,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02898089999999995,
+          "utilization": 0.2898089999999995
+        },
+        {
+          "sequenceIndex": 133,
+          "model": "gemma3-1b",
+          "spendUsd": 0.029160499999999947,
+          "utilization": 0.29160499999999945
+        },
+        {
+          "sequenceIndex": 134,
+          "model": "gemma3-1b",
+          "spendUsd": 0.029268099999999946,
+          "utilization": 0.29268099999999947
+        },
+        {
+          "sequenceIndex": 135,
+          "model": "gemma3-1b",
+          "spendUsd": 0.029344799999999945,
+          "utilization": 0.29344799999999943
+        },
+        {
+          "sequenceIndex": 136,
+          "model": "gemma3-1b",
+          "spendUsd": 0.029514199999999945,
+          "utilization": 0.29514199999999946
+        },
+        {
+          "sequenceIndex": 137,
+          "model": "gemma3-1b",
+          "spendUsd": 0.029579899999999944,
+          "utilization": 0.2957989999999994
+        },
+        {
+          "sequenceIndex": 138,
+          "model": "gemma3-1b",
+          "spendUsd": 0.029746399999999944,
+          "utilization": 0.2974639999999994
+        },
+        {
+          "sequenceIndex": 139,
+          "model": "gemma3-1b",
+          "spendUsd": 0.029827299999999942,
+          "utilization": 0.2982729999999994
+        },
+        {
+          "sequenceIndex": 140,
+          "model": null,
+          "spendUsd": 0.029827299999999942,
+          "utilization": 0.2982729999999994
+        },
+        {
+          "sequenceIndex": 141,
+          "model": null,
+          "spendUsd": 0.029827299999999942,
+          "utilization": 0.2982729999999994
+        },
+        {
+          "sequenceIndex": 142,
+          "model": null,
+          "spendUsd": 0.029827299999999942,
+          "utilization": 0.2982729999999994
+        },
+        {
+          "sequenceIndex": 143,
+          "model": null,
+          "spendUsd": 0.029827299999999942,
+          "utilization": 0.2982729999999994
+        },
+        {
+          "sequenceIndex": 144,
+          "model": null,
+          "spendUsd": 0.029827299999999942,
+          "utilization": 0.2982729999999994
+        },
+        {
+          "sequenceIndex": 145,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02999689999999994,
+          "utilization": 0.2999689999999994
+        },
+        {
+          "sequenceIndex": 146,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03017169999999994,
+          "utilization": 0.3017169999999994
+        },
+        {
+          "sequenceIndex": 147,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03030969999999994,
+          "utilization": 0.3030969999999994
+        },
+        {
+          "sequenceIndex": 148,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03047899999999994,
+          "utilization": 0.3047899999999994
+        },
+        {
+          "sequenceIndex": 149,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03068869999999994,
+          "utilization": 0.3068869999999994
+        },
+        {
+          "sequenceIndex": 150,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03076489999999994,
+          "utilization": 0.3076489999999994
+        },
+        {
+          "sequenceIndex": 151,
+          "model": "gemma3-1b",
+          "spendUsd": 0.030918199999999937,
+          "utilization": 0.30918199999999935
+        },
+        {
+          "sequenceIndex": 152,
+          "model": "gemma3-1b",
+          "spendUsd": 0.031061199999999938,
+          "utilization": 0.3106119999999994
+        },
+        {
+          "sequenceIndex": 153,
+          "model": "gemma3-1b",
+          "spendUsd": 0.031240799999999937,
+          "utilization": 0.31240799999999935
+        },
+        {
+          "sequenceIndex": 154,
+          "model": "gemma3-1b",
+          "spendUsd": 0.031348399999999936,
+          "utilization": 0.3134839999999993
+        },
+        {
+          "sequenceIndex": 155,
+          "model": "gemma3-1b",
+          "spendUsd": 0.031425099999999935,
+          "utilization": 0.31425099999999934
+        },
+        {
+          "sequenceIndex": 156,
+          "model": "gemma3-1b",
+          "spendUsd": 0.031594499999999935,
+          "utilization": 0.3159449999999993
+        },
+        {
+          "sequenceIndex": 157,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03166019999999994,
+          "utilization": 0.31660199999999933
+        },
+        {
+          "sequenceIndex": 158,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03182669999999994,
+          "utilization": 0.31826699999999936
+        },
+        {
+          "sequenceIndex": 159,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03190759999999994,
+          "utilization": 0.31907599999999936
+        },
+        {
+          "sequenceIndex": 160,
+          "model": null,
+          "spendUsd": 0.03190759999999994,
+          "utilization": 0.31907599999999936
+        },
+        {
+          "sequenceIndex": 161,
+          "model": null,
+          "spendUsd": 0.03190759999999994,
+          "utilization": 0.31907599999999936
+        },
+        {
+          "sequenceIndex": 162,
+          "model": null,
+          "spendUsd": 0.03190759999999994,
+          "utilization": 0.31907599999999936
+        },
+        {
+          "sequenceIndex": 163,
+          "model": null,
+          "spendUsd": 0.03190759999999994,
+          "utilization": 0.31907599999999936
+        },
+        {
+          "sequenceIndex": 164,
+          "model": null,
+          "spendUsd": 0.03190759999999994,
+          "utilization": 0.31907599999999936
+        },
+        {
+          "sequenceIndex": 165,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03207719999999994,
+          "utilization": 0.32077199999999934
+        },
+        {
+          "sequenceIndex": 166,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03225199999999994,
+          "utilization": 0.32251999999999936
+        },
+        {
+          "sequenceIndex": 167,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03238999999999994,
+          "utilization": 0.32389999999999936
+        },
+        {
+          "sequenceIndex": 168,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03255929999999994,
+          "utilization": 0.32559299999999936
+        },
+        {
+          "sequenceIndex": 169,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03276899999999994,
+          "utilization": 0.32768999999999937
+        },
+        {
+          "sequenceIndex": 170,
+          "model": "gemma3-1b",
+          "spendUsd": 0.032845199999999936,
+          "utilization": 0.32845199999999936
+        },
+        {
+          "sequenceIndex": 171,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03299849999999994,
+          "utilization": 0.32998499999999936
+        },
+        {
+          "sequenceIndex": 172,
+          "model": "gemma3-1b",
+          "spendUsd": 0.033141499999999935,
+          "utilization": 0.33141499999999935
+        },
+        {
+          "sequenceIndex": 173,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03332109999999994,
+          "utilization": 0.33321099999999937
+        },
+        {
+          "sequenceIndex": 174,
+          "model": "gemma3-1b",
+          "spendUsd": 0.033428699999999936,
+          "utilization": 0.33428699999999933
+        },
+        {
+          "sequenceIndex": 175,
+          "model": "gemma3-1b",
+          "spendUsd": 0.033505399999999935,
+          "utilization": 0.33505399999999935
+        },
+        {
+          "sequenceIndex": 176,
+          "model": "gemma3-1b",
+          "spendUsd": 0.033674799999999935,
+          "utilization": 0.3367479999999993
+        },
+        {
+          "sequenceIndex": 177,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03374049999999994,
+          "utilization": 0.33740499999999934
+        },
+        {
+          "sequenceIndex": 178,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03390699999999994,
+          "utilization": 0.33906999999999937
+        },
+        {
+          "sequenceIndex": 179,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03398789999999994,
+          "utilization": 0.3398789999999994
+        },
+        {
+          "sequenceIndex": 180,
+          "model": null,
+          "spendUsd": 0.03398789999999994,
+          "utilization": 0.3398789999999994
+        },
+        {
+          "sequenceIndex": 181,
+          "model": null,
+          "spendUsd": 0.03398789999999994,
+          "utilization": 0.3398789999999994
+        },
+        {
+          "sequenceIndex": 182,
+          "model": null,
+          "spendUsd": 0.03398789999999994,
+          "utilization": 0.3398789999999994
+        },
+        {
+          "sequenceIndex": 183,
+          "model": null,
+          "spendUsd": 0.03398789999999994,
+          "utilization": 0.3398789999999994
+        },
+        {
+          "sequenceIndex": 184,
+          "model": null,
+          "spendUsd": 0.03398789999999994,
+          "utilization": 0.3398789999999994
+        },
+        {
+          "sequenceIndex": 185,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03415749999999994,
+          "utilization": 0.34157499999999935
+        },
+        {
+          "sequenceIndex": 186,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03433229999999994,
+          "utilization": 0.3433229999999994
+        },
+        {
+          "sequenceIndex": 187,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03447029999999994,
+          "utilization": 0.34470299999999937
+        },
+        {
+          "sequenceIndex": 188,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03463959999999994,
+          "utilization": 0.34639599999999937
+        },
+        {
+          "sequenceIndex": 189,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03484929999999994,
+          "utilization": 0.34849299999999933
+        },
+        {
+          "sequenceIndex": 190,
+          "model": "gemma3-1b",
+          "spendUsd": 0.034925499999999936,
+          "utilization": 0.3492549999999993
+        },
+        {
+          "sequenceIndex": 191,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03507879999999994,
+          "utilization": 0.3507879999999994
+        },
+        {
+          "sequenceIndex": 192,
+          "model": "gemma3-1b",
+          "spendUsd": 0.035221799999999935,
+          "utilization": 0.3522179999999993
+        },
+        {
+          "sequenceIndex": 193,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03540139999999994,
+          "utilization": 0.35401399999999933
+        },
+        {
+          "sequenceIndex": 194,
+          "model": "gemma3-1b",
+          "spendUsd": 0.035508999999999936,
+          "utilization": 0.35508999999999935
+        },
+        {
+          "sequenceIndex": 195,
+          "model": "gemma3-1b",
+          "spendUsd": 0.035585699999999935,
+          "utilization": 0.3558569999999993
+        },
+        {
+          "sequenceIndex": 196,
+          "model": "gemma3-1b",
+          "spendUsd": 0.035755099999999936,
+          "utilization": 0.35755099999999934
+        },
+        {
+          "sequenceIndex": 197,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03582079999999994,
+          "utilization": 0.35820799999999936
+        },
+        {
+          "sequenceIndex": 198,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03598729999999994,
+          "utilization": 0.35987299999999933
+        },
+        {
+          "sequenceIndex": 199,
+          "model": "gemma3-1b",
+          "spendUsd": 0.03606819999999994,
+          "utilization": 0.3606819999999994
+        }
+      ]
+    },
+    "orchestra-inferred": {
+      "modelCounts": {
+        "gemma3-1b": 150
+      },
+      "modelSwitches": 0,
+      "firstBudgetRejection": 0,
+      "cumulativeSpend": [
+        {
+          "sequenceIndex": 0,
+          "model": null,
+          "spendUsd": 0,
+          "utilization": 0
+        },
+        {
+          "sequenceIndex": 1,
+          "model": null,
+          "spendUsd": 0,
+          "utilization": 0
+        },
+        {
+          "sequenceIndex": 2,
+          "model": null,
+          "spendUsd": 0,
+          "utilization": 0
+        },
+        {
+          "sequenceIndex": 3,
+          "model": null,
+          "spendUsd": 0,
+          "utilization": 0
+        },
+        {
+          "sequenceIndex": 4,
+          "model": null,
+          "spendUsd": 0,
+          "utilization": 0
+        },
+        {
+          "sequenceIndex": 5,
+          "model": "gemma3-1b",
+          "spendUsd": 0.00016959999999999998,
+          "utilization": 0.0016959999999999996
+        },
+        {
+          "sequenceIndex": 6,
+          "model": "gemma3-1b",
+          "spendUsd": 0.00034439999999999997,
+          "utilization": 0.0034439999999999996
+        },
+        {
+          "sequenceIndex": 7,
+          "model": "gemma3-1b",
+          "spendUsd": 0.00048239999999999996,
+          "utilization": 0.004823999999999999
+        },
+        {
+          "sequenceIndex": 8,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0006517,
+          "utilization": 0.006516999999999999
+        },
+        {
+          "sequenceIndex": 9,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0008614,
+          "utilization": 0.008614
+        },
+        {
+          "sequenceIndex": 10,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0009376,
+          "utilization": 0.009375999999999999
+        },
+        {
+          "sequenceIndex": 11,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0010909000000000001,
+          "utilization": 0.010909
+        },
+        {
+          "sequenceIndex": 12,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0012339,
+          "utilization": 0.012339
+        },
+        {
+          "sequenceIndex": 13,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0014135,
+          "utilization": 0.014135
+        },
+        {
+          "sequenceIndex": 14,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0015211,
+          "utilization": 0.015211
+        },
+        {
+          "sequenceIndex": 15,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0015978000000000001,
+          "utilization": 0.015978
+        },
+        {
+          "sequenceIndex": 16,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0017672,
+          "utilization": 0.017672
+        },
+        {
+          "sequenceIndex": 17,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0018329,
+          "utilization": 0.018328999999999998
+        },
+        {
+          "sequenceIndex": 18,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0019994,
+          "utilization": 0.019994
+        },
+        {
+          "sequenceIndex": 19,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0020803,
+          "utilization": 0.020803000000000002
+        },
+        {
+          "sequenceIndex": 20,
+          "model": null,
+          "spendUsd": 0.0020803,
+          "utilization": 0.020803000000000002
+        },
+        {
+          "sequenceIndex": 21,
+          "model": null,
+          "spendUsd": 0.0020803,
+          "utilization": 0.020803000000000002
+        },
+        {
+          "sequenceIndex": 22,
+          "model": null,
+          "spendUsd": 0.0020803,
+          "utilization": 0.020803000000000002
+        },
+        {
+          "sequenceIndex": 23,
+          "model": null,
+          "spendUsd": 0.0020803,
+          "utilization": 0.020803000000000002
+        },
+        {
+          "sequenceIndex": 24,
+          "model": null,
+          "spendUsd": 0.0020803,
+          "utilization": 0.020803000000000002
+        },
+        {
+          "sequenceIndex": 25,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0022499,
+          "utilization": 0.022498999999999998
+        },
+        {
+          "sequenceIndex": 26,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0024247,
+          "utilization": 0.024247
+        },
+        {
+          "sequenceIndex": 27,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0025627000000000002,
+          "utilization": 0.025627
+        },
+        {
+          "sequenceIndex": 28,
+          "model": "gemma3-1b",
+          "spendUsd": 0.002732,
+          "utilization": 0.02732
+        },
+        {
+          "sequenceIndex": 29,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0029417000000000002,
+          "utilization": 0.029417000000000002
+        },
+        {
+          "sequenceIndex": 30,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0030179000000000004,
+          "utilization": 0.030179000000000004
+        },
+        {
+          "sequenceIndex": 31,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0031712000000000003,
+          "utilization": 0.031712000000000004
+        },
+        {
+          "sequenceIndex": 32,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0033142000000000002,
+          "utilization": 0.033142
+        },
+        {
+          "sequenceIndex": 33,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0034938,
+          "utilization": 0.034938
+        },
+        {
+          "sequenceIndex": 34,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0036014,
+          "utilization": 0.036014
+        },
+        {
+          "sequenceIndex": 35,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0036780999999999997,
+          "utilization": 0.036780999999999994
+        },
+        {
+          "sequenceIndex": 36,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0038475,
+          "utilization": 0.038474999999999995
+        },
+        {
+          "sequenceIndex": 37,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0039131999999999995,
+          "utilization": 0.03913199999999999
+        },
+        {
+          "sequenceIndex": 38,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0040796999999999995,
+          "utilization": 0.04079699999999999
+        },
+        {
+          "sequenceIndex": 39,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0041605999999999995,
+          "utilization": 0.04160599999999999
+        },
+        {
+          "sequenceIndex": 40,
+          "model": null,
+          "spendUsd": 0.0041605999999999995,
+          "utilization": 0.04160599999999999
+        },
+        {
+          "sequenceIndex": 41,
+          "model": null,
+          "spendUsd": 0.0041605999999999995,
+          "utilization": 0.04160599999999999
+        },
+        {
+          "sequenceIndex": 42,
+          "model": null,
+          "spendUsd": 0.0041605999999999995,
+          "utilization": 0.04160599999999999
+        },
+        {
+          "sequenceIndex": 43,
+          "model": null,
+          "spendUsd": 0.0041605999999999995,
+          "utilization": 0.04160599999999999
+        },
+        {
+          "sequenceIndex": 44,
+          "model": null,
+          "spendUsd": 0.0041605999999999995,
+          "utilization": 0.04160599999999999
+        },
+        {
+          "sequenceIndex": 45,
+          "model": "gemma3-1b",
+          "spendUsd": 0.004330199999999999,
+          "utilization": 0.04330199999999999
+        },
+        {
+          "sequenceIndex": 46,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0045049999999999995,
+          "utilization": 0.04504999999999999
+        },
+        {
+          "sequenceIndex": 47,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0046429999999999996,
+          "utilization": 0.04642999999999999
+        },
+        {
+          "sequenceIndex": 48,
+          "model": "gemma3-1b",
+          "spendUsd": 0.004812299999999999,
+          "utilization": 0.04812299999999999
+        },
+        {
+          "sequenceIndex": 49,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0050219999999999996,
+          "utilization": 0.050219999999999994
+        },
+        {
+          "sequenceIndex": 50,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0050982,
+          "utilization": 0.05098199999999999
+        },
+        {
+          "sequenceIndex": 51,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0052515,
+          "utilization": 0.052515
+        },
+        {
+          "sequenceIndex": 52,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0053945,
+          "utilization": 0.053945
+        },
+        {
+          "sequenceIndex": 53,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0055741,
+          "utilization": 0.055741
+        },
+        {
+          "sequenceIndex": 54,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0056817000000000005,
+          "utilization": 0.056817
+        },
+        {
+          "sequenceIndex": 55,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0057584,
+          "utilization": 0.057584
+        },
+        {
+          "sequenceIndex": 56,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0059278,
+          "utilization": 0.059278000000000004
+        },
+        {
+          "sequenceIndex": 57,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0059935000000000006,
+          "utilization": 0.059935
+        },
+        {
+          "sequenceIndex": 58,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0061600000000000005,
+          "utilization": 0.0616
+        },
+        {
+          "sequenceIndex": 59,
+          "model": "gemma3-1b",
+          "spendUsd": 0.006240900000000001,
+          "utilization": 0.062409000000000006
+        },
+        {
+          "sequenceIndex": 60,
+          "model": null,
+          "spendUsd": 0.006240900000000001,
+          "utilization": 0.062409000000000006
+        },
+        {
+          "sequenceIndex": 61,
+          "model": null,
+          "spendUsd": 0.006240900000000001,
+          "utilization": 0.062409000000000006
+        },
+        {
+          "sequenceIndex": 62,
+          "model": null,
+          "spendUsd": 0.006240900000000001,
+          "utilization": 0.062409000000000006
+        },
+        {
+          "sequenceIndex": 63,
+          "model": null,
+          "spendUsd": 0.006240900000000001,
+          "utilization": 0.062409000000000006
+        },
+        {
+          "sequenceIndex": 64,
+          "model": null,
+          "spendUsd": 0.006240900000000001,
+          "utilization": 0.062409000000000006
+        },
+        {
+          "sequenceIndex": 65,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0064105,
+          "utilization": 0.064105
+        },
+        {
+          "sequenceIndex": 66,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0065853000000000005,
+          "utilization": 0.065853
+        },
+        {
+          "sequenceIndex": 67,
+          "model": "gemma3-1b",
+          "spendUsd": 0.006723300000000001,
+          "utilization": 0.067233
+        },
+        {
+          "sequenceIndex": 68,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0068926000000000005,
+          "utilization": 0.068926
+        },
+        {
+          "sequenceIndex": 69,
+          "model": "gemma3-1b",
+          "spendUsd": 0.007102300000000001,
+          "utilization": 0.071023
+        },
+        {
+          "sequenceIndex": 70,
+          "model": "gemma3-1b",
+          "spendUsd": 0.007178500000000001,
+          "utilization": 0.071785
+        },
+        {
+          "sequenceIndex": 71,
+          "model": "gemma3-1b",
+          "spendUsd": 0.007331800000000001,
+          "utilization": 0.07331800000000001
+        },
+        {
+          "sequenceIndex": 72,
+          "model": "gemma3-1b",
+          "spendUsd": 0.007474800000000001,
+          "utilization": 0.07474800000000001
+        },
+        {
+          "sequenceIndex": 73,
+          "model": "gemma3-1b",
+          "spendUsd": 0.007654400000000001,
+          "utilization": 0.07654400000000001
+        },
+        {
+          "sequenceIndex": 74,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0077620000000000015,
+          "utilization": 0.07762000000000001
+        },
+        {
+          "sequenceIndex": 75,
+          "model": "gemma3-1b",
+          "spendUsd": 0.007838700000000002,
+          "utilization": 0.07838700000000001
+        },
+        {
+          "sequenceIndex": 76,
+          "model": "gemma3-1b",
+          "spendUsd": 0.008008100000000002,
+          "utilization": 0.08008100000000001
+        },
+        {
+          "sequenceIndex": 77,
+          "model": "gemma3-1b",
+          "spendUsd": 0.008073800000000003,
+          "utilization": 0.08073800000000002
+        },
+        {
+          "sequenceIndex": 78,
+          "model": "gemma3-1b",
+          "spendUsd": 0.008240300000000002,
+          "utilization": 0.08240300000000002
+        },
+        {
+          "sequenceIndex": 79,
+          "model": "gemma3-1b",
+          "spendUsd": 0.008321200000000003,
+          "utilization": 0.08321200000000002
+        },
+        {
+          "sequenceIndex": 80,
+          "model": null,
+          "spendUsd": 0.008321200000000003,
+          "utilization": 0.08321200000000002
+        },
+        {
+          "sequenceIndex": 81,
+          "model": null,
+          "spendUsd": 0.008321200000000003,
+          "utilization": 0.08321200000000002
+        },
+        {
+          "sequenceIndex": 82,
+          "model": null,
+          "spendUsd": 0.008321200000000003,
+          "utilization": 0.08321200000000002
+        },
+        {
+          "sequenceIndex": 83,
+          "model": null,
+          "spendUsd": 0.008321200000000003,
+          "utilization": 0.08321200000000002
+        },
+        {
+          "sequenceIndex": 84,
+          "model": null,
+          "spendUsd": 0.008321200000000003,
+          "utilization": 0.08321200000000002
+        },
+        {
+          "sequenceIndex": 85,
+          "model": "gemma3-1b",
+          "spendUsd": 0.008490800000000003,
+          "utilization": 0.08490800000000003
+        },
+        {
+          "sequenceIndex": 86,
+          "model": "gemma3-1b",
+          "spendUsd": 0.008665600000000002,
+          "utilization": 0.08665600000000002
+        },
+        {
+          "sequenceIndex": 87,
+          "model": "gemma3-1b",
+          "spendUsd": 0.008803600000000002,
+          "utilization": 0.08803600000000002
+        },
+        {
+          "sequenceIndex": 88,
+          "model": "gemma3-1b",
+          "spendUsd": 0.008972900000000002,
+          "utilization": 0.08972900000000002
+        },
+        {
+          "sequenceIndex": 89,
+          "model": "gemma3-1b",
+          "spendUsd": 0.009182600000000003,
+          "utilization": 0.09182600000000002
+        },
+        {
+          "sequenceIndex": 90,
+          "model": "gemma3-1b",
+          "spendUsd": 0.009258800000000003,
+          "utilization": 0.09258800000000002
+        },
+        {
+          "sequenceIndex": 91,
+          "model": "gemma3-1b",
+          "spendUsd": 0.009412100000000003,
+          "utilization": 0.09412100000000002
+        },
+        {
+          "sequenceIndex": 92,
+          "model": "gemma3-1b",
+          "spendUsd": 0.009555100000000004,
+          "utilization": 0.09555100000000004
+        },
+        {
+          "sequenceIndex": 93,
+          "model": "gemma3-1b",
+          "spendUsd": 0.009734700000000004,
+          "utilization": 0.09734700000000003
+        },
+        {
+          "sequenceIndex": 94,
+          "model": "gemma3-1b",
+          "spendUsd": 0.009842300000000003,
+          "utilization": 0.09842300000000002
+        },
+        {
+          "sequenceIndex": 95,
+          "model": "gemma3-1b",
+          "spendUsd": 0.009919000000000004,
+          "utilization": 0.09919000000000004
+        },
+        {
+          "sequenceIndex": 96,
+          "model": "gemma3-1b",
+          "spendUsd": 0.010088400000000004,
+          "utilization": 0.10088400000000004
+        },
+        {
+          "sequenceIndex": 97,
+          "model": "gemma3-1b",
+          "spendUsd": 0.010154100000000004,
+          "utilization": 0.10154100000000003
+        },
+        {
+          "sequenceIndex": 98,
+          "model": "gemma3-1b",
+          "spendUsd": 0.010320600000000004,
+          "utilization": 0.10320600000000003
+        },
+        {
+          "sequenceIndex": 99,
+          "model": "gemma3-1b",
+          "spendUsd": 0.010401500000000004,
+          "utilization": 0.10401500000000004
+        },
+        {
+          "sequenceIndex": 100,
+          "model": null,
+          "spendUsd": 0.010401500000000004,
+          "utilization": 0.10401500000000004
+        },
+        {
+          "sequenceIndex": 101,
+          "model": null,
+          "spendUsd": 0.010401500000000004,
+          "utilization": 0.10401500000000004
+        },
+        {
+          "sequenceIndex": 102,
+          "model": null,
+          "spendUsd": 0.010401500000000004,
+          "utilization": 0.10401500000000004
+        },
+        {
+          "sequenceIndex": 103,
+          "model": null,
+          "spendUsd": 0.010401500000000004,
+          "utilization": 0.10401500000000004
+        },
+        {
+          "sequenceIndex": 104,
+          "model": null,
+          "spendUsd": 0.010401500000000004,
+          "utilization": 0.10401500000000004
+        },
+        {
+          "sequenceIndex": 105,
+          "model": "gemma3-1b",
+          "spendUsd": 0.010571100000000005,
+          "utilization": 0.10571100000000004
+        },
+        {
+          "sequenceIndex": 106,
+          "model": "gemma3-1b",
+          "spendUsd": 0.010745900000000004,
+          "utilization": 0.10745900000000004
+        },
+        {
+          "sequenceIndex": 107,
+          "model": "gemma3-1b",
+          "spendUsd": 0.010883900000000004,
+          "utilization": 0.10883900000000003
+        },
+        {
+          "sequenceIndex": 108,
+          "model": "gemma3-1b",
+          "spendUsd": 0.011053200000000004,
+          "utilization": 0.11053200000000003
+        },
+        {
+          "sequenceIndex": 109,
+          "model": "gemma3-1b",
+          "spendUsd": 0.011262900000000005,
+          "utilization": 0.11262900000000003
+        },
+        {
+          "sequenceIndex": 110,
+          "model": "gemma3-1b",
+          "spendUsd": 0.011339100000000005,
+          "utilization": 0.11339100000000005
+        },
+        {
+          "sequenceIndex": 111,
+          "model": "gemma3-1b",
+          "spendUsd": 0.011492400000000005,
+          "utilization": 0.11492400000000004
+        },
+        {
+          "sequenceIndex": 112,
+          "model": "gemma3-1b",
+          "spendUsd": 0.011635400000000006,
+          "utilization": 0.11635400000000005
+        },
+        {
+          "sequenceIndex": 113,
+          "model": "gemma3-1b",
+          "spendUsd": 0.011815000000000006,
+          "utilization": 0.11815000000000006
+        },
+        {
+          "sequenceIndex": 114,
+          "model": "gemma3-1b",
+          "spendUsd": 0.011922600000000005,
+          "utilization": 0.11922600000000005
+        },
+        {
+          "sequenceIndex": 115,
+          "model": "gemma3-1b",
+          "spendUsd": 0.011999300000000006,
+          "utilization": 0.11999300000000006
+        },
+        {
+          "sequenceIndex": 116,
+          "model": "gemma3-1b",
+          "spendUsd": 0.012168700000000006,
+          "utilization": 0.12168700000000006
+        },
+        {
+          "sequenceIndex": 117,
+          "model": "gemma3-1b",
+          "spendUsd": 0.012234400000000006,
+          "utilization": 0.12234400000000006
+        },
+        {
+          "sequenceIndex": 118,
+          "model": "gemma3-1b",
+          "spendUsd": 0.012400900000000006,
+          "utilization": 0.12400900000000006
+        },
+        {
+          "sequenceIndex": 119,
+          "model": "gemma3-1b",
+          "spendUsd": 0.012481800000000006,
+          "utilization": 0.12481800000000005
+        },
+        {
+          "sequenceIndex": 120,
+          "model": null,
+          "spendUsd": 0.012481800000000006,
+          "utilization": 0.12481800000000005
+        },
+        {
+          "sequenceIndex": 121,
+          "model": null,
+          "spendUsd": 0.012481800000000006,
+          "utilization": 0.12481800000000005
+        },
+        {
+          "sequenceIndex": 122,
+          "model": null,
+          "spendUsd": 0.012481800000000006,
+          "utilization": 0.12481800000000005
+        },
+        {
+          "sequenceIndex": 123,
+          "model": null,
+          "spendUsd": 0.012481800000000006,
+          "utilization": 0.12481800000000005
+        },
+        {
+          "sequenceIndex": 124,
+          "model": null,
+          "spendUsd": 0.012481800000000006,
+          "utilization": 0.12481800000000005
+        },
+        {
+          "sequenceIndex": 125,
+          "model": "gemma3-1b",
+          "spendUsd": 0.012651400000000007,
+          "utilization": 0.12651400000000007
+        },
+        {
+          "sequenceIndex": 126,
+          "model": "gemma3-1b",
+          "spendUsd": 0.012826200000000006,
+          "utilization": 0.12826200000000004
+        },
+        {
+          "sequenceIndex": 127,
+          "model": "gemma3-1b",
+          "spendUsd": 0.012964200000000006,
+          "utilization": 0.12964200000000003
+        },
+        {
+          "sequenceIndex": 128,
+          "model": "gemma3-1b",
+          "spendUsd": 0.013133500000000006,
+          "utilization": 0.13133500000000006
+        },
+        {
+          "sequenceIndex": 129,
+          "model": "gemma3-1b",
+          "spendUsd": 0.013343200000000006,
+          "utilization": 0.13343200000000005
+        },
+        {
+          "sequenceIndex": 130,
+          "model": "gemma3-1b",
+          "spendUsd": 0.013419400000000007,
+          "utilization": 0.13419400000000006
+        },
+        {
+          "sequenceIndex": 131,
+          "model": "gemma3-1b",
+          "spendUsd": 0.013572700000000007,
+          "utilization": 0.13572700000000007
+        },
+        {
+          "sequenceIndex": 132,
+          "model": "gemma3-1b",
+          "spendUsd": 0.013715700000000008,
+          "utilization": 0.13715700000000006
+        },
+        {
+          "sequenceIndex": 133,
+          "model": "gemma3-1b",
+          "spendUsd": 0.013895300000000008,
+          "utilization": 0.13895300000000008
+        },
+        {
+          "sequenceIndex": 134,
+          "model": "gemma3-1b",
+          "spendUsd": 0.014002900000000007,
+          "utilization": 0.14002900000000007
+        },
+        {
+          "sequenceIndex": 135,
+          "model": "gemma3-1b",
+          "spendUsd": 0.014079600000000008,
+          "utilization": 0.14079600000000006
+        },
+        {
+          "sequenceIndex": 136,
+          "model": "gemma3-1b",
+          "spendUsd": 0.014249000000000008,
+          "utilization": 0.14249000000000006
+        },
+        {
+          "sequenceIndex": 137,
+          "model": "gemma3-1b",
+          "spendUsd": 0.014314700000000008,
+          "utilization": 0.14314700000000008
+        },
+        {
+          "sequenceIndex": 138,
+          "model": "gemma3-1b",
+          "spendUsd": 0.014481200000000008,
+          "utilization": 0.14481200000000008
+        },
+        {
+          "sequenceIndex": 139,
+          "model": "gemma3-1b",
+          "spendUsd": 0.014562100000000008,
+          "utilization": 0.14562100000000008
+        },
+        {
+          "sequenceIndex": 140,
+          "model": null,
+          "spendUsd": 0.014562100000000008,
+          "utilization": 0.14562100000000008
+        },
+        {
+          "sequenceIndex": 141,
+          "model": null,
+          "spendUsd": 0.014562100000000008,
+          "utilization": 0.14562100000000008
+        },
+        {
+          "sequenceIndex": 142,
+          "model": null,
+          "spendUsd": 0.014562100000000008,
+          "utilization": 0.14562100000000008
+        },
+        {
+          "sequenceIndex": 143,
+          "model": null,
+          "spendUsd": 0.014562100000000008,
+          "utilization": 0.14562100000000008
+        },
+        {
+          "sequenceIndex": 144,
+          "model": null,
+          "spendUsd": 0.014562100000000008,
+          "utilization": 0.14562100000000008
+        },
+        {
+          "sequenceIndex": 145,
+          "model": "gemma3-1b",
+          "spendUsd": 0.014731700000000009,
+          "utilization": 0.1473170000000001
+        },
+        {
+          "sequenceIndex": 146,
+          "model": "gemma3-1b",
+          "spendUsd": 0.014906500000000008,
+          "utilization": 0.1490650000000001
+        },
+        {
+          "sequenceIndex": 147,
+          "model": "gemma3-1b",
+          "spendUsd": 0.015044500000000008,
+          "utilization": 0.15044500000000008
+        },
+        {
+          "sequenceIndex": 148,
+          "model": "gemma3-1b",
+          "spendUsd": 0.015213800000000008,
+          "utilization": 0.15213800000000008
+        },
+        {
+          "sequenceIndex": 149,
+          "model": "gemma3-1b",
+          "spendUsd": 0.015423500000000008,
+          "utilization": 0.15423500000000007
+        },
+        {
+          "sequenceIndex": 150,
+          "model": "gemma3-1b",
+          "spendUsd": 0.015499700000000009,
+          "utilization": 0.15499700000000008
+        },
+        {
+          "sequenceIndex": 151,
+          "model": "gemma3-1b",
+          "spendUsd": 0.015653000000000007,
+          "utilization": 0.15653000000000006
+        },
+        {
+          "sequenceIndex": 152,
+          "model": "gemma3-1b",
+          "spendUsd": 0.015796000000000008,
+          "utilization": 0.15796000000000007
+        },
+        {
+          "sequenceIndex": 153,
+          "model": "gemma3-1b",
+          "spendUsd": 0.015975600000000006,
+          "utilization": 0.15975600000000006
+        },
+        {
+          "sequenceIndex": 154,
+          "model": "gemma3-1b",
+          "spendUsd": 0.016083200000000006,
+          "utilization": 0.16083200000000006
+        },
+        {
+          "sequenceIndex": 155,
+          "model": "gemma3-1b",
+          "spendUsd": 0.016159900000000005,
+          "utilization": 0.16159900000000005
+        },
+        {
+          "sequenceIndex": 156,
+          "model": "gemma3-1b",
+          "spendUsd": 0.016329300000000005,
+          "utilization": 0.16329300000000005
+        },
+        {
+          "sequenceIndex": 157,
+          "model": "gemma3-1b",
+          "spendUsd": 0.016395000000000003,
+          "utilization": 0.16395
+        },
+        {
+          "sequenceIndex": 158,
+          "model": "gemma3-1b",
+          "spendUsd": 0.016561500000000003,
+          "utilization": 0.165615
+        },
+        {
+          "sequenceIndex": 159,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0166424,
+          "utilization": 0.16642400000000002
+        },
+        {
+          "sequenceIndex": 160,
+          "model": null,
+          "spendUsd": 0.0166424,
+          "utilization": 0.16642400000000002
+        },
+        {
+          "sequenceIndex": 161,
+          "model": null,
+          "spendUsd": 0.0166424,
+          "utilization": 0.16642400000000002
+        },
+        {
+          "sequenceIndex": 162,
+          "model": null,
+          "spendUsd": 0.0166424,
+          "utilization": 0.16642400000000002
+        },
+        {
+          "sequenceIndex": 163,
+          "model": null,
+          "spendUsd": 0.0166424,
+          "utilization": 0.16642400000000002
+        },
+        {
+          "sequenceIndex": 164,
+          "model": null,
+          "spendUsd": 0.0166424,
+          "utilization": 0.16642400000000002
+        },
+        {
+          "sequenceIndex": 165,
+          "model": "gemma3-1b",
+          "spendUsd": 0.016812,
+          "utilization": 0.16812
+        },
+        {
+          "sequenceIndex": 166,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0169868,
+          "utilization": 0.169868
+        },
+        {
+          "sequenceIndex": 167,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0171248,
+          "utilization": 0.17124799999999998
+        },
+        {
+          "sequenceIndex": 168,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0172941,
+          "utilization": 0.17294099999999998
+        },
+        {
+          "sequenceIndex": 169,
+          "model": "gemma3-1b",
+          "spendUsd": 0.0175038,
+          "utilization": 0.175038
+        },
+        {
+          "sequenceIndex": 170,
+          "model": "gemma3-1b",
+          "spendUsd": 0.01758,
+          "utilization": 0.17579999999999998
+        },
+        {
+          "sequenceIndex": 171,
+          "model": "gemma3-1b",
+          "spendUsd": 0.017733299999999997,
+          "utilization": 0.17733299999999996
+        },
+        {
+          "sequenceIndex": 172,
+          "model": "gemma3-1b",
+          "spendUsd": 0.017876299999999998,
+          "utilization": 0.17876299999999998
+        },
+        {
+          "sequenceIndex": 173,
+          "model": "gemma3-1b",
+          "spendUsd": 0.018055899999999996,
+          "utilization": 0.18055899999999994
+        },
+        {
+          "sequenceIndex": 174,
+          "model": "gemma3-1b",
+          "spendUsd": 0.018163499999999996,
+          "utilization": 0.18163499999999994
+        },
+        {
+          "sequenceIndex": 175,
+          "model": "gemma3-1b",
+          "spendUsd": 0.018240199999999995,
+          "utilization": 0.18240199999999993
+        },
+        {
+          "sequenceIndex": 176,
+          "model": "gemma3-1b",
+          "spendUsd": 0.018409599999999995,
+          "utilization": 0.18409599999999993
+        },
+        {
+          "sequenceIndex": 177,
+          "model": "gemma3-1b",
+          "spendUsd": 0.018475299999999993,
+          "utilization": 0.18475299999999992
+        },
+        {
+          "sequenceIndex": 178,
+          "model": "gemma3-1b",
+          "spendUsd": 0.018641799999999993,
+          "utilization": 0.18641799999999992
+        },
+        {
+          "sequenceIndex": 179,
+          "model": "gemma3-1b",
+          "spendUsd": 0.01872269999999999,
+          "utilization": 0.1872269999999999
+        },
+        {
+          "sequenceIndex": 180,
+          "model": null,
+          "spendUsd": 0.01872269999999999,
+          "utilization": 0.1872269999999999
+        },
+        {
+          "sequenceIndex": 181,
+          "model": null,
+          "spendUsd": 0.01872269999999999,
+          "utilization": 0.1872269999999999
+        },
+        {
+          "sequenceIndex": 182,
+          "model": null,
+          "spendUsd": 0.01872269999999999,
+          "utilization": 0.1872269999999999
+        },
+        {
+          "sequenceIndex": 183,
+          "model": null,
+          "spendUsd": 0.01872269999999999,
+          "utilization": 0.1872269999999999
+        },
+        {
+          "sequenceIndex": 184,
+          "model": null,
+          "spendUsd": 0.01872269999999999,
+          "utilization": 0.1872269999999999
+        },
+        {
+          "sequenceIndex": 185,
+          "model": "gemma3-1b",
+          "spendUsd": 0.01889229999999999,
+          "utilization": 0.1889229999999999
+        },
+        {
+          "sequenceIndex": 186,
+          "model": "gemma3-1b",
+          "spendUsd": 0.01906709999999999,
+          "utilization": 0.1906709999999999
+        },
+        {
+          "sequenceIndex": 187,
+          "model": "gemma3-1b",
+          "spendUsd": 0.01920509999999999,
+          "utilization": 0.1920509999999999
+        },
+        {
+          "sequenceIndex": 188,
+          "model": "gemma3-1b",
+          "spendUsd": 0.01937439999999999,
+          "utilization": 0.1937439999999999
+        },
+        {
+          "sequenceIndex": 189,
+          "model": "gemma3-1b",
+          "spendUsd": 0.01958409999999999,
+          "utilization": 0.19584099999999988
+        },
+        {
+          "sequenceIndex": 190,
+          "model": "gemma3-1b",
+          "spendUsd": 0.019660299999999988,
+          "utilization": 0.19660299999999986
+        },
+        {
+          "sequenceIndex": 191,
+          "model": "gemma3-1b",
+          "spendUsd": 0.019813599999999987,
+          "utilization": 0.19813599999999987
+        },
+        {
+          "sequenceIndex": 192,
+          "model": "gemma3-1b",
+          "spendUsd": 0.019956599999999988,
+          "utilization": 0.19956599999999985
+        },
+        {
+          "sequenceIndex": 193,
+          "model": "gemma3-1b",
+          "spendUsd": 0.020136199999999986,
+          "utilization": 0.20136199999999985
+        },
+        {
+          "sequenceIndex": 194,
+          "model": "gemma3-1b",
+          "spendUsd": 0.020243799999999985,
+          "utilization": 0.20243799999999984
+        },
+        {
+          "sequenceIndex": 195,
+          "model": "gemma3-1b",
+          "spendUsd": 0.020320499999999984,
+          "utilization": 0.20320499999999983
+        },
+        {
+          "sequenceIndex": 196,
+          "model": "gemma3-1b",
+          "spendUsd": 0.020489899999999985,
+          "utilization": 0.20489899999999983
+        },
+        {
+          "sequenceIndex": 197,
+          "model": "gemma3-1b",
+          "spendUsd": 0.020555599999999983,
+          "utilization": 0.20555599999999982
+        },
+        {
+          "sequenceIndex": 198,
+          "model": "gemma3-1b",
+          "spendUsd": 0.020722099999999983,
+          "utilization": 0.20722099999999982
+        },
+        {
+          "sequenceIndex": 199,
+          "model": "gemma3-1b",
+          "spendUsd": 0.02080299999999998,
+          "utilization": 0.2080299999999998
+        }
+      ]
+    }
+  },
+  "groups": {
+    "baseline/all": {
+      "requests": 200,
+      "successfulGenerations": 81,
+      "unresolvedCosts": 0,
+      "rejected": 119,
+      "failed": 0,
+      "judged": 81,
+      "passed": 72,
+      "violations": 9,
+      "providerFailures": 0,
+      "policyRejections": 119,
+      "generationSuccessRate": 0.405,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.36,
+      "observedPassRate": 0.8888888888888888,
+      "qualityFloorViolationRate": 0.1111111111111111,
+      "pairedCount": 81,
+      "meanPredictedQuality": 0.9117283950617289,
+      "meanObservedQuality": 0.8672839506172838
+    },
+    "baseline/model:gemma3-12b": {
+      "requests": 10,
+      "successfulGenerations": 10,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 10,
+      "passed": 10,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 1,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 10,
+      "meanPredictedQuality": 0.8666666666666669,
+      "meanObservedQuality": 1
+    },
+    "baseline/importance:high": {
+      "requests": 100,
+      "successfulGenerations": 41,
+      "unresolvedCosts": 0,
+      "rejected": 59,
+      "failed": 0,
+      "judged": 41,
+      "passed": 36,
+      "violations": 5,
+      "providerFailures": 0,
+      "policyRejections": 59,
+      "generationSuccessRate": 0.41,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.36,
+      "observedPassRate": 0.8780487804878049,
+      "qualityFloorViolationRate": 0.12195121951219512,
+      "pairedCount": 41,
+      "meanPredictedQuality": 0.8577235772357726,
+      "meanObservedQuality": 0.9146341463414634
+    },
+    "baseline/category:coding": {
+      "requests": 50,
+      "successfulGenerations": 21,
+      "unresolvedCosts": 0,
+      "rejected": 29,
+      "failed": 0,
+      "judged": 21,
+      "passed": 16,
+      "violations": 5,
+      "providerFailures": 0,
+      "policyRejections": 29,
+      "generationSuccessRate": 0.42,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.32,
+      "observedPassRate": 0.7619047619047619,
+      "qualityFloorViolationRate": 0.23809523809523808,
+      "pairedCount": 21,
+      "meanPredictedQuality": 0.858730158730159,
+      "meanObservedQuality": 0.8809523809523809
+    },
+    "baseline/utilization:0-25%": {
+      "requests": 22,
+      "successfulGenerations": 22,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 22,
+      "passed": 19,
+      "violations": 3,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.8636363636363636,
+      "observedPassRate": 0.8636363636363636,
+      "qualityFloorViolationRate": 0.13636363636363635,
+      "pairedCount": 22,
+      "meanPredictedQuality": 0.9060606060606059,
+      "meanObservedQuality": 0.8598484848484848
+    },
+    "baseline/model:gemma3-4b": {
+      "requests": 64,
+      "successfulGenerations": 64,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 64,
+      "passed": 56,
+      "violations": 8,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.875,
+      "observedPassRate": 0.875,
+      "qualityFloorViolationRate": 0.125,
+      "pairedCount": 64,
+      "meanPredictedQuality": 0.926822916666667,
+      "meanObservedQuality": 0.8502604166666665
+    },
+    "baseline/model:gemma3-1b": {
+      "requests": 7,
+      "successfulGenerations": 7,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 7,
+      "passed": 6,
+      "violations": 1,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.8571428571428571,
+      "observedPassRate": 0.8571428571428571,
+      "qualityFloorViolationRate": 0.14285714285714285,
+      "pairedCount": 7,
+      "meanPredictedQuality": 0.838095238095238,
+      "meanObservedQuality": 0.8333333333333334
+    },
+    "baseline/category:analysis": {
+      "requests": 50,
+      "successfulGenerations": 20,
+      "unresolvedCosts": 0,
+      "rejected": 30,
+      "failed": 0,
+      "judged": 20,
+      "passed": 20,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 30,
+      "generationSuccessRate": 0.4,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.4,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 20,
+      "meanPredictedQuality": 0.8566666666666668,
+      "meanObservedQuality": 0.95
+    },
+    "baseline/importance:medium": {
+      "requests": 50,
+      "successfulGenerations": 20,
+      "unresolvedCosts": 0,
+      "rejected": 30,
+      "failed": 0,
+      "judged": 20,
+      "passed": 20,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 30,
+      "generationSuccessRate": 0.4,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.4,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 20,
+      "meanPredictedQuality": 0.9925,
+      "meanObservedQuality": 0.7875
+    },
+    "baseline/category:writing": {
+      "requests": 50,
+      "successfulGenerations": 20,
+      "unresolvedCosts": 0,
+      "rejected": 30,
+      "failed": 0,
+      "judged": 20,
+      "passed": 20,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 30,
+      "generationSuccessRate": 0.4,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.4,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 20,
+      "meanPredictedQuality": 0.9925,
+      "meanObservedQuality": 0.7875
+    },
+    "baseline/importance:low": {
+      "requests": 50,
+      "successfulGenerations": 20,
+      "unresolvedCosts": 0,
+      "rejected": 30,
+      "failed": 0,
+      "judged": 20,
+      "passed": 16,
+      "violations": 4,
+      "providerFailures": 0,
+      "policyRejections": 30,
+      "generationSuccessRate": 0.4,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.32,
+      "observedPassRate": 0.8,
+      "qualityFloorViolationRate": 0.2,
+      "pairedCount": 20,
+      "meanPredictedQuality": 0.9416666666666664,
+      "meanObservedQuality": 0.85
+    },
+    "baseline/category:qa": {
+      "requests": 50,
+      "successfulGenerations": 20,
+      "unresolvedCosts": 0,
+      "rejected": 30,
+      "failed": 0,
+      "judged": 20,
+      "passed": 16,
+      "violations": 4,
+      "providerFailures": 0,
+      "policyRejections": 30,
+      "generationSuccessRate": 0.4,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.32,
+      "observedPassRate": 0.8,
+      "qualityFloorViolationRate": 0.2,
+      "pairedCount": 20,
+      "meanPredictedQuality": 0.9416666666666664,
+      "meanObservedQuality": 0.85
+    },
+    "baseline/utilization:25-50%": {
+      "requests": 21,
+      "successfulGenerations": 21,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 21,
+      "passed": 18,
+      "violations": 3,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.8571428571428571,
+      "observedPassRate": 0.8571428571428571,
+      "qualityFloorViolationRate": 0.14285714285714285,
+      "pairedCount": 21,
+      "meanPredictedQuality": 0.9039682539682539,
+      "meanObservedQuality": 0.8571428571428571
+    },
+    "baseline/utilization:50-75%": {
+      "requests": 19,
+      "successfulGenerations": 19,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 19,
+      "passed": 18,
+      "violations": 1,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.9473684210526315,
+      "observedPassRate": 0.9473684210526315,
+      "qualityFloorViolationRate": 0.05263157894736842,
+      "pairedCount": 19,
+      "meanPredictedQuality": 0.9149122807017541,
+      "meanObservedQuality": 0.8903508771929823
+    },
+    "baseline/utilization:75-100%": {
+      "requests": 138,
+      "successfulGenerations": 19,
+      "unresolvedCosts": 0,
+      "rejected": 119,
+      "failed": 0,
+      "judged": 19,
+      "passed": 17,
+      "violations": 2,
+      "providerFailures": 0,
+      "policyRejections": 119,
+      "generationSuccessRate": 0.13768115942028986,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.12318840579710146,
+      "observedPassRate": 0.8947368421052632,
+      "qualityFloorViolationRate": 0.10526315789473684,
+      "pairedCount": 19,
+      "meanPredictedQuality": 0.9236842105263157,
+      "meanObservedQuality": 0.8640350877192982
+    },
+    "baseline/model:none": {
+      "requests": 119,
+      "successfulGenerations": 0,
+      "unresolvedCosts": 0,
+      "rejected": 119,
+      "failed": 0,
+      "judged": 0,
+      "passed": 0,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 119,
+      "generationSuccessRate": 0,
+      "judgmentCoverage": null,
+      "overallSuccessfulServiceRate": 0,
+      "observedPassRate": null,
+      "qualityFloorViolationRate": null,
+      "pairedCount": 0,
+      "meanPredictedQuality": null,
+      "meanObservedQuality": null
+    },
+    "orchestra-fixed/all": {
+      "requests": 200,
+      "successfulGenerations": 160,
+      "unresolvedCosts": 0,
+      "rejected": 40,
+      "failed": 0,
+      "judged": 160,
+      "passed": 158,
+      "violations": 2,
+      "providerFailures": 0,
+      "policyRejections": 40,
+      "generationSuccessRate": 0.8,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.79,
+      "observedPassRate": 0.9875,
+      "qualityFloorViolationRate": 0.0125,
+      "pairedCount": 160,
+      "meanPredictedQuality": 0.8416666666666665,
+      "meanObservedQuality": 0.9083333333333334
+    },
+    "orchestra-fixed/model:gemma3-4b": {
+      "requests": 20,
+      "successfulGenerations": 20,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 20,
+      "passed": 18,
+      "violations": 2,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.9,
+      "observedPassRate": 0.9,
+      "qualityFloorViolationRate": 0.1,
+      "pairedCount": 20,
+      "meanPredictedQuality": 0.8666666666666668,
+      "meanObservedQuality": 0.925
+    },
+    "orchestra-fixed/importance:high": {
+      "requests": 100,
+      "successfulGenerations": 60,
+      "unresolvedCosts": 0,
+      "rejected": 40,
+      "failed": 0,
+      "judged": 60,
+      "passed": 58,
+      "violations": 2,
+      "providerFailures": 0,
+      "policyRejections": 40,
+      "generationSuccessRate": 0.6,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.58,
+      "observedPassRate": 0.9666666666666667,
+      "qualityFloorViolationRate": 0.03333333333333333,
+      "pairedCount": 60,
+      "meanPredictedQuality": 0.7999999999999994,
+      "meanObservedQuality": 0.9083333333333329
+    },
+    "orchestra-fixed/category:coding": {
+      "requests": 50,
+      "successfulGenerations": 10,
+      "unresolvedCosts": 0,
+      "rejected": 40,
+      "failed": 0,
+      "judged": 10,
+      "passed": 8,
+      "violations": 2,
+      "providerFailures": 0,
+      "policyRejections": 40,
+      "generationSuccessRate": 0.2,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.16,
+      "observedPassRate": 0.8,
+      "qualityFloorViolationRate": 0.2,
+      "pairedCount": 10,
+      "meanPredictedQuality": 0.8666666666666665,
+      "meanObservedQuality": 0.9
+    },
+    "orchestra-fixed/utilization:0-25%": {
+      "requests": 95,
+      "successfulGenerations": 80,
+      "unresolvedCosts": 0,
+      "rejected": 15,
+      "failed": 0,
+      "judged": 80,
+      "passed": 78,
+      "violations": 2,
+      "providerFailures": 0,
+      "policyRejections": 15,
+      "generationSuccessRate": 0.8421052631578947,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.8210526315789474,
+      "observedPassRate": 0.975,
+      "qualityFloorViolationRate": 0.025,
+      "pairedCount": 80,
+      "meanPredictedQuality": 0.853125,
+      "meanObservedQuality": 0.9072916666666666
+    },
+    "orchestra-fixed/category:analysis": {
+      "requests": 50,
+      "successfulGenerations": 50,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 50,
+      "passed": 50,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 1,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 50,
+      "meanPredictedQuality": 0.7866666666666658,
+      "meanObservedQuality": 0.9099999999999997
+    },
+    "orchestra-fixed/model:gemma3-1b": {
+      "requests": 140,
+      "successfulGenerations": 140,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 140,
+      "passed": 140,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 1,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 140,
+      "meanPredictedQuality": 0.8380952380952381,
+      "meanObservedQuality": 0.9059523809523815
+    },
+    "orchestra-fixed/importance:medium": {
+      "requests": 50,
+      "successfulGenerations": 50,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 50,
+      "passed": 50,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 1,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 50,
+      "meanPredictedQuality": 0.9500000000000006,
+      "meanObservedQuality": 0.85
+    },
+    "orchestra-fixed/category:writing": {
+      "requests": 50,
+      "successfulGenerations": 50,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 50,
+      "passed": 50,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 1,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 50,
+      "meanPredictedQuality": 0.9500000000000006,
+      "meanObservedQuality": 0.85
+    },
+    "orchestra-fixed/importance:low": {
+      "requests": 50,
+      "successfulGenerations": 50,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 50,
+      "passed": 50,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 1,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 50,
+      "meanPredictedQuality": 0.7833333333333335,
+      "meanObservedQuality": 0.9666666666666665
+    },
+    "orchestra-fixed/category:qa": {
+      "requests": 50,
+      "successfulGenerations": 50,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 50,
+      "passed": 50,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 1,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 50,
+      "meanPredictedQuality": 0.7833333333333335,
+      "meanObservedQuality": 0.9666666666666665
+    },
+    "orchestra-fixed/model:none": {
+      "requests": 40,
+      "successfulGenerations": 0,
+      "unresolvedCosts": 0,
+      "rejected": 40,
+      "failed": 0,
+      "judged": 0,
+      "passed": 0,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 40,
+      "generationSuccessRate": 0,
+      "judgmentCoverage": null,
+      "overallSuccessfulServiceRate": 0,
+      "observedPassRate": null,
+      "qualityFloorViolationRate": null,
+      "pairedCount": 0,
+      "meanPredictedQuality": null,
+      "meanObservedQuality": null
+    },
+    "orchestra-fixed/utilization:25-50%": {
+      "requests": 105,
+      "successfulGenerations": 80,
+      "unresolvedCosts": 0,
+      "rejected": 25,
+      "failed": 0,
+      "judged": 80,
+      "passed": 80,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 25,
+      "generationSuccessRate": 0.7619047619047619,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.7619047619047619,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 80,
+      "meanPredictedQuality": 0.8302083333333334,
+      "meanObservedQuality": 0.9093749999999998
+    },
+    "orchestra-inferred/all": {
+      "requests": 200,
+      "successfulGenerations": 150,
+      "unresolvedCosts": 0,
+      "rejected": 50,
+      "failed": 0,
+      "judged": 150,
+      "passed": 150,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 50,
+      "generationSuccessRate": 0.75,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.75,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 150,
+      "meanPredictedQuality": 0.8333333333333333,
+      "meanObservedQuality": 0.9055555555555562
+    },
+    "orchestra-inferred/model:none": {
+      "requests": 50,
+      "successfulGenerations": 0,
+      "unresolvedCosts": 0,
+      "rejected": 50,
+      "failed": 0,
+      "judged": 0,
+      "passed": 0,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 50,
+      "generationSuccessRate": 0,
+      "judgmentCoverage": null,
+      "overallSuccessfulServiceRate": 0,
+      "observedPassRate": null,
+      "qualityFloorViolationRate": null,
+      "pairedCount": 0,
+      "meanPredictedQuality": null,
+      "meanObservedQuality": null
+    },
+    "orchestra-inferred/importance:medium": {
+      "requests": 200,
+      "successfulGenerations": 150,
+      "unresolvedCosts": 0,
+      "rejected": 50,
+      "failed": 0,
+      "judged": 150,
+      "passed": 150,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 50,
+      "generationSuccessRate": 0.75,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.75,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 150,
+      "meanPredictedQuality": 0.8333333333333333,
+      "meanObservedQuality": 0.9055555555555562
+    },
+    "orchestra-inferred/category:coding": {
+      "requests": 50,
+      "successfulGenerations": 0,
+      "unresolvedCosts": 0,
+      "rejected": 50,
+      "failed": 0,
+      "judged": 0,
+      "passed": 0,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 50,
+      "generationSuccessRate": 0,
+      "judgmentCoverage": null,
+      "overallSuccessfulServiceRate": 0,
+      "observedPassRate": null,
+      "qualityFloorViolationRate": null,
+      "pairedCount": 0,
+      "meanPredictedQuality": null,
+      "meanObservedQuality": null
+    },
+    "orchestra-inferred/utilization:0-25%": {
+      "requests": 200,
+      "successfulGenerations": 150,
+      "unresolvedCosts": 0,
+      "rejected": 50,
+      "failed": 0,
+      "judged": 150,
+      "passed": 150,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 50,
+      "generationSuccessRate": 0.75,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 0.75,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 150,
+      "meanPredictedQuality": 0.8333333333333333,
+      "meanObservedQuality": 0.9055555555555562
+    },
+    "orchestra-inferred/model:gemma3-1b": {
+      "requests": 150,
+      "successfulGenerations": 150,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 150,
+      "passed": 150,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 1,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 150,
+      "meanPredictedQuality": 0.8333333333333333,
+      "meanObservedQuality": 0.9055555555555562
+    },
+    "orchestra-inferred/category:analysis": {
+      "requests": 50,
+      "successfulGenerations": 50,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 50,
+      "passed": 50,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 1,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 50,
+      "meanPredictedQuality": 0.766666666666666,
+      "meanObservedQuality": 0.8999999999999999
+    },
+    "orchestra-inferred/category:writing": {
+      "requests": 50,
+      "successfulGenerations": 50,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 50,
+      "passed": 50,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 1,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 50,
+      "meanPredictedQuality": 0.9500000000000006,
+      "meanObservedQuality": 0.85
+    },
+    "orchestra-inferred/category:qa": {
+      "requests": 50,
+      "successfulGenerations": 50,
+      "unresolvedCosts": 0,
+      "rejected": 0,
+      "failed": 0,
+      "judged": 50,
+      "passed": 50,
+      "violations": 0,
+      "providerFailures": 0,
+      "policyRejections": 0,
+      "generationSuccessRate": 1,
+      "judgmentCoverage": 1,
+      "overallSuccessfulServiceRate": 1,
+      "observedPassRate": 1,
+      "qualityFloorViolationRate": 0,
+      "pairedCount": 50,
+      "meanPredictedQuality": 0.7833333333333335,
+      "meanObservedQuality": 0.9666666666666665
+    }
+  }
+}

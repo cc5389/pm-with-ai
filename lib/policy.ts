@@ -1,3 +1,4 @@
+import { classifyTask } from "./classification";
 import type {
   BudgetContext,
   CompanyPolicyRules,
@@ -54,6 +55,9 @@ export function derivePolicy(
   context: BudgetContext,
   coldStartProjectedSpend: number,
 ): Omit<Policy, "allowedModels"> & { calculation: PolicyCalculation } {
+  if (input.importanceMode === "inferred") {
+    input = { ...input, importance: classifyTask(input.prompt).importance };
+  }
   const date = new Date(
     /^\d{4}-\d{2}-\d{2}$/.test(settings.simulatedDate)
       ? `${settings.simulatedDate}T12:00:00.000Z`

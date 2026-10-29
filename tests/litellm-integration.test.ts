@@ -17,6 +17,7 @@ import {
   type LiteLLMTransport,
 } from "../eval/shared/litellm-client";
 import {
+  ANSWER_LENGTH_INSTRUCTION,
   EVAL_OUTPUT_TOKEN_CAP,
   canonicalAlias,
   estimatedRequestCost,
@@ -187,9 +188,12 @@ test("Orchestra selects one configured alias and reserves input plus the full ou
     "temperature",
   ]);
   assert.equal(body.model, planned.requestedModel);
-  assert.equal(body.max_tokens, 256);
+  assert.equal(body.max_tokens, EVAL_OUTPUT_TOKEN_CAP);
   assert.equal(body.temperature, 0);
-  assert.deepEqual(body.messages, [{ role: "user", content: "Hi" }]);
+  assert.deepEqual(body.messages, [
+    { role: "system", content: ANSWER_LENGTH_INSTRUCTION },
+    { role: "user", content: "Hi" },
+  ]);
   assert.equal(JSON.stringify(body).includes("smart-router"), false);
   assert.equal(JSON.stringify(body).includes("test-gateway-master-key"), false);
   const headers = calls[0].init.headers as Record<string, string>;
@@ -205,7 +209,8 @@ test("Orchestra selects one configured alias and reserves input plus the full ou
 
 test("the same budget sends smart-router for baseline and the engine alias for Orchestra", async () => {
   const tight = request({
-    budgetUsd: 0.02,
+    // Sized for the 1024-token cap: only nano fits the per-request allowance.
+    budgetUsd: 0.08,
     spentUsd: 0,
     budgetUsedFraction: 0,
     taskImportance: "low",

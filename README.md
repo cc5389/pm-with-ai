@@ -51,6 +51,10 @@ With only one configured local model, live inference validates the execution pat
 
 Real LiteLLM calls stay off until you opt in. Simulation, mock evaluation, and local Ollama remain available. Orchestra still selects a model in `lib/engine.ts` and sends that configured alias to the gateway. The Stage A baseline instead sends `smart-router`, and the gateway chooses a model itself. Windows setup for a private local gateway is in [the LiteLLM guide](docs/LITELLM-WINDOWS.md). Keep the app on this computer. Do not start a paid run until you intend to pay for the requests named by `EVAL_LIMIT`.
 
+## Free end-to-end runs with Ollama
+
+Gateway mode routes real requests to local Gemma models through LiteLLM, with shadow prices so the budget still matters. A local Qwen judge scores quality. The demo and Stage B/C need no paid API. Setup and run order are in [the Ollama guide](docs/OLLAMA.md).
+
 ## Architecture and API
 
 - **Agent 1** uses a pure, independently testable calculator (`lib/policy.ts`) to derive quality floor, weights, allowance, and calculation explanations from request input, company rules, and budget context. New version 1.1 snapshots preserve the effective rules; older history remains readable. No LiteLLM integration is required for this layer.

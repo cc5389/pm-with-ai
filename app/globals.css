@@ -2480,6 +2480,11 @@ tbody tr:last-child td {
   margin-top: 22px;
   min-width: 0;
 }
+.calculation-panel .calculation-details {
+  border-top: 0;
+  margin-top: 0;
+  padding-top: 0;
+}
 .calculation-details h3 {
   font-size: 15px;
   margin: 0 0 12px;

@@ -1,0 +1,7 @@
+# Local quality judge. eval/shared/judge.ts disables Qwen thinking on every
+# local request. The 16k context leaves room for rubric, response, and verdict.
+# This variant shares the qwen3.5:4b weights (no extra disk).
+#
+#   ollama create qwen3.5-judge -f eval/litellm/judge.Modelfile
+FROM qwen3.5:4b
+PARAMETER num_ctx 16384

@@ -13,6 +13,12 @@ import {
   transaction,
 } from "./db";
 import { generateLocal, localProfile } from "./local";
+import {
+  gatewayAssumptions,
+  gatewayPool,
+  gatewayProfiles,
+  generateGateway,
+} from "./gateway";
 import type {
   Preview,
   RequestInput,
@@ -24,9 +30,12 @@ import type {
 export function workspace(): Workspace & { defaultInput: RequestInput } {
   const records = allRecords(),
     local = localProfile(records),
-    settings = getSettings();
-  const defaultInput = {
+    settings = getSettings(),
+    pool = gatewayPool();
+  const defaultInput: RequestInput = {
     ...DEFAULT_INPUT,
+    // A configured gateway is an explicit opt-in, so start there after a reload.
+    mode: pool ? "gateway" : DEFAULT_INPUT.mode,
     userId: settings.users.some((u) => u.id === DEFAULT_INPUT.userId)
       ? DEFAULT_INPUT.userId
       : settings.users[0].id,
@@ -41,8 +50,12 @@ export function workspace(): Workspace & { defaultInput: RequestInput } {
   };
   return {
     settings,
-    balances: { simulation: balance("simulation"), local: balance("local") },
-    models: [...MODELS, ...(local ? [local] : [])],
+    balances: {
+      simulation: balance("simulation"),
+      local: balance("local"),
+      gateway: balance("gateway"),
+    },
+    models: [...MODELS, ...(local ? [local] : []), ...gatewayProfiles()],
     history: history(),
     localAvailable: !!local,
     localModel: local?.name ?? null,
@@ -50,6 +63,8 @@ export function workspace(): Workspace & { defaultInput: RequestInput } {
       !!local &&
       Object.values(local.qualitySampleCounts ?? {}).length === 4 &&
       Object.values(local.qualitySampleCounts!).every((n) => n > 0),
+    gatewayAvailable: !!pool,
+    gatewayPool: pool?.label ?? null,
     defaultInput,
   };
 }
@@ -62,6 +77,11 @@ export function previewRequest(
   if (input.mode === "local" && !process.env.OLLAMA_MODEL)
     throw new AppError(
       "Local inference is not configured. Simulation works without setup.",
+    );
+  const pool = gatewayPool();
+  if (input.mode === "gateway" && !pool)
+    throw new AppError(
+      "Gateway mode is not configured. Set ORCHESTRA_POOL and LITELLM_MASTER_KEY in .env.local, start LiteLLM, and restart Orchestra.",
     );
   const start = performance.now();
   const local = localProfile(allRecords());
@@ -78,9 +98,11 @@ export function previewRequest(
   const result = buildPreview(
     input,
     effective,
-    [...MODELS, ...(local ? [local] : [])],
+    [...MODELS, ...(local ? [local] : []), ...gatewayProfiles()],
     context,
   );
+  if (input.mode === "gateway" && pool)
+    result.policy.assumptions.push(...gatewayAssumptions(pool));
   if (input.mode === "local") {
     result.policy.assumptions.push(
       "Local inference has no API charge; electricity and hardware costs are excluded.",
@@ -151,6 +173,25 @@ export async function runRequest(
   });
   if (prepared.existing) return prepared.existing;
   const record = prepared.record!;
+  if (input.mode === "gateway") {
+    try {
+      Object.assign(
+        record,
+        await generateGateway(
+          input,
+          record.preview.selected!,
+          record.preview.policy.budget.remaining,
+        ),
+      );
+    } catch (error) {
+      // Configuration errors are raised before any request is sent.
+      record.status = "failed";
+      record.error =
+        error instanceof Error ? error.message : "Gateway request failed.";
+    }
+    transaction(() => saveRecord(record));
+    return record;
+  }
   try {
     const result = await generateLocal(input);
     record.response = result.response;
@@ -173,7 +214,7 @@ export function rateRecord(
 ) {
   return transaction(() => {
     const record = getRecord(id);
-    if (record.input.mode !== "local" || record.status !== "completed")
+    if (record.input.mode === "simulation" || record.status !== "completed")
       throw new AppError(
         "Only completed real responses can be rated. Simulation values are illustrative.",
       );

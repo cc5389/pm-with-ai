@@ -1,3 +1,5 @@
+import { activePool, type ModelPool } from "./model-pool";
+
 export type ExecutionMode = "mock" | "real";
 
 type ExecutionEnv = {
@@ -29,7 +31,10 @@ export function executionLimit(env: ExecutionEnv = process.env): number | null {
 export function assertPaidRunIsExplicit(
   mode: ExecutionMode,
   limit: number | null,
+  pool: ModelPool = activePool(),
 ): void {
+  // A shadow-priced local pool cannot incur provider charges.
+  if (pool.shadowPriced) return;
   if (mode === "real" && limit === null) {
     throw new Error(
       "Real LiteLLM execution is opt-in. Set EVAL_LIMIT to the number of requests each system should run (use 1 for a smoke test). Refusing to start an unbounded paid run.",
@@ -37,9 +42,13 @@ export function assertPaidRunIsExplicit(
   }
 }
 
+/** Real runs of a non-default pool get their own files so pools never mix. */
 export function resultsPath(
   stage: "stage-b" | "stage-c",
   mode: ExecutionMode,
+  pool: ModelPool = activePool(),
+  kind: "results" | "judgments" | "constraints" | "report" = "results",
 ): string {
-  return `eval/results/${stage}/${mode}-results.json`;
+  const label = mode === "real" && pool.id !== "openai" ? `real-${pool.id}` : mode;
+  return `eval/results/${stage}/${label}-${kind}.json`;
 }

@@ -1,0 +1,181 @@
+{
+  "mode": "real",
+  "generatedAt": "2026-10-22T05:20:28.651Z",
+  "costNote": "Costs are the pool's charges. For the Ollama pool these are shadow prices; nothing was billed.",
+  "qualityAvailable": true,
+  "stageC": [
+    {
+      "system": "baseline",
+      "requests": 200,
+      "budgetUsd": 0.4,
+      "spentUsd": 0.18938,
+      "finalUtilization": 0.473,
+      "withinBudget": true,
+      "overspendingRequests": 0,
+      "completed": 200,
+      "rejected": 0,
+      "failed": 0,
+      "firstRejectedRequest": null,
+      "utilizationAtFirstRejection": null,
+      "qualityByQuarter": [
+        {
+          "requests": "1–50",
+          "meanQuality": 0.827,
+          "passRate": 0.82,
+          "models": {
+            "gemma3-12b": 7,
+            "gemma3-4b": 34,
+            "gemma3-1b": 9
+          }
+        },
+        {
+          "requests": "51–100",
+          "meanQuality": 0.858,
+          "passRate": 0.86,
+          "models": {
+            "gemma3-1b": 10,
+            "gemma3-4b": 38,
+            "gemma3-12b": 2
+          }
+        },
+        {
+          "requests": "101–150",
+          "meanQuality": 0.857,
+          "passRate": 0.84,
+          "models": {
+            "gemma3-4b": 37,
+            "gemma3-12b": 4,
+            "gemma3-1b": 9
+          }
+        },
+        {
+          "requests": "151–200",
+          "meanQuality": 0.858,
+          "passRate": 0.86,
+          "models": {
+            "gemma3-1b": 5,
+            "gemma3-12b": 5,
+            "gemma3-4b": 40
+          }
+        }
+      ],
+      "modelsByBudgetState": {
+        "<50% used": {
+          "gemma3-12b": 18,
+          "gemma3-4b": 149,
+          "gemma3-1b": 33
+        },
+        "50–80% used": {},
+        "80–90% used": {},
+        "≥90% used": {}
+      },
+      "modelsOverall": {
+        "gemma3-12b": 18,
+        "gemma3-4b": 149,
+        "gemma3-1b": 33
+      },
+      "passingAnswers": 169,
+      "costPerPassingAnswerUsd": 0.001121,
+      "unusedBudgetUsd": 0.21062
+    },
+    {
+      "system": "orchestra",
+      "requests": 200,
+      "budgetUsd": 0.4,
+      "spentUsd": 0.140044,
+      "finalUtilization": 0.35,
+      "withinBudget": true,
+      "overspendingRequests": 0,
+      "completed": 200,
+      "rejected": 0,
+      "failed": 0,
+      "firstRejectedRequest": null,
+      "utilizationAtFirstRejection": null,
+      "qualityByQuarter": [
+        {
+          "requests": "1–50",
+          "meanQuality": 0.852,
+          "passRate": 0.84,
+          "models": {
+            "gemma3-4b": 50
+          }
+        },
+        {
+          "requests": "51–100",
+          "meanQuality": 0.848,
+          "passRate": 0.86,
+          "models": {
+            "gemma3-4b": 50
+          }
+        },
+        {
+          "requests": "101–150",
+          "meanQuality": 0.852,
+          "passRate": 0.84,
+          "models": {
+            "gemma3-4b": 50
+          }
+        },
+        {
+          "requests": "151–200",
+          "meanQuality": 0.848,
+          "passRate": 0.86,
+          "models": {
+            "gemma3-4b": 50
+          }
+        }
+      ],
+      "modelsByBudgetState": {
+        "<50% used": {
+          "gemma3-4b": 200
+        },
+        "50–80% used": {},
+        "80–90% used": {},
+        "≥90% used": {}
+      },
+      "modelsOverall": {
+        "gemma3-4b": 200
+      },
+      "passingAnswers": 170,
+      "costPerPassingAnswerUsd": 0.000824,
+      "unusedBudgetUsd": 0.259956
+    }
+  ],
+  "stageB": [
+    {
+      "system": "baseline",
+      "modelsByBudgetState": {
+        "10% used": {
+          "gemma3-4b": 14,
+          "gemma3-12b": 2,
+          "gemma3-1b": 4
+        },
+        "50% used": {
+          "gemma3-12b": 3,
+          "gemma3-4b": 12,
+          "gemma3-1b": 5
+        },
+        "92% used": {
+          "gemma3-12b": 1,
+          "gemma3-4b": 15,
+          "gemma3-1b": 4
+        }
+      }
+    },
+    {
+      "system": "orchestra",
+      "modelsByBudgetState": {
+        "10% used": {
+          "gemma3-4b": 20
+        },
+        "50% used": {
+          "gemma3-4b": 20
+        },
+        "92% used": {
+          "gemma3-4b": 10,
+          "gemma3-1b": 10
+        }
+      }
+    }
+  ]
+}
