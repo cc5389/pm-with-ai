@@ -150,7 +150,7 @@ The Stage B judging script additionally records `scenarioId` and `system` so rep
 | `evaluate.ts` | Run offline constraint checks |
 | `judge.ts` | Evaluate real responses using the LLM quality judge |
 
-The current `run.ts` uses mock adapters. It does not execute the real Orchestra pipeline.
+`run.ts` uses mock adapters unless `EVAL_EXECUTION=real`. A real run also requires `EVAL_LIMIT`, so an unbounded paid run cannot start by accident.
 
 ## 5. Stage C Files
 
@@ -161,7 +161,7 @@ The current `run.ts` uses mock adapters. It does not execute the real Orchestra 
 | `run.ts` | Execute sequential requests with independent budgets |
 | `validate.ts` | Validate saved budget trajectories |
 
-The current `run.ts` uses mock adapters.
+`run.ts` uses mock adapters unless `EVAL_EXECUTION=real` and `EVAL_LIMIT` are both set.
 
 The budget tracker records observed spending but does not itself enforce routing or budget restrictions.
 
@@ -185,11 +185,13 @@ async function runOrchestra(
 ): Promise<PipelineExecution>
 ```
 
-Both functions must use the same underlying LiteLLM routing configuration.
+Both functions use the same gateway config, model pool, prompts, output cap, and starting budgets. They do not share a second router.
 
-The baseline calls LiteLLM without Orchestra's policy.
+The baseline calls LiteLLM with the Stage A alias `smart-router` and does not apply Orchestra's score. In `eval/stage-a/litellm/config.yaml`, `smart-router` is `auto_router/adaptive_router`. The gateway then chooses among `gpt-4.1`, `gpt-4.1-mini`, and `gpt-4.1-nano` using its own weights (quality 0.7, cost 0.3) and can ignore Orchestra's budget and quality floor. Before that call, the runner still reserves the most expensive model in the pool at the shared output cap. If the remaining budget cannot cover that reservation, the baseline rejects the request and does not call the gateway.
 
-Orchestra applies the policy to the supplied organization state before invoking LiteLLM.
+Orchestra calls `buildPreview` in `lib/engine.ts`. The HTTP `model` field is the selected alias (`gpt-4.1`, `gpt-4.1-mini`, or `gpt-4.1-nano`), never `smart-router`. Returned ids are accepted only from an explicit list, including the versioned ids in the gateway config (`gpt-4.1-2025-04-14` and its mini and nano counterparts, with or without the `openai/` prefix). A genuinely different model is a failure, and both names are kept. The reservation is input tokens plus the full output cap. If the provider may have charged but did not report a price, that reservation stays locked and is labeled unresolved. A known cost is kept even when the returned model is rejected.
+
+All three aliases share one uncalibrated quality estimate of 0.75, so that estimate does not remove nano from the pool. Latency figures are also estimates. The baseline still cannot force `smart-router` to honor Orchestra's eligible set. Reports label this as a comparison of two policies. They do not claim to isolate routing quality. Prices used for the reservation are the frozen 2026-10-07 snapshot. A response cost header is recorded as actual; otherwise a price-table calculation is labeled estimated.
 
 The input includes:
 
@@ -216,7 +218,7 @@ The output must include:
 2. Preserve the original request ID.
 3. Return actual measured costs and latency, not mock values.
 4. Preserve policy decisions and allowed-model restrictions in the returned metadata.
-5. Use the same LiteLLM router configuration for both systems to support a controlled comparison.
+5. Use the same gateway, model pool, prompts, output cap, and starting budgets. Do not send Orchestra's selected alias through `smart-router`.
 
 ## 7. Running the Evaluation Framework
 
@@ -242,7 +244,19 @@ node --import tsx eval/stage-c/run.ts
 node --import tsx eval/stage-c/validate.ts
 ```
 
-Mock evaluations require no API credentials.
+Mock evaluations require no API credentials. They do not measure provider spend, and their reports must not be cited as savings.
+
+### Stage B or C — one real request
+
+Only after the local gateway is running and you intend to pay:
+
+```powershell
+$env:EVAL_EXECUTION = "real"
+$env:EVAL_LIMIT = "1"
+node --env-file=.env.local --import tsx eval/stage-b/run.ts
+```
+
+`EVAL_LIMIT=1` runs the first scenario or workload item through both systems. It is not the full study. Unset `EVAL_LIMIT` makes a real run refuse to start. Real results are written under `eval/results/stage-b/real-*` and `eval/results/stage-c/real-*`, which are gitignored. See [the Windows gateway guide](../docs/LITELLM-WINDOWS.md).
 
 ### Stage B — Real quality judging
 
@@ -305,11 +319,10 @@ Real evaluation outputs must remain separate from mock results.
 - Unknown provider-side charges and automatic retry behavior remain integration considerations.
 
 **Remaining before real experiments:**
-- Connect baseline and Orchestra pipeline functions
-- Finalize experimental budget values and task-importance assumptions
-- Strengthen checkpoint and failure handling
-- Run real Stage B and Stage C evaluations
-- Verify quality and constraint metrics on real responses
+- Provide your own gateway and provider credentials outside this repository
+- Decide whether the uncalibrated quality estimates should be replaced with measurements before a full run
+- Run real Stage B and Stage C only for a limit you intend to pay for
+- Judge real responses separately; generation reports do not contain quality scores
 - Freeze the experiment configuration and preserve raw outputs
 
 

@@ -74,7 +74,10 @@ import type {
         !Number.isFinite(cost) ||
         cost < 0
       ) {
-        throw new Error(`${system}: invalid generation cost at ${i}`);
+        throw new Error(
+          `${system}: unresolved or invalid provider cost at ${i}. ` +
+            "The saved attempt will not be retried and its budget was not increased.",
+        );
       }
   
       const expectedAfter = tracker.recordCost(cost);

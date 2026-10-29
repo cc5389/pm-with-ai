@@ -2,17 +2,23 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { buildStageBScenarios } from "./scenarios";
 import { evaluateConstraints } from "./constraints";
+import { formatComparison, summarizeComparison } from "../shared/comparison";
+import { executionMode, resultsPath } from "../shared/run-mode";
 import type { EvaluationResult } from "../shared/pipeline";
 
-const INPUT = "eval/results/stage-b/mock-results.json";
-const OUTPUT = "eval/results/stage-b/mock-constraints.json";
-
 interface SavedResults {
+  mode?: string;
   results: EvaluationResult[];
 }
 
 async function main() {
-  const raw = await readFile(INPUT, "utf8");
+  const mode = executionMode();
+  const input = resultsPath("stage-b", mode);
+  const output =
+    mode === "real"
+      ? "eval/results/stage-b/real-constraints.json"
+      : "eval/results/stage-b/mock-constraints.json";
+  const raw = await readFile(input, "utf8");
   const parsed: SavedResults = JSON.parse(raw);
 
   if (!Array.isArray(parsed.results)) {
@@ -34,18 +40,25 @@ async function main() {
     return evaluateConstraints(scenario, result);
   });
 
+  const comparison = summarizeComparison(
+    parsed.results,
+    parsed.mode ?? mode,
+  );
+
   await writeFile(
-    OUTPUT,
+    output,
     JSON.stringify(
       {
         experiment: "stage-b-constraints",
-        mode: "mock",
+        mode: parsed.mode ?? mode,
+        comparison,
         evaluations,
       },
       null,
       2,
     ),
   );
+  console.log(formatComparison(comparison));
 
   console.log(`Evaluated: ${evaluations.length}`);
 
@@ -69,7 +82,7 @@ async function main() {
     }),
   );
 
-  console.log(`Saved to ${OUTPUT}`);
+  console.log(`Saved to ${output}`);
 }
 
 main().catch((error) => {

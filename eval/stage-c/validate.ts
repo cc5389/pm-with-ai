@@ -1,12 +1,13 @@
 
 import { readFile } from "node:fs/promises";
 import { buildStageCWorkload } from "./workload";
+import { formatComparison, summarizeComparison } from "../shared/comparison";
+import { executionMode, resultsPath } from "../shared/run-mode";
 import type {
   EvaluationResult,
   EvaluationSystem,
 } from "../shared/pipeline";
 
-const INPUT = "eval/results/stage-c/mock-results.json";
 const EPSILON = 1e-8;
 
 interface StageCRecord {
@@ -28,12 +29,13 @@ function approximatelyEqual(a: number, b: number): boolean {
 }
 
 async function main() {
+  const mode = executionMode();
   const saved: SavedResults = JSON.parse(
-    await readFile(INPUT, "utf8"),
+    await readFile(resultsPath("stage-c", mode), "utf8"),
   );
 
   if (
-    saved.mode !== "mock" ||
+    (saved.mode !== "mock" && saved.mode !== "real") ||
     !Array.isArray(saved.records) ||
     !Number.isFinite(saved.budgetUsd) ||
     saved.budgetUsd <= 0
@@ -43,9 +45,18 @@ async function main() {
 
   const workload = buildStageCWorkload();
 
-  if (saved.workloadSize !== workload.length) {
+  if (saved.mode === "mock" && saved.workloadSize !== workload.length) {
     throw new Error("Workload size mismatch.");
   }
+  if (
+    saved.mode === "real" &&
+    (!Number.isInteger(saved.workloadSize) ||
+      saved.workloadSize < 1 ||
+      saved.workloadSize > workload.length)
+  ) {
+    throw new Error("Workload size mismatch.");
+  }
+  const expectedLength = saved.workloadSize;
 
   const systems: EvaluationSystem[] = [
     "baseline",
@@ -59,9 +70,9 @@ async function main() {
       .filter((record) => record.result.system === system)
       .sort((a, b) => a.sequenceIndex - b.sequenceIndex);
 
-    if (records.length !== workload.length) {
+    if (records.length !== expectedLength) {
       errors.push(
-        `${system}: expected ${workload.length} records, found ${records.length}`,
+        `${system}: expected ${expectedLength} records, found ${records.length}`,
       );
     }
 
@@ -142,6 +153,15 @@ async function main() {
       `$${expectedSpent.toFixed(6)} spent`,
     );
   }
+
+  console.log(
+    formatComparison(
+      summarizeComparison(
+        saved.records.map((record) => record.result),
+        saved.mode,
+      ),
+    ),
+  );
 
   if (errors.length > 0) {
     console.error("Validation failures:");

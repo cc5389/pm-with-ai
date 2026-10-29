@@ -1,4 +1,11 @@
 
+/**
+ * Stage A baseline. Every request sends the configured alias "smart-router".
+ * In eval/stage-a/litellm/config.yaml that alias is LiteLLM's adaptive router:
+ * the gateway chooses among gpt-4.1, gpt-4.1-mini, and gpt-4.1-nano with its
+ * own quality/cost weights. Orchestra does not use this class. It selects one
+ * alias in lib/engine.ts and sends that alias, so this router cannot replace it.
+ */
 import type {
     RouterAdapter,
     RouterRequest,
