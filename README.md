@@ -83,3 +83,20 @@ npm run test:browser
 ```
 
 Unit/integration tests use an isolated in-memory database and a mock HTTP inference endpoint, never actual models or paid APIs. Browser tests cover request preview, run/history, settings, scenario changes, evaluation, and mocked local execution with ratings. They use an isolated server/database when started by the test script.
+
+## Evaluation Results
+
+Orchestra was evaluated against LiteLLM's adaptive router using
+Gemma 3 models and a simulated $0.10 budget.
+
+Across 200 requests per configuration:
+
+- LiteLLM: 72 quality-passing responses, $0.0922 shadow cost.
+- Orchestra (fixed importance): 158 passing responses, $0.0361.
+- Orchestra (inferred importance): 150 passing responses, $0.0208.
+
+Orchestra improved budget-efficient request coverage, while
+automatic importance inference traded some coverage for lower cost.
+
+See [Evaluation Results](eval/results/README.md) for methodology,
+model selections, quality results, and limitations.
