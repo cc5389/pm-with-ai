@@ -121,6 +121,33 @@ try {
       3,
     ),
   );
+  const importanceMode = page.getByLabel("Importance mode", { exact: true });
+  await expect(importanceMode).toHaveValue("inferred");
+  await expect(page.getByLabel("Importance", { exact: true })).toHaveCount(0);
+  const promptField = page.locator(".prompt-input");
+  const originalPrompt = await promptField.inputValue();
+  await promptField.fill("Review a distributed production security incident");
+  await expect(page.locator("#task-classification")).toContainText(
+    "Inferred importance: high",
+  );
+  await expect(page.locator("#task-classification")).toContainText(
+    "Difficulty: high",
+  );
+  await expect(page.locator("#task-classification")).toContainText(
+    "explicit high-stakes context",
+  );
+  await importanceMode.selectOption("fixed");
+  await page.getByLabel("Importance", { exact: true }).selectOption("low");
+  await expect
+    .poll(async () => (await currentPolicy())?.importance)
+    .toBe("low");
+  await expect(page.locator("#task-classification")).toHaveCount(0);
+  await importanceMode.selectOption("inferred");
+  await expect
+    .poll(async () => (await currentPolicy())?.importance)
+    .toBe("high");
+  await promptField.fill(originalPrompt);
+  await importanceMode.selectOption("fixed");
   await page.getByLabel("Importance", { exact: true }).selectOption("high");
   await expect
     .poll(async () => (await currentPolicy())?.calculation.multiplier)

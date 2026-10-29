@@ -722,24 +722,44 @@ export default function Dashboard() {
                                 <option value="qa">Question answering</option>
                               </select>
                             </label>
-                            <label>
-                              Importance
-                              <select
-                                aria-label="Importance"
-                                aria-describedby="importance-help"
-                                value={input.importance}
-                                onChange={(e) =>
-                                  edit({
-                                    importance: e.target
-                                      .value as RequestInput["importance"],
-                                  })
-                                }
-                              >
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
-                              </select>
-                            </label>
+                            <div>
+                              <label>
+                                Importance mode
+                                <select
+                                  aria-label="Importance mode"
+                                  value={input.importanceMode ?? "fixed"}
+                                  onChange={(e) =>
+                                    edit({
+                                      importanceMode: e.target
+                                        .value as RequestInput["importanceMode"],
+                                    })
+                                  }
+                                >
+                                  <option value="inferred">Automatic</option>
+                                  <option value="fixed">Manual</option>
+                                </select>
+                              </label>
+                              {input.importanceMode !== "inferred" && (
+                                <label>
+                                  Importance
+                                  <select
+                                    aria-label="Importance"
+                                    aria-describedby="importance-help"
+                                    value={input.importance}
+                                    onChange={(e) =>
+                                      edit({
+                                        importance: e.target
+                                          .value as RequestInput["importance"],
+                                      })
+                                    }
+                                  >
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                  </select>
+                                </label>
+                              )}
+                            </div>
                             <label>
                               Requested by
                               <select
@@ -756,14 +776,48 @@ export default function Dashboard() {
                               </select>
                             </label>
                           </div>
+                          {input.importanceMode === "inferred" && (
+                            <p
+                              id="task-classification"
+                              className="importance-help"
+                              aria-live="polite"
+                            >
+                              {preview?.classification ? (
+                                <>
+                                  Inferred importance:{" "}
+                                  <strong>
+                                    {preview.classification.importance}
+                                  </strong>
+                                  {" · "}Difficulty:{" "}
+                                  <strong>
+                                    {preview.classification.difficulty}
+                                  </strong>
+                                  <br />
+                                  {preview.classification.explanation}
+                                </>
+                              ) : calculationError ? (
+                                "Classification unavailable. Review the preview error below."
+                              ) : input.prompt.trim() ? (
+                                "Classifying your prompt…"
+                              ) : (
+                                "Enter a prompt to infer importance and difficulty."
+                              )}
+                            </p>
+                          )}
                           <p id="importance-help" className="importance-help">
-                            {importanceMultiplier(
-                              input.importance,
-                              resolveCompanyPolicy(effectiveSettings!),
+                            {(preview ||
+                              input.importanceMode !== "inferred") && (
+                              <>
+                                {importanceMultiplier(
+                                  preview?.policy.importance ??
+                                    input.importance,
+                                  resolveCompanyPolicy(effectiveSettings!),
+                                )}
+                                × allowance and quality preference.{" "}
+                              </>
                             )}
-                            × allowance and quality preference. Low: routine
-                            ideas; Medium: regular updates; High: urgent
-                            customer issues. Quality floor stays fixed.
+                            Low: routine ideas; Medium: regular updates; High:
+                            urgent customer issues. Quality floor stays fixed.
                           </p>
                           <label className="prompt-label">
                             Your prompt <span>Be as specific as you like</span>
@@ -2010,7 +2064,8 @@ function CandidatePanel({ preview }: { preview: Preview | null }) {
               <p>
                 {preview.selected
                   ? `${preview.selected.model.provider} · ${preview.selected.model.gateway ? "Gateway model" : preview.selected.model.local ? "Local model" : "Simulated execution"} · Highest eligible weighted score`
-                  : "Review the candidate reasons below, then adjust the constraints or budget."}
+                  : (preview.rejectionReason ??
+                    "Review the candidate reasons below, then adjust the constraints or budget.")}
               </p>
             </div>
             {preview.selected && (

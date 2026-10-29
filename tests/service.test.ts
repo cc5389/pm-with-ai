@@ -1,3 +1,6 @@
+import { classifyTask } from "../lib/classification";
+import { POST as previewPOST } from "../app/api/preview/route";
+import { POST as runPOST } from "../app/api/run/route";
 import { test, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
@@ -281,3 +284,123 @@ test("draft budget previews calculate without persisting settings or spend", () 
   assert.deepEqual(getSettings(), saved);
   assert.equal(history().length, 0);
 });
+
+test("demo defaults to automatic without changing legacy request defaults", () => {
+  assert.equal(workspace().defaultInput.importanceMode, "inferred");
+  assert.equal(inputSchema.parse(input()).importanceMode, "fixed");
+  assert.equal(
+    inputSchema.safeParse({ ...input(), importanceMode: "automatic" }).success,
+    false,
+  );
+});
+
+test("automatic preview reuses Stage C classification and the fixed routing policy", () => {
+  for (const prompt of [
+    "Write a short birthday poem for a friend",
+    "Review a distributed production security incident",
+    "Explain the topic",
+  ]) {
+    const request = inputSchema.parse({
+      ...input(),
+      prompt,
+      importance: "low",
+      importanceMode: "inferred",
+    });
+    const preview = previewRequest(request);
+    const classification = classifyTask(prompt);
+    assert.equal(preview.classification?.importance, classification.importance);
+    assert.equal(preview.classification?.difficulty, classification.difficulty);
+    assert.equal(
+      preview.classification?.explanation,
+      classification.explanation,
+    );
+    assert.equal(preview.classification?.costUsd, 0);
+    const fixed = previewRequest({
+      ...request,
+      importanceMode: "fixed",
+      importance: classification.importance,
+    });
+    assert.deepEqual(preview.policy, fixed.policy);
+    assert.deepEqual(preview.candidates, fixed.candidates);
+    assert.deepEqual(preview.selected, fixed.selected);
+  }
+});
+
+test("manual override preserves the supplied importance for a high-stakes prompt", async () => {
+  const request = inputSchema.parse({
+    ...input(),
+    prompt: "Review a production security incident",
+    importance: "low",
+    importanceMode: "fixed",
+  });
+  const preview = previewRequest(request);
+  const run = await runRequest(request, randomUUID());
+  assert.equal(preview.classification, undefined);
+  assert.equal(preview.policy.importance, "low");
+  assert.deepEqual(run.preview.policy, preview.policy);
+  assert.equal(run.input.importance, "low");
+});
+
+test("preview and run HTTP routes preserve inferred classification and routing", async () => {
+  const request = {
+    ...input(),
+    prompt: "Review a distributed production security incident",
+    importance: "low",
+    importanceMode: "inferred",
+  };
+  const post = (url: string, payload: unknown) =>
+    new Request(`http://localhost${url}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+  const previewResponse = await previewPOST(
+    post("/api/preview", { input: request }),
+  );
+  const runResponse = await runPOST(
+    post("/api/run", { input: request, idempotencyKey: randomUUID() }),
+  );
+  assert.equal(previewResponse.status, 200);
+  assert.equal(runResponse.status, 200);
+  const preview = await previewResponse.json();
+  const run = await runResponse.json();
+  assert.equal(preview.policy.importance, "high");
+  assert.equal(run.input.importance, "high");
+  assert.deepEqual(run.preview.policy, preview.policy);
+  assert.deepEqual(run.preview.candidates, preview.candidates);
+  assert.equal(
+    run.preview.classification.explanation,
+    preview.classification.explanation,
+  );
+  assert.equal(run.status, "completed");
+});
+
+for (const constraint of [
+  { maxRequestCost: 0 },
+  { qualityFloor: 1 },
+  { maxRequestCost: 0, qualityFloor: 1 },
+]) {
+  test(`rejections explain constraints without relaxing policy: ${JSON.stringify(constraint)}`, async () => {
+    const request = inputSchema.parse({
+      ...input(),
+      ...constraint,
+      prompt: "Review production security",
+      importanceMode: "inferred",
+    });
+    const preview = previewRequest(request);
+    const key = randomUUID();
+    const run = await runRequest(request, key);
+    assert.equal(preview.selected, null);
+    assert.equal(run.status, "rejected");
+    assert.equal(run.error, preview.rejectionReason);
+    assert.match(run.error!, /high importance/);
+    if (constraint.maxRequestCost === 0)
+      assert.match(run.error!, /cost exceeds this request's allowance/);
+    if (constraint.qualityFloor === 1)
+      assert.match(run.error!, /quality is below the required floor/);
+    assert.equal(run.simulatedCost, 0);
+    assert.equal(run.actualCost, 0);
+    assert.equal(budgetContext(getSettings(), request).reserved, 0);
+    assert.equal((await runRequest(request, key)).id, run.id);
+  });
+}

@@ -128,6 +128,8 @@ export type Candidate = {
   preferred: boolean;
 };
 export type Preview = {
+  classification?: import("./classification").TaskClassification;
+  rejectionReason?: string;
   policy: Policy;
   candidates: Candidate[];
   selected: Candidate | null;

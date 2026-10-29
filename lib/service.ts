@@ -1,3 +1,4 @@
+import { classifyTask } from "./classification";
 import { buildPreview, qualityScore } from "./engine";
 import { MODELS, DEFAULT_INPUT } from "./catalog";
 import {
@@ -34,6 +35,7 @@ export function workspace(): Workspace & { defaultInput: RequestInput } {
     pool = gatewayPool();
   const defaultInput: RequestInput = {
     ...DEFAULT_INPUT,
+    importanceMode: "inferred",
     // A configured gateway is an explicit opt-in, so start there after a reload.
     mode: pool ? "gateway" : DEFAULT_INPUT.mode,
     userId: settings.users.some((u) => u.id === DEFAULT_INPUT.userId)
@@ -95,8 +97,20 @@ export function previewRequest(
           openingSpend: 0,
         }
       : settings;
+  const classification =
+    input.importanceMode === "inferred"
+      ? classifyTask(input.prompt)
+      : undefined;
+  // Resolve once before routing; keep the evaluated policy math unchanged.
+  const resolvedInput: RequestInput = classification
+    ? {
+        ...input,
+        importance: classification.importance,
+        importanceMode: "fixed",
+      }
+    : input;
   const result = buildPreview(
-    input,
+    resolvedInput,
     effective,
     [...MODELS, ...(local ? [local] : []), ...gatewayProfiles()],
     context,
@@ -125,6 +139,22 @@ export function previewRequest(
       });
     }
   }
+  if (classification) result.classification = classification;
+  if (!result.selected) {
+    const reasons = [
+      ...new Set(
+        result.candidates
+          .filter((candidate) =>
+            input.mode === "gateway"
+              ? candidate.model.gateway
+              : !candidate.model.gateway &&
+                candidate.model.local === (input.mode === "local"),
+          )
+          .flatMap((candidate) => candidate.reasons),
+      ),
+    ];
+    result.rejectionReason = `No model meets the current policy (${result.policy.importance} importance, ${Math.round(result.policy.qualityFloor * 100)}% quality floor, $${result.policy.maxCostPerRequest.toFixed(6)} request allowance). ${reasons.join(" ") || "No models are available in this execution mode."} Review the budget or request guardrails.`;
+  }
   result.routingMs = performance.now() - start;
   return result;
 }
@@ -140,7 +170,7 @@ export async function runRequest(
     const meta = reserve(key, input, settings, preview);
     const record: RunRecord = {
       ...meta,
-      input,
+      input: { ...input, importance: preview.policy.importance },
       preview,
       status: preview.selected ? "completed" : "rejected",
       response: "",
@@ -154,8 +184,7 @@ export async function runRequest(
       error: null,
     };
     if (!preview.selected) {
-      record.error =
-        "No model meets the current policy. Inspect the candidate exclusions.";
+      record.error = preview.rejectionReason!;
       saveRecord(record);
       return { existing: record };
     }

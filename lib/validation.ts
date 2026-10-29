@@ -37,6 +37,7 @@ export const inputSchema = z.object({
   prompt: z.string().trim().min(1, "Enter a request first.").max(50000),
   task: z.enum(["coding", "analysis", "writing", "qa"]),
   importance: z.enum(["low", "medium", "high"]),
+  importanceMode: z.enum(["fixed", "inferred"]).default("fixed"),
   userId: z.string().min(1).max(100),
   qualityFloor: z.number().finite().min(0).max(1),
   latencyTarget: z.number().finite().positive().max(600),
