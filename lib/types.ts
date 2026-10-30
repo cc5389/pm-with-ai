@@ -170,6 +170,8 @@ export type RunRecord = {
   };
 };
 export type Workspace = {
+  storage?: "browser";
+  storageNotice?: string;
   settings: Settings;
   models: ModelProfile[];
   history: RunRecord[];

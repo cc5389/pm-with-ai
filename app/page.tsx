@@ -1,6 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  browserDemoApi,
+  browserDemoEnabled,
+  enableBrowserDemo,
+  downloadBrowserDemo,
+} from "@/lib/demo-client";
 import { BudgetEditor } from "./budget-editor";
 import { CompanyPolicyEditor } from "./company-policy-editor";
 import { PolicyCalculationDetails } from "./policy-calculation";
@@ -70,6 +76,7 @@ const examples = [
   },
 ] as const;
 async function api<T>(path: string, body?: unknown): Promise<T> {
+  if (browserDemoEnabled()) return browserDemoApi<T>(path, body);
   const response = await fetch(
     path,
     body === undefined
@@ -83,6 +90,10 @@ async function api<T>(path: string, body?: unknown): Promise<T> {
   const result = await response.json();
   if (!response.ok)
     throw new Error(result.error || "Something went wrong. Please try again.");
+  if (path === "/api/workspace" && result.storage === "browser") {
+    enableBrowserDemo();
+    return browserDemoApi<T>(path);
+  }
   return result;
 }
 
@@ -518,12 +529,27 @@ export default function Dashboard() {
                     </div>
                   </div>
                 ) : (
-                  <a className="button secondary" href="/api/export" download>
+                  <a
+                    className="button secondary"
+                    href="/api/export"
+                    download
+                    onClick={(event) => {
+                      if (browserDemoEnabled()) {
+                        event.preventDefault();
+                        downloadBrowserDemo(false);
+                      }
+                    }}
+                  >
                     <ArrowDownToLine size={16} />
                     Export workspace
                   </a>
                 )}
               </div>
+              {workspace.storage === "browser" && (
+                <p className="importance-help" role="note">
+                  Public simulation demo. {workspace.storageNotice}
+                </p>
+              )}
               <div
                 className={`company-controls ${input.mode === "local" ? "local-controls" : ""}`}
                 hidden={view !== "lab"}
@@ -1827,6 +1853,12 @@ export default function Dashboard() {
                         <a
                           className="button secondary"
                           href="/api/export?format=csv"
+                          onClick={(event) => {
+                            if (browserDemoEnabled()) {
+                              event.preventDefault();
+                              downloadBrowserDemo(true);
+                            }
+                          }}
                           download
                         >
                           <ArrowDownToLine size={15} />

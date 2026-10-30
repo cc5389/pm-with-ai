@@ -1,3 +1,4 @@
+import { publicDemoGuard } from "@/lib/deployment";
 import { evaluate, BENCHMARK_PROMPTS } from "@/lib/benchmark";
 import { AppError, getSettings } from "@/lib/db";
 import { MODELS } from "@/lib/catalog";
@@ -9,6 +10,8 @@ export async function GET() {
   return Response.json({ prompts: BENCHMARK_PROMPTS });
 }
 export async function POST(req: Request) {
+  const guard = publicDemoGuard();
+  if (guard) return guard;
   try {
     const b = (await body(req)) as { input: unknown; settings?: unknown };
     const input = inputSchema.parse(b?.input);

@@ -1,3 +1,4 @@
+import { publicDemoGuard } from "@/lib/deployment";
 import { allRecords, getSettings } from "@/lib/db";
 import { failure } from "@/lib/http";
 export const runtime = "nodejs";
@@ -9,6 +10,8 @@ const cell = (value: unknown) =>
     .replaceAll('"', '""') +
   '"';
 export async function GET(req: Request) {
+  const guard = publicDemoGuard();
+  if (guard) return guard;
   try {
     const records = allRecords();
     if (new URL(req.url).searchParams.get("format") === "csv") {

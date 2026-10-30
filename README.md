@@ -104,3 +104,44 @@ automatic importance inference traded some coverage for lower cost.
 
 See [Evaluation Results](eval/results/README.md) for methodology,
 model selections, quality results, and limitations.
+
+### Public deployment storage
+
+On Vercel (`VERCEL=1`), Orchestra runs as a browser-owned simulation demo. You can
+also test this mode locally with `ORCHESTRA_PUBLIC_DEMO=1 npm run dev`.
+`/api/workspace` returns only fresh public defaults and a browser-storage flag;
+it never opens SQLite or reads a previous visitor's workspace. All server routes
+that access settings, history, export, ratings, preview, execution, or saved
+settings reject public-demo requests. The static benchmark prompt list remains
+available. Real local/gateway inference is disabled in this mode, even if provider
+environment variables are configured.
+
+The browser runs the same classifier, resolved preview, policy, model catalog,
+budget calculations, and simulation response code used locally. Workspace edits
+and simulated runs are saved as a versioned action log in `localStorage`; reload
+replays the log to restore settings, run IDs, history, and budget balances. JSON
+and CSV downloads are generated in the browser. No visitor prompts, settings, or
+history are sent to the workspace APIs. There is no server memory cache, `/tmp`
+workspace, or shared deployment database.
+
+This is **browser storage, not durable account storage**. It is scoped to this
+site and browser profile, survives normal reloads, and is lost when site data is
+cleared. People sharing that browser profile share its demo data. Separate tabs
+have independent in-memory snapshots; their latest save replaces the browser's
+saved log. Storage failures show a notice and leave the current tab usable;
+export a copy before leaving. Replaying saved actions uses the current demo code,
+so a future policy/catalog release may recalculate old simulations. Clearing site
+data resets the public demo. There is no cross-device sync or authenticated
+workspace. Simulation budgets are editable demonstrations, not billing controls.
+
+Local development without these deployment flags still uses
+`data/orchestra.sqlite` (or `ORCHESTRA_DB_PATH`), including persistent settings,
+history, accounting, reservations, and idempotency. The persistence call sites are
+`lib/db.ts`, `lib/service.ts`, and the workspace/history/export/preview/run/ratings/
+evaluate API routes. Gateway calibration optionally reads a configured calibration
+file; evaluation scripts and saved Stage C results are separate and unchanged.
+
+Durable shared or cross-device workspaces would require an external transactional
+database (for example, hosted PostgreSQL), authentication, workspace membership
+checks on every query, tenant-scoped settings/history/idempotency, and atomic
+budget reservations. No external database is needed for this public simulation.

@@ -1,3 +1,4 @@
+import { isPublicDemo } from "./deployment";
 import { DatabaseSync } from "node:sqlite";
 import { mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -15,6 +16,11 @@ import type {
 
 let instance: DatabaseSync | undefined;
 export function db() {
+  if (isPublicDemo())
+    throw new AppError(
+      "Server workspace storage is disabled in the public demo.",
+      403,
+    );
   if (instance) return instance;
   const file =
     process.env.ORCHESTRA_DB_PATH || resolve("data/orchestra.sqlite");

@@ -1,5 +1,6 @@
-import { classifyTask } from "./classification";
-import { buildPreview, qualityScore } from "./engine";
+import { resolvedPreview } from "./preview";
+import { simulate } from "./simulation";
+import { qualityScore } from "./engine";
 import { MODELS, DEFAULT_INPUT } from "./catalog";
 import {
   allRecords,
@@ -97,20 +98,8 @@ export function previewRequest(
           openingSpend: 0,
         }
       : settings;
-  const classification =
-    input.importanceMode === "inferred"
-      ? classifyTask(input.prompt)
-      : undefined;
-  // Resolve once before routing; keep the evaluated policy math unchanged.
-  const resolvedInput: RequestInput = classification
-    ? {
-        ...input,
-        importance: classification.importance,
-        importanceMode: "fixed",
-      }
-    : input;
-  const result = buildPreview(
-    resolvedInput,
+  const result = resolvedPreview(
+    input,
     effective,
     [...MODELS, ...(local ? [local] : []), ...gatewayProfiles()],
     context,
@@ -138,22 +127,6 @@ export function previewRequest(
         }
       });
     }
-  }
-  if (classification) result.classification = classification;
-  if (!result.selected) {
-    const reasons = [
-      ...new Set(
-        result.candidates
-          .filter((candidate) =>
-            input.mode === "gateway"
-              ? candidate.model.gateway
-              : !candidate.model.gateway &&
-                candidate.model.local === (input.mode === "local"),
-          )
-          .flatMap((candidate) => candidate.reasons),
-      ),
-    ];
-    result.rejectionReason = `No model meets the current policy (${result.policy.importance} importance, ${Math.round(result.policy.qualityFloor * 100)}% quality floor, $${result.policy.maxCostPerRequest.toFixed(6)} request allowance). ${reasons.join(" ") || "No models are available in this execution mode."} Review the budget or request guardrails.`;
   }
   result.routingMs = performance.now() - start;
   return result;
@@ -189,12 +162,7 @@ export async function runRequest(
       return { existing: record };
     }
     if (input.mode === "simulation") {
-      const selected = preview.selected;
-      record.simulatedCost = selected.estimatedCost;
-      record.simulatedLatency = selected.estimatedLatency;
-      record.inputTokens = selected.inputTokens;
-      record.outputTokens = selected.outputTokens;
-      record.response = `SIMULATED EXECUTION — no language model was called.\n\n${selected.model.name} was selected for your ${input.task} request.\n\nRequest: ${input.prompt}\n\nThis placeholder demonstrates the routing workflow; it is not an answer to your prompt. The simulation assumes ${selected.outputTokens} output tokens, ${selected.estimatedLatency.toFixed(1)} seconds, and an illustrative quality score of ${(selected.estimatedQuality * 100).toFixed(0)}%.\n\nThe simulated ledger was updated by $${selected.estimatedCost.toFixed(6)}. Actual API charges: $0. Configure local inference to generate a real answer without a paid API.`;
+      Object.assign(record, simulate(input, preview.selected));
       saveRecord(record);
       return { existing: record };
     }
